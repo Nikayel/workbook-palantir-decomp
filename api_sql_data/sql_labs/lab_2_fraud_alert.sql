@@ -1,0 +1,2 @@
+-- SQL Lab 2: Fraud Alert Investigation
+-- Identify transactions with anomalous amounts compared to historical averages using window functions.

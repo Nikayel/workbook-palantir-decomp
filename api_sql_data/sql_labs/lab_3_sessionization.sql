@@ -1,0 +1,2 @@
+-- SQL Lab 3: Sessionization / User Behavior
+-- Group user page views into sessions based on a 30-minute inactivity threshold.

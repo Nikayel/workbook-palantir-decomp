@@ -1,0 +1,2 @@
+-- SQL Lab 4: Latest Status Per Entity
+-- Fetch the most recent status of an entity from an event log using row_number().

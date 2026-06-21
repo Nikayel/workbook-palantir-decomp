@@ -1,0 +1,2 @@
+-- SQL Lab 1: Incident Response Metrics
+-- Find average time from incident_created to responder_arrived, grouped by severity and district.
