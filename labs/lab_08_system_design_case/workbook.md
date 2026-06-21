@@ -1,3 +1,5 @@
+Status: Spec incomplete — fill in all blank fields before implementing
+
 # Scenario
 
 You need to design a Case Management Platform for investigating high-priority operational incidents. 

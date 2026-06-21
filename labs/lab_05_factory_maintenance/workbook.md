@@ -1,3 +1,5 @@
+Status: Spec incomplete — fill in all blank fields before implementing
+
 # Scenario
 
 A manufacturing plant has 500 CNC machines. They currently do preventative maintenance every 30 days, which wastes time if the machine is fine, and misses breakdowns that happen on day 15. They have raw sensor data (temperature, vibration) streaming in. They want a system to detect anomalies and automatically create maintenance tickets for technicians before a machine breaks.
@@ -34,19 +36,51 @@ Core entities:
 1. ________________________________
 2. ________________________________
 
-# Part 3: System / API Design
+# Part 3: System / API Contract
 
-API / Action design:
-1. ________________________________
+## Input / Output Contract
+*Complete the tables below to define your API / function signature.*
 
-MVP vs V2:
-MVP: ________________________________
-V2: ________________________________
+**Input:**
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| _________ | ____ | ___________ |
+| _________ | ____ | ___________ |
+
+**Output:**
+| Key | Type | Description |
+|-----|------|-------------|
+| ___ | ____ | ___________ |
+
+
+
+## Detailed Design Decisions
+*Complete the fields below before writing any code.*
+
+### Time-Windowing
+How will you group real-time sensor readings? Sliding windows or tumbling windows?
+__________________________________________________
+
+### Missing Data Handling
+What if a sensor goes offline for 5 minutes? Do you interpolate the temperature, or drop the window?
+__________________________________________________
+
+### Alert Definition
+Is an anomaly a sudden spike, or a sustained high temperature? How do you code that difference?
+__________________________________________________
 
 Tradeoff table:
 | Decision | Option A | Option B | Choice | Why |
 |---|---|---|---|---|
 | ________________ | ________________ | ________________ | ________________ | ________________ |
+
+
+
+## Implementation Notes
+*Fill this in after implementing, before moving to the tests.*
+
+One edge case or implementation detail that surprised you:
+__________________________________________________
 
 # Part 4: Coding Task
 Open `starter.py` and implement the logic. Run `python tests.py`.

@@ -1,3 +1,5 @@
+Status: Spec incomplete — fill in all blank fields before implementing
+
 # Scenario
 
 A hospital is struggling with bed availability. Patients who are "medically ready for discharge" are staying in beds for an extra 8-12 hours because of administrative blockers: waiting for a doctor's final signature, waiting for pharmacy medications, or waiting for transport. The hospital wants a system to identify these blockers and alert the right people.
@@ -43,14 +45,46 @@ State transitions (for a Discharge Task):
 1. ________________________________
 2. ________________________________
 
-# Part 3: System / API Design
+# Part 3: System / API Contract
 
-API / Action design:
-1. ________________________________
+## Input / Output Contract
+*Complete the tables below to define your API / function signature.*
 
-MVP vs V2:
-MVP: ________________________________
-V2: ________________________________
+**Input:**
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| _________ | ____ | ___________ |
+| _________ | ____ | ___________ |
+
+**Output:**
+| Key | Type | Description |
+|-----|------|-------------|
+| ___ | ____ | ___________ |
+
+
+
+## Detailed Design Decisions
+*Complete the fields below before writing any code.*
+
+### Bottleneck Identification
+How will you mathematically define a "bottleneck" between departments in code?
+__________________________________________________
+
+### Data Messiness
+What happens if the legacy system drops the "discharge_ordered" timestamp? How will you handle missing sequential data?
+__________________________________________________
+
+### Alerting Thresholds
+At what point (1 hour? 4 hours?) do you actually flag an anomaly to a human?
+__________________________________________________
+
+
+
+## Implementation Notes
+*Fill this in after implementing, before moving to the tests.*
+
+One edge case or implementation detail that surprised you:
+__________________________________________________
 
 # Part 4: Coding Task
 Open `starter.py` and implement the logic. Run `python tests.py`.

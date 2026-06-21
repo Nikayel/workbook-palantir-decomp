@@ -1,3 +1,5 @@
+Status: Spec incomplete — fill in all blank fields before implementing
+
 # Scenario
 
 An automotive manufacturer has thousands of suppliers globally. When a natural disaster occurs (e.g., a port closure or earthquake), supply chain managers scramble to figure out which of their final cars will be delayed. Currently, they use Excel to trace the dependency graph from raw material -> sub-assembly -> car. They need a system to automatically propagate risk through the dependency graph.
@@ -31,14 +33,46 @@ Core entities:
 2. ________________________________
 3. ________________________________
 
-# Part 3: System / API Design
+# Part 3: System / API Contract
 
-API / Action design:
-1. ________________________________
+## Input / Output Contract
+*Complete the tables below to define your API / function signature.*
 
-MVP vs V2:
-MVP: ________________________________
-V2: ________________________________
+**Input:**
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| _________ | ____ | ___________ |
+| _________ | ____ | ___________ |
+
+**Output:**
+| Key | Type | Description |
+|-----|------|-------------|
+| ___ | ____ | ___________ |
+
+
+
+## Detailed Design Decisions
+*Complete the fields below before writing any code.*
+
+### Traversal Approach
+Will you use BFS or DFS to propagate disruption risk through the supplier graph, and why?
+__________________________________________________
+
+### Cycle Detection
+What if supplier A depends on B, and B depends on A? How will your code avoid crashing?
+__________________________________________________
+
+### Risk Aggregation
+How do you combine multiple minor risks from downstream suppliers into a single risk score?
+__________________________________________________
+
+
+
+## Implementation Notes
+*Fill this in after implementing, before moving to the tests.*
+
+One edge case or implementation detail that surprised you:
+__________________________________________________
 
 # Part 4: Coding Task
 Open `starter.py` and implement the logic. Run `python tests.py`.

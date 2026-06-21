@@ -1,3 +1,5 @@
+Status: Spec incomplete — fill in all blank fields before implementing
+
 # Scenario
 
 You are building a system for a city's emergency dispatch center. Currently, dispatchers receive a call, look at a map, and manually decide which responder (police, fire, ambulance) to send. This takes too long and sometimes the closest responder is on a break or lacks the right equipment. They want a system to automatically recommend the top 3 best responders for an incident.
@@ -64,20 +66,51 @@ State transitions (for a Responder):
 1. ________________________________
 2. ________________________________
 
-# Part 3: System / API Design
+# Part 3: System / API Contract
 
-API / Action design:
-1. ________________________________
-2. ________________________________
+## Input / Output Contract
+*Complete the tables below to define your API / function signature.*
 
-MVP vs V2:
-MVP: ________________________________
-V2: ________________________________
+**Input:**
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| _________ | ____ | ___________ |
+| _________ | ____ | ___________ |
+
+**Output:**
+| Key | Type | Description |
+|-----|------|-------------|
+| ___ | ____ | ___________ |
+
+
+
+## Detailed Design Decisions
+*Complete the fields below before writing any code. These are specific to this lab's operational reality.*
+
+### Ranking Strategy
+How will the system rank responders? Will you filter first by equipment, or distance? How will you handle responders who are currently on break?
+__________________________________________________
+
+### Concurrency Boundary
+What happens if two dispatchers try to assign the same responder to two different incidents at the exact same time?
+__________________________________________________
+
+### Fallback Behavior
+What does your function return if no responders have the required equipment within a 50-mile radius? Note: failing open is dangerous.
+__________________________________________________
 
 Tradeoff table:
 | Decision | Option A | Option B | Choice | Why |
 |---|---|---|---|---|
 | ________________ | ________________ | ________________ | ________________ | ________________ |
+
+
+
+## Implementation Notes
+*Fill this in after implementing, before moving to the tests.*
+
+One edge case or implementation detail that surprised you:
+__________________________________________________
 
 # Part 4: Coding Task
 Open `starter.py` and implement the logic. Run `python tests.py`.

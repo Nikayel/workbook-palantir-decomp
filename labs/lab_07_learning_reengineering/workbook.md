@@ -1,3 +1,5 @@
+Status: Spec incomplete — fill in all blank fields before implementing
+
 # Scenario
 
 You have inherited a legacy piece of code written by a former intern. It is supposed to assign support tickets to agents. However, users are complaining that tickets are being assigned to agents who are currently on vacation, the highest priority tickets are being ignored, and sometimes the system throws weird errors.

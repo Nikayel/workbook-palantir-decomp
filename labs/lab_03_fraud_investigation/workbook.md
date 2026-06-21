@@ -1,3 +1,5 @@
+Status: Spec incomplete — fill in all blank fields before implementing
+
 # Scenario
 
 A financial institution is getting overwhelmed with credit card fraud alerts. Their analysts currently look at a spreadsheet of raw transactions and have to manually look up the customer's history in 3 different tools to decide if a transaction is fraud. The process is slow and misses complex patterns. They want a platform to automatically score transactions and prioritize the riskiest ones for manual review.
@@ -44,20 +46,51 @@ State transitions (for an Alert):
 1. ________________________________
 2. ________________________________
 
-# Part 3: System / API Design
+# Part 3: System / API Contract
 
-API / Action design:
-1. ________________________________
-2. ________________________________
+## Input / Output Contract
+*Complete the tables below to define your API / function signature.*
 
-MVP vs V2:
-MVP: ________________________________
-V2: ________________________________
+**Input:**
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| _________ | ____ | ___________ |
+| _________ | ____ | ___________ |
+
+**Output:**
+| Key | Type | Description |
+|-----|------|-------------|
+| ___ | ____ | ___________ |
+
+
+
+## Detailed Design Decisions
+*Complete the fields below before writing any code.*
+
+### Anomaly Scoring
+How will you weight different risk factors (e.g. shared IP vs. unusually large transaction)?
+__________________________________________________
+
+### False Positive Tradeoff
+Alert fatigue is a huge issue. How will you ensure your threshold doesn't overwhelm analysts?
+__________________________________________________
+
+### Traversal Depth
+When searching for linked fraudulent accounts, how deep will your graph traversal go to prevent infinite loops?
+__________________________________________________
 
 Tradeoff table:
 | Decision | Option A | Option B | Choice | Why |
 |---|---|---|---|---|
 | ________________ | ________________ | ________________ | ________________ | ________________ |
+
+
+
+## Implementation Notes
+*Fill this in after implementing, before moving to the tests.*
+
+One edge case or implementation detail that surprised you:
+__________________________________________________
 
 # Part 4: Coding Task
 Open `starter.py` and implement the logic. Run `python tests.py`.
