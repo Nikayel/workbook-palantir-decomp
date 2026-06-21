@@ -18,6 +18,25 @@ Before coding, answer:
 
 def recommend_responders(incident, responders, top_k=3):
     """
+    Recommends the top available responders for a given incident.
+
+    Expected Input Schema:
+    incident = {
+        "id": "inc_1",
+        "type": "medical",          # What kind of response is needed?
+        "location": (40.71, -74.0), # Tuple of (lat, lon)
+        "severity": "high"          # String enum
+    }
+
+    responders = [
+        {
+            "id": "r_1",
+            "capabilities": ["medical", "fire"], 
+            "status": "available",        # "available" or "busy"
+            "location": (40.72, -74.0),   # Tuple of (lat, lon)
+            "last_update": 1670000000     # Unix timestamp of last GPS ping
+        }, ...
+    ]
     TODO:
     1. Validate the incident.
     2. Filter unavailable responders.
