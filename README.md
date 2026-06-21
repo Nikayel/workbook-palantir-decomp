@@ -67,6 +67,7 @@ Each core lab is designed to take about **3 hours**.
 7. **Self-Grade**: Fill out the rubric.
 
 ### ⚠️ Golden Rules
+- **Ask & Assume**: When gathering requirements in Part 1, always pair your question with an immediate assumption. (e.g., *"What is our scale? I'll assume it fits in memory for now."*) This prevents you from freezing if the interviewer is silent.
 - **Write your answer before opening `solution_reasoning.md`**.
 - **Explain out loud while coding**.
 - **Self-grade after every lab**.

@@ -12,35 +12,28 @@ Pause. Do not design yet.
 
 Goal:
 > What is the primary business or operational outcome we are optimizing for?
-1. ________________________________
-2. ________________________________
+Question: ________________________________
+Assumption: ________________________________
 
 Users:
 > Who is interacting with the system? Who is the most critical persona causing the bottleneck?
-1. ________________________________
-2. ________________________________
+Question: ________________________________
+Assumption: ________________________________
 
 Data:
 > What data sources exist? Are they real-time or batch? Are they notoriously messy or delayed?
-1. ________________________________
-2. ________________________________
+Question: ________________________________
+Assumption: ________________________________
 
 Constraints:
 > Are there strict latency, legal, safety, or offline requirements?
-1. ________________________________
-2. ________________________________
+Question: ________________________________
+Assumption: ________________________________
 
 Scale:
 > What is the volume of data? Thousands of events or millions? Can the active state fit in memory?
-1. ________________________________
-2. ________________________________
-
-What assumptions will you make if the interviewer does not answer?
-> If the interviewer is silent, you must state an assumption (e.g. "Assuming the graph fits in memory") and proceed.
-
-1. ________________________________
-2. ________________________________
-3. ________________________________
+Question: ________________________________
+Assumption: ________________________________
 
 <details>
 <summary>Small hint</summary>

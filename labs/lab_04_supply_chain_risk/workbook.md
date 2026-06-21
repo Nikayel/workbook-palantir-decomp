@@ -11,14 +11,13 @@ Goal:
 
 Users:
 > Who is interacting with the system? Who is the most critical persona causing the bottleneck?
-1. ________________________________
+Question: ________________________________
+Assumption: ________________________________
 
 Data:
 > What data sources exist? Are they real-time or batch? Are they notoriously messy or delayed?
-1. ________________________________
-
-What assumptions will you make if the interviewer does not answer?
-1. ________________________________
+Question: ________________________________
+Assumption: ________________________________
 
 # Part 2: Decomposition
 

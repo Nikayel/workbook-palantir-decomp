@@ -1,5 +1,23 @@
 # Solution Reasoning
 
+## 0. Clarifying Questions Answer Key
+- **Goal**: 
+  - *Question*: Do we just fix the bugs, or rewrite the whole system?
+  - *Assumption*: I'll assume we should safely patch the critical bugs without rewriting everything, to minimize regression risk.
+- **Users**: 
+  - *Question*: Who relies on the output of this script?
+  - *Assumption*: I'll assume downstream reporting pipelines rely on the exact current output format.
+- **Data**: 
+  - *Question*: Is the historical data format changing?
+  - *Assumption*: I'll assume no, we must maintain backwards compatibility.
+- **Constraints**: 
+  - *Question*: Are there testing constraints?
+  - *Assumption*: I'll assume I must write unit tests that prove the fix works on old buggy inputs.
+- **Scale**: 
+  - *Question*: Does this script process massive data?
+  - *Assumption*: I'll assume scale isn't the issue here; correctness and edge-case handling are.
+
+
 ## The 5 Bugs
 1. `tickets.sort(key=lambda x: x["priority"])` sorts ascending. If 1 is high priority, this is fine. But usually, higher numbers mean higher priority, or it mutates the input array which is a side-effect.
 2. `if a["status"] == "vacation": pass` does nothing. It should be `continue`. The vacationing agent still gets evaluated!

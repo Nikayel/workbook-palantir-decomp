@@ -1,5 +1,23 @@
 # Solution Reasoning
 
+## 0. Clarifying Questions Answer Key
+- **Goal**: 
+  - *Question*: Are we trying to optimize for cost, or time-to-dispatch?
+  - *Assumption*: I'll assume minimizing time-to-dispatch is the primary metric to save lives.
+- **Users**: 
+  - *Question*: Will responders use this on their phones, or just dispatchers?
+  - *Assumption*: I'll assume dispatchers are the primary user bottleneck, so we'll build for their desktop workflow.
+- **Data**: 
+  - *Question*: Is the GPS data reliable and real-time?
+  - *Assumption*: I'll assume GPS drops out or is noisy, so we must handle stale timestamps in our ranking logic.
+- **Constraints**: 
+  - *Question*: Can the system automatically dispatch a responder without human review?
+  - *Assumption*: I'll assume a human-in-the-loop is legally/safety required.
+- **Scale**: 
+  - *Question*: How many concurrent incidents and responders are we tracking?
+  - *Assumption*: I'll assume ~1000 responders per city, easily fitting in memory for fast ranking.
+
+
 ## 1. Why these users?
 The primary user is the dispatcher. The secondary user is the responder. We focus on the dispatcher because they are the operational bottleneck.
 

@@ -1,5 +1,23 @@
 # Solution Reasoning
 
+## 0. Clarifying Questions Answer Key
+- **Goal**: 
+  - *Question*: Do we need to reroute supply, or just identify which cars are delayed?
+  - *Assumption*: I'll assume the primary goal is just mapping the blast radius of the disruption.
+- **Users**: 
+  - *Question*: Who consumes this data?
+  - *Assumption*: I'll assume supply chain managers looking at a dashboard.
+- **Data**: 
+  - *Question*: Is the dependency graph a strict tree, or a directed graph with cycles?
+  - *Assumption*: I'll assume it's a directed graph that might contain cycles (Supplier A relies on B, B relies on A).
+- **Constraints**: 
+  - *Question*: How quickly do they need this report after a disaster hits?
+  - *Assumption*: I'll assume within minutes, not milliseconds.
+- **Scale**: 
+  - *Question*: How many nodes (suppliers/parts) are in the graph?
+  - *Assumption*: I'll assume ~100,000 nodes, which can be traversed quickly using BFS/DFS in memory.
+
+
 ## 1. Why these users?
 Supply Chain Managers need to quickly contact alternate suppliers or delay production lines.
 

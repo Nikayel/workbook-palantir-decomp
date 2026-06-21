@@ -1,5 +1,23 @@
 # Solution Reasoning
 
+## 0. Clarifying Questions Answer Key
+- **Goal**: 
+  - *Question*: Are we trying to shut down machines automatically, or just create tickets?
+  - *Assumption*: I'll assume we just create maintenance tickets to keep humans in the loop.
+- **Users**: 
+  - *Question*: Who receives the tickets?
+  - *Assumption*: I'll assume maintenance technicians on the factory floor.
+- **Data**: 
+  - *Question*: Is the sensor data continuous, and what is the sampling rate?
+  - *Assumption*: I'll assume 1 reading per second, and that data might occasionally drop out.
+- **Constraints**: 
+  - *Question*: What happens if we create too many tickets?
+  - *Assumption*: I'll assume false positives are costly (wasted time), so we need a sustained anomaly, not just a single spike.
+- **Scale**: 
+  - *Question*: 500 machines * 1 reading/sec. Can we process this on one node?
+  - *Assumption*: 500 events/sec is low throughput; a single process can handle this stream easily.
+
+
 ## 1. Why these users?
 Maintenance shift leads and technicians. They need prioritized work orders, not raw data.
 
