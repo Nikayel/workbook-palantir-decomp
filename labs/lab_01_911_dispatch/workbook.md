@@ -4,29 +4,37 @@ You are building a system for a city's emergency dispatch center. Currently, dis
 
 # Part 1: Clarifying questions
 
+> In a Palantir interview, demonstrating you can extract the true constraints from an ambiguous prompt is critical. Use this section to write down the questions you would ask the interviewer before writing any code.
+
 Pause. Do not design yet.
 
 Goal:
+> What is the primary business or operational outcome we are optimizing for?
 1. ________________________________
 2. ________________________________
 
 Users:
+> Who is interacting with the system? Who is the most critical persona causing the bottleneck?
 1. ________________________________
 2. ________________________________
 
 Data:
+> What data sources exist? Are they real-time or batch? Are they notoriously messy or delayed?
 1. ________________________________
 2. ________________________________
 
 Constraints:
+> Are there strict latency, legal, safety, or offline requirements?
 1. ________________________________
 2. ________________________________
 
 Scale:
+> What is the volume of data? Thousands of events or millions? Can the active state fit in memory?
 1. ________________________________
 2. ________________________________
 
 What assumptions will you make if the interviewer does not answer?
+> If the interviewer is silent, you must state an assumption (e.g. "Assuming the graph fits in memory") and proceed.
 
 1. ________________________________
 2. ________________________________

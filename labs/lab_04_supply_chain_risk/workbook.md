@@ -8,9 +8,11 @@ Goal:
 1. ________________________________
 
 Users:
+> Who is interacting with the system? Who is the most critical persona causing the bottleneck?
 1. ________________________________
 
 Data:
+> What data sources exist? Are they real-time or batch? Are they notoriously messy or delayed?
 1. ________________________________
 
 What assumptions will you make if the interviewer does not answer?

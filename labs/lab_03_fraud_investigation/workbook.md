@@ -9,14 +9,17 @@ Goal:
 2. ________________________________
 
 Users:
+> Who is interacting with the system? Who is the most critical persona causing the bottleneck?
 1. ________________________________
 2. ________________________________
 
 Data:
+> What data sources exist? Are they real-time or batch? Are they notoriously messy or delayed?
 1. ________________________________
 2. ________________________________
 
 Constraints:
+> Are there strict latency, legal, safety, or offline requirements?
 1. ________________________________
 2. ________________________________
 
