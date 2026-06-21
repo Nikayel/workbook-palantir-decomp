@@ -12,28 +12,28 @@ Pause. Do not design yet.
 
 Goal:
 > What is the primary business or operational outcome we are optimizing for?
-Question: ________________________________
-Assumption: ________________________________
+Question: [blank]
+Assumption: [blank]
 
 Users:
 > Who is interacting with the system? Who is the most critical persona causing the bottleneck?
-Question: ________________________________
-Assumption: ________________________________
+Question: [blank]
+Assumption: [blank]
 
 Data:
 > What data sources exist? Are they real-time or batch? Are they notoriously messy or delayed?
-Question: ________________________________
-Assumption: ________________________________
+Question: [blank]
+Assumption: [blank]
 
 Constraints:
 > Are there strict latency, legal, safety, or offline requirements?
-Question: ________________________________
-Assumption: ________________________________
+Question: [blank]
+Assumption: [blank]
 
 Scale:
 > What is the volume of data? Thousands of events or millions? Can the active state fit in memory?
-Question: ________________________________
-Assumption: ________________________________
+Question: [blank]
+Assumption: [blank]
 
 <details>
 <summary>Small hint</summary>
@@ -44,20 +44,20 @@ Think about the dispatcher, the response time, the current workflow, and the mes
 # Part 2: Decomposition
 
 Current workflow:
-1. ________________________________
-2. ________________________________
-3. ________________________________
+1. [blank]
+2. [blank]
+3. [blank]
 
 Bottlenecks:
-1. ________________________________
+1. [blank]
 
 Core entities:
-1. ________________________________
-2. ________________________________
+1. [blank]
+2. [blank]
 
 State transitions (for a Responder):
-1. ________________________________
-2. ________________________________
+1. [blank]
+2. [blank]
 
 # Part 3: System / API Contract
 
@@ -67,13 +67,13 @@ State transitions (for a Responder):
 **Input:**
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| _________ | ____ | ___________ |
-| _________ | ____ | ___________ |
+| [blank] | [blank] | [blank] |
+| [blank] | [blank] | [blank] |
 
 **Output:**
 | Key | Type | Description |
 |-----|------|-------------|
-| ___ | ____ | ___________ |
+| [blank] | [blank] | [blank] |
 
 
 
@@ -82,20 +82,20 @@ State transitions (for a Responder):
 
 ### Ranking Strategy
 How will the system rank responders? Will you filter first by equipment, or distance? How will you handle responders who are currently on break?
-__________________________________________________
+[blank]
 
 ### Concurrency Boundary
 What happens if two dispatchers try to assign the same responder to two different incidents at the exact same time?
-__________________________________________________
+[blank]
 
 ### Fallback Behavior
 What does your function return if no responders have the required equipment within a 50-mile radius? Note: failing open is dangerous.
-__________________________________________________
+[blank]
 
 Tradeoff table:
 | Decision | Option A | Option B | Choice | Why |
 |---|---|---|---|---|
-| ________________ | ________________ | ________________ | ________________ | ________________ |
+| [blank] | [blank] | [blank] | [blank] | [blank] |
 
 
 
@@ -103,46 +103,46 @@ Tradeoff table:
 *Fill this in after implementing, before moving to the tests.*
 
 One edge case or implementation detail that surprised you:
-__________________________________________________
+[blank]
 
 # Part 4: Coding Task
 Open `starter.py` and implement the logic. Run `python tests.py`.
 
 Edge cases to handle:
-1. ________________________________
-2. ________________________________
+1. [blank]
+2. [blank]
 
 # Part 5: System Design Reasoning
 
 Why did you choose these entities?
-__________________________________
+[blank]
 
 Why did you choose this workflow?
-__________________________________
+[blank]
 
 Why is this the right MVP?
-__________________________________
+[blank]
 
 What would you intentionally NOT build first?
-__________________________________
+[blank]
 
 What breaks if the data is stale?
-__________________________________
+[blank]
 
 What needs to be audited?
-__________________________________
+[blank]
 
 What needs permissions?
-__________________________________
+[blank]
 
 What should be real-time vs batch?
-__________________________________
+[blank]
 
 What is the simplest version that would still help the user?
-__________________________________
+[blank]
 
 What is the riskiest assumption?
-__________________________________
+[blank]
 
 # Part 6: Interview Simulation
 
@@ -153,21 +153,21 @@ Practice your talk track. Use the template in `templates/blank_90_second_talktra
 
 Curveball 1: The GPS data for responders is delayed by 5 minutes.
 Your response:
-__________________________________
-__________________________________
-__________________________________
+[blank]
+[blank]
+[blank]
 
 Curveball 2: A dispatcher overrides the system's #1 recommendation and picks #3. How do we track this?
 Your response:
-__________________________________
-__________________________________
-__________________________________
+[blank]
+[blank]
+[blank]
 
 Curveball 3: There are no available responders in the entire city. What does the system do?
 Your response:
-__________________________________
-__________________________________
-__________________________________
+[blank]
+[blank]
+[blank]
 
 # Self-grade
 
@@ -187,10 +187,10 @@ Communication: __ / 5
 Total: __ / 50
 
 One thing I did well:
-__________________________________
+[blank]
 
 One thing I missed:
-__________________________________
+[blank]
 
 One thing I will improve next lab:
-__________________________________
+[blank]

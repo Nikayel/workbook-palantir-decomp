@@ -21,11 +21,11 @@ Open `api_design.js` and `state_machine.js`. Implement the validation logic and 
 
 Curveball 1: An analyst tries to close a case, but the system crashes halfway through writing the audit log.
 Your response (Idempotency / Transactions):
-__________________________________
+[blank]
 
 Curveball 2: A supervisor needs to see all cases closed in the last 24 hours. How do you index the database?
 Your response:
-__________________________________
+[blank]
 
 # Self-grade
 

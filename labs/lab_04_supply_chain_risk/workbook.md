@@ -7,30 +7,31 @@ An automotive manufacturer has thousands of suppliers globally. When a natural d
 # Part 1: Clarifying questions
 
 Goal:
-1. ________________________________
+Question: [blank]
+Assumption: [blank]
 
 Users:
 > Who is interacting with the system? Who is the most critical persona causing the bottleneck?
-Question: ________________________________
-Assumption: ________________________________
+Question: [blank]
+Assumption: [blank]
 
 Data:
 > What data sources exist? Are they real-time or batch? Are they notoriously messy or delayed?
-Question: ________________________________
-Assumption: ________________________________
+Question: [blank]
+Assumption: [blank]
 
 # Part 2: Decomposition
 
 Current workflow:
-1. ________________________________
+1. [blank]
 
 Bottlenecks:
-1. ________________________________
+1. [blank]
 
 Core entities:
-1. ________________________________
-2. ________________________________
-3. ________________________________
+1. [blank]
+2. [blank]
+3. [blank]
 
 # Part 3: System / API Contract
 
@@ -40,13 +41,13 @@ Core entities:
 **Input:**
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| _________ | ____ | ___________ |
-| _________ | ____ | ___________ |
+| [blank] | [blank] | [blank] |
+| [blank] | [blank] | [blank] |
 
 **Output:**
 | Key | Type | Description |
 |-----|------|-------------|
-| ___ | ____ | ___________ |
+| [blank] | [blank] | [blank] |
 
 
 
@@ -55,15 +56,15 @@ Core entities:
 
 ### Traversal Approach
 Will you use BFS or DFS to propagate disruption risk through the supplier graph, and why?
-__________________________________________________
+[blank]
 
 ### Cycle Detection
 What if supplier A depends on B, and B depends on A? How will your code avoid crashing?
-__________________________________________________
+[blank]
 
 ### Risk Aggregation
 How do you combine multiple minor risks from downstream suppliers into a single risk score?
-__________________________________________________
+[blank]
 
 
 
@@ -71,7 +72,7 @@ __________________________________________________
 *Fill this in after implementing, before moving to the tests.*
 
 One edge case or implementation detail that surprised you:
-__________________________________________________
+[blank]
 
 # Part 4: Coding Task
 Open `starter.py` and implement the logic. Run `python tests.py`.
@@ -79,23 +80,23 @@ Open `starter.py` and implement the logic. Run `python tests.py`.
 # Part 5: System Design Reasoning
 
 Why did you choose these entities?
-__________________________________
+[blank]
 
 What breaks if the data is stale?
-__________________________________
+[blank]
 
 What should be real-time vs batch?
-__________________________________
+[blank]
 
 # Part 6: Interview Simulation
 
 Curveball 1: Some suppliers don't report their sub-tier suppliers. You have gaps in the graph.
 Your response:
-__________________________________
+[blank]
 
 Curveball 2: A disruption happens, but there is alternate inventory in a warehouse.
 Your response:
-__________________________________
+[blank]
 
 # Self-grade
 

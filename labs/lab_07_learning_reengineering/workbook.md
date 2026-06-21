@@ -9,17 +9,17 @@ Your job is to read the code, find the bugs, fix them, and add a new feature.
 # Part 1: Understand the Code
 
 Read `starter.py`. Without running it, explain what it is *trying* to do:
-__________________________________
-__________________________________
+[blank]
+[blank]
 
 # Part 2: Find the Bugs
 
 List the 5 bugs you found in the code.
-1. ________________________________
-2. ________________________________
-3. ________________________________
-4. ________________________________
-5. ________________________________
+1. [blank]
+2. [blank]
+3. [blank]
+4. [blank]
+5. [blank]
 
 # Part 3: Write Tests
 
@@ -35,10 +35,10 @@ The business now wants to route tickets based on `language`. If a ticket is mark
 # Part 5: Reasoning
 
 Why did the original code mutate the input array? Why is that bad?
-__________________________________
+[blank]
 
 How did you preserve the existing behavior while adding the language requirement?
-__________________________________
+[blank]
 
 # Self-grade
 
