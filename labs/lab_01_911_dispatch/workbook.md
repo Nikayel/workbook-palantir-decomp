@@ -44,24 +44,29 @@ Think about the dispatcher, the response time, the current workflow, and the mes
 # Part 2: Decomposition
 
 Current workflow:
+*(Tutorial: Map the existing legacy/broken process so you can find the exact step that causes the bottleneck. E.g. "1. User calls, 2. Dispatcher looks at map")*
 1. [blank]
 2. [blank]
 3. [blank]
 
 Bottlenecks:
+*(Tutorial: Which specific step from the workflow above is the slowest or most error-prone?)*
 1. [blank]
 
 Core entities:
+*(Tutorial: These are the "Nouns" or Database Tables for your NEW system. Do NOT list properties like 'address' here, just the object name like 'Incident' or 'Responder'.)*
 1. [blank]
 2. [blank]
 
 State transitions (for a Responder):
+*(Tutorial: This is the database lifecycle for the core entity, NOT the user's UI flow. E.g. OPEN -> IN_PROGRESS -> RESOLVED)*
 1. [blank]
 2. [blank]
 
 # Part 3: System / API Contract
 
 ## Input / Output Contract
+*(Tutorial: Think of this as the exact JSON payload or function arguments you will write in starter.py. Inputs are specific variables like 'incident: dict' or 'incident_id: str', NOT abstract concepts. Outputs are exactly what the function returns.)*
 *Complete the tables below to define your API / function signature.*
 
 **Input:**
