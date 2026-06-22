@@ -12,6 +12,21 @@ Before coding, answer:
 
 def allocate_supplies(shelters, depots, road_closures, trucks):
     """
+
+    Expected Input Schema:
+    inventory = {
+        "water": 100,
+        "medical": 50
+    }
+    
+    shelters = [
+        {
+            "id": "s1", 
+            "needs": {"water": 100, "medical": 20}, 
+            "priority": "high"
+        }, ...
+    ]
+
     TODO:
     1. Filter out depots that are cut off by road closures.
     2. Sort shelters by priority (e.g., medical needs > water > food).

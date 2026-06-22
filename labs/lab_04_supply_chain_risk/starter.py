@@ -12,6 +12,15 @@ Before coding, answer:
 
 def propagate_risk(disrupted_suppliers, supplier_graph, product_mapping):
     """
+
+    Expected Input Schema:
+    graph = {
+        "prod_1": ["prod_2"], # prod_1 is required by prod_2
+        "prod_2": ["prod_3"]
+    }
+    
+    offline_nodes = ["prod_1"]
+
     TODO:
     1. disrupted_suppliers: list of supplier IDs
     2. supplier_graph: dict of {supplier_id: [dependent_supplier_ids]}

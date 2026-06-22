@@ -12,6 +12,12 @@ Before coding, answer:
 
 def detect_anomalies(sensor_logs, thresholds, maintenance_history):
     """
+
+    Expected Input Schema:
+    stream = [
+        {"machine_id": "m1", "temp": 110, "timestamp": 1000}, ...
+    ]
+
     TODO:
     1. Filter out machines that just had maintenance (e.g. in the last 24h).
     2. Check for sustained anomalies (e.g., 3 consecutive readings above threshold).

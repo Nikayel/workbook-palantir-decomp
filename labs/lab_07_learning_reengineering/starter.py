@@ -7,6 +7,17 @@ Find the bugs.
 
 def assign_tickets(tickets, agents):
     """
+
+    Expected Input Schema:
+    tickets = [
+        {
+            "id": 1, 
+            "priority": 1, 
+            "status": "open", 
+            "language": "es"
+        }, ...
+    ]
+
     Assigns tickets to agents.
     """
     # Bug 1?

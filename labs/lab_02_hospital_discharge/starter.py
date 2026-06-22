@@ -12,6 +12,21 @@ Before coding, answer:
 
 def detect_discharge_blockers(patients, tasks):
     """
+
+    Expected Input Schema:
+    patients = [
+        {"id": "p_1", "status": "medically_ready"}, ...
+    ]
+    
+    tasks = [
+        {
+            "patient_id": "p_1", 
+            "type": "pharmacy", 
+            "status": "pending", 
+            "owner": "pharmacist"
+        }, ...
+    ]
+
     TODO:
     1. Filter for medically ready patients.
     2. Join tasks to patients.

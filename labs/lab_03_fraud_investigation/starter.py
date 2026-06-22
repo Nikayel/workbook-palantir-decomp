@@ -12,6 +12,21 @@ Before coding, answer:
 
 def score_transaction(transaction, account_history, device_history):
     """
+
+    Expected Input Schema:
+    tx = {
+        "amount": 50, 
+        "location": "London", 
+        "timestamp": 5600, 
+        "device_id": "device_1"
+    }
+    
+    history = [
+        {"amount": 100, "location": "NYC", "timestamp": 1000}, ...
+    ]
+    
+    known_devices = ["device_1", "device_2"]
+
     TODO:
     1. Check for unusual amounts (e.g., > 3x average).
     2. Check if the device is new.
