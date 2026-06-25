@@ -1,0 +1,24 @@
+id: stripe_tpm_01_payments_api
+company: stripe
+role: tpm
+tier: 1
+difficulty: hard
+primary_skill: "API design with idempotency, webhooks, and 10-year versioning"
+est_minutes: 75
+tags:
+  - api-design
+  - idempotency
+  - webhooks
+  - versioning
+  - payment-links
+  - resource-modeling
+  - cursor-pagination
+  - financial-systems
+  - stripe-memo
+  - tpm-flagship
+assessment_format: Stripe TPM technical screen
+prereqs:
+  - REST API fundamentals
+  - HTTP verbs and status codes
+  - Basic financial systems awareness
+  - JSON API conventions

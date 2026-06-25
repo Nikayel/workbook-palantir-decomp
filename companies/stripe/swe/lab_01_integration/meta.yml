@@ -1,0 +1,24 @@
+id: stripe_swe_01_integration
+company: stripe
+role: swe
+tier: 1
+difficulty: medium
+primary_skill: "integrating against an unfamiliar codebase and API"
+est_minutes: 75
+tags:
+  - integration
+  - api
+  - http
+  - error-handling
+  - logging
+  - partial-refund
+  - idempotency
+  - stripe-culture
+  - writing-quality
+  - production-code
+assessment_format: Stripe integration round (45-60 min, internet OK, no AI)
+prereqs:
+  - Python requests library
+  - HTTP status codes
+  - Reading unfamiliar code
+  - JSON handling

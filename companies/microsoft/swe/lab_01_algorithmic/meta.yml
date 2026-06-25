@@ -1,0 +1,21 @@
+id: microsoft_swe_01_algorithmic
+company: microsoft
+role: swe
+tier: 1
+difficulty: easy
+primary_skill: "BFS and stack fundamentals with growth-mindset narration"
+est_minutes: 75
+tags:
+  - bfs
+  - stack
+  - binary-tree
+  - level-order
+  - valid-parentheses
+  - growth-mindset
+  - codility-oa
+  - narration
+assessment_format: Codility OA (90 min, 2 problems)
+prereqs:
+  - Basic tree traversal
+  - Stack data structure
+  - Deque / queue usage

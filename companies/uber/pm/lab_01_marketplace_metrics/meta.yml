@@ -1,0 +1,25 @@
+id: uber_pm_01_marketplace_metrics
+company: uber
+role: pm
+tier: 1
+difficulty: medium
+primary_skill: "two-sided marketplace metric diagnosis (supply vs demand vs platform)"
+est_minutes: 75
+tags:
+  - marketplace
+  - supply-demand
+  - metrics
+  - root-cause
+  - uber-eats
+  - data-driven-pm
+  - a-b-testing
+  - gross-bookings
+  - take-rate
+  - contribution-margin
+  - driver-acceptance-rate
+  - conversion-rate
+assessment_format: Uber PM interview (with data scientist co-interviewer)
+prereqs:
+  - Basic marketplace economics
+  - Funnel metric literacy
+  - A/B testing fundamentals

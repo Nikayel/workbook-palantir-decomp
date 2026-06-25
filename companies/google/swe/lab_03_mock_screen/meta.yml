@@ -1,0 +1,20 @@
+id: google_swe_03_mock_screen
+title: "Anagram Pairs — Mock Phone Screen"
+company: google
+role: swe
+interview_moment: "Google phone screen — plain-doc coding, no IDE"
+tier: 3
+difficulty: medium
+est_minutes: 45
+primary_skill: "hash map / string normalization under mock conditions"
+secondary_skills:
+  - "GCA narration under pressure"
+  - "edge case handling without prompts"
+  - "complexity analysis cold"
+bloom_top: evaluate
+language: python
+status: published
+prereqs:
+  - "lab_01_algorithmic"
+  - "lab_02_graph_grid"
+next_lab: null

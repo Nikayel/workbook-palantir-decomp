@@ -1,0 +1,60 @@
+id: amazon_pm_01_prfaq
+company: amazon
+role: pm
+tier: 1
+difficulty: medium
+est_minutes: 60
+primary_skill: "Working Backwards PR-FAQ writing"
+secondary_skills:
+  - Customer Obsession LP
+  - Invent and Simplify LP
+  - Bar Raiser readiness
+  - GDPR consent modeling
+  - launch criteria and metrics
+  - false positive tolerance in ML products
+  - Working Backwards methodology
+tags:
+  - pr-faq
+  - working backwards
+  - product sense
+  - writing
+  - leadership principles
+  - machine learning product
+  - Alexa
+  - consumables
+lp_connections:
+  - principle: Customer Obsession
+    connection: "Lead with customer pain, not feature — every PR-FAQ decision traced here"
+  - principle: Are Right A Lot
+    connection: "Named data required to validate customer hypothesis"
+  - principle: Invent and Simplify
+    connection: "Single confirmation step, no auto-charges, simple opt-out"
+  - principle: Bias for Action
+    connection: "Staged launch at 1% cohort rather than waiting for perfect model"
+  - principle: Earn Trust
+    connection: "Opt-in consent for EU, explicit privacy transparency"
+  - principle: Have Backbone
+    connection: "Curveball 3 — push back on launching at 15% FP with data, not just opinion"
+  - principle: Dive Deep
+    connection: "Specific FP threshold with reasoning; Subscribe & Save cannibalization metric"
+  - principle: Insist on the Highest Standards
+    connection: "Writing quality row — Bar Raiser-level clarity required"
+curveballs:
+  - id: c1
+    description: "Bar Raiser rejects feature-first framing — rewrite headline and opening live"
+    lp: Customer Obsession
+  - id: c2
+    description: "GDPR triggers on order history analysis for EU customers — structured response required"
+    lp: Earn Trust
+  - id: c3
+    description: "15% false positive rate — argue both sides, recommend staged launch"
+    lp: "Bias for Action + Deliver Results"
+next_lab: lab_02_product_case_metrics
+prereqs: []
+notes: >
+  This is a Tier 1 lab — the PR-FAQ structure is provided but all content must be written
+  by the candidate. The most common failure mode is leading with the feature instead of the customer.
+  The second most common failure mode is FAQ answers that address the PR-sanitized version of
+  the concern ("we value your privacy") rather than the real concern ("are you watching me and
+  will you auto-charge me"). Practice writing direct, specific, jargon-free answers out loud
+  before attempting the lab.

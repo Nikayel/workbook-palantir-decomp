@@ -1,0 +1,21 @@
+id: google_pm_01_product_sense
+title: "Improve Google Maps for Commuters — Product Sense"
+company: google
+role: pm
+interview_moment: "Google APM Product Sense interview"
+tier: 1
+difficulty: medium
+est_minutes: 45
+primary_skill: "product sense with user segmentation and metric definition"
+secondary_skills:
+  - "RICE prioritization framework"
+  - "North Star Metric definition"
+  - "guardrail metric design"
+  - "A/B test scoping"
+  - "user journey mapping"
+  - "Googleyness in product answers"
+bloom_top: evaluate
+language: prose
+status: published
+prereqs: []
+next_lab: "lab_02_metrics_nsm"

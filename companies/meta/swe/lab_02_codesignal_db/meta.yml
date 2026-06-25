@@ -1,0 +1,43 @@
+id: meta_swe_02_codesignal_db
+company: meta
+role: swe
+tier: 2
+difficulty: medium
+est_minutes: 90
+primary_skill: "build and evolve a system across 4 progressive ICF levels"
+secondary_skills:
+  - in-memory data structures
+  - TTL implementation
+  - lazy vs eager expiry
+  - backward-compatible API evolution
+  - time handling (absolute vs relative)
+  - thread safety awareness
+tags:
+  - object design
+  - key-value store
+  - TTL
+  - CodeSignal ICF
+  - OA format
+  - history tracking
+levels:
+  - id: L1
+    description: Basic SET / GET / DELETE with dict
+    est_minutes: 10
+  - id: L2
+    description: Add optional TTL with absolute expiry time
+    est_minutes: 20
+  - id: L3
+    description: Edge case hardening — overwrite resets TTL, expired DELETE returns False
+    est_minutes: 20
+  - id: L4
+    description: Add history tracking and GET_RANGE timestamp query
+    est_minutes: 30
+strategy: "Finish L1 and L2 completely before touching L3. Partial L3 > broken L2."
+next_lab: lab_03_ai_coding
+prereqs:
+  - meta_swe_01_speed_drill
+notes: >
+  The ICF format rewards backward compatibility and clean design over raw speed.
+  The single most important design choice is storing absolute expiry time (not TTL duration).
+  Everything else follows from that. Practice building L1 in 10 minutes or less —
+  it should be reflex so you save time for the harder levels.

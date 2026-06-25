@@ -1,0 +1,24 @@
+id: uber_swe_01_routing
+company: uber
+role: swe
+tier: 1
+difficulty: medium
+primary_skill: "Dijkstra shortest path with path reconstruction"
+est_minutes: 75
+tags:
+  - dijkstra
+  - graph
+  - shortest-path
+  - min-heap
+  - path-reconstruction
+  - geospatial
+  - routing
+  - uber-eta
+  - act-like-owners
+  - bellman-ford
+assessment_format: Uber phone screen or CodeSignal + technical interview
+prereqs:
+  - Graph representation (adjacency list)
+  - heapq module in Python
+  - BFS/DFS familiarity
+  - Basic graph theory

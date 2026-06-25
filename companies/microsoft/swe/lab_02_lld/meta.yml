@@ -1,0 +1,23 @@
+id: microsoft_swe_02_lld
+company: microsoft
+role: swe
+tier: 2
+difficulty: medium
+primary_skill: "OOD/LLD with extensible class design"
+est_minutes: 90
+tags:
+  - ood
+  - lld
+  - abstract-base-class
+  - inheritance
+  - extensibility
+  - hashing
+  - thread-safety
+  - design-patterns
+  - microsoft-superday
+assessment_format: Microsoft Superday onsite coding round
+prereqs:
+  - Python ABC module
+  - hashlib
+  - Class inheritance
+  - Abstract methods

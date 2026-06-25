@@ -1,0 +1,21 @@
+id: google_swe_02_graph_grid
+title: "Number of Islands — Graph/Grid Traversal"
+company: google
+role: swe
+interview_moment: "Google phone screen — plain-doc coding, no IDE"
+tier: 2
+difficulty: medium
+est_minutes: 50
+primary_skill: "graph traversal (BFS/DFS) on a 2D grid"
+secondary_skills:
+  - "BFS vs DFS tradeoff reasoning"
+  - "in-place visited marking"
+  - "4-directional grid neighbor logic"
+  - "Union-Find as an alternative"
+  - "recursion depth / stack overflow awareness"
+bloom_top: analyze
+language: python
+status: published
+prereqs:
+  - "lab_01_algorithmic"
+next_lab: "lab_03_mock_screen"

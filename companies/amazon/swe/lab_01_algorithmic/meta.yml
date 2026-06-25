@@ -1,0 +1,49 @@
+id: amazon_swe_01_algorithmic
+company: amazon
+role: swe
+tier: 1
+difficulty: medium
+est_minutes: 90
+primary_skill: "binary search on answer + graph shortest path (Dijkstra)"
+secondary_skills:
+  - binary search
+  - Dijkstra
+  - greedy scheduling
+  - graph traversal
+  - Leadership Principles awareness
+  - LP-aware problem solving
+tags:
+  - binary search on answer
+  - shortest path
+  - heap
+  - parallel processing
+  - graph
+  - Amazon OA
+lp_connections:
+  - principle: Dive Deep
+    connection: "Edge cases (k > n, disconnected graph) reflect LP12 — staying connected to details"
+  - principle: Insist on the Highest Standards
+    connection: "Code quality and test coverage reflect LP7"
+  - principle: Bias for Action
+    connection: "Attempting brute force first, then optimizing, reflects LP9"
+  - principle: Invent and Simplify
+    connection: "Recognizing DAG enables O(V+E) instead of Dijkstra reflects LP3"
+problems:
+  - id: p1
+    name: Minimum time to process orders with k parallel workers
+    pattern: "binary search on answer + feasibility check"
+    time: "O(n log(sum(orders)))"
+    space: O(1)
+  - id: p2
+    name: Warehouse robot shortest path to all required items
+    pattern: "Dijkstra single-source shortest path"
+    time: "O((V+E) log V)"
+    space: O(V)
+next_lab: lab_02_medium_oa
+prereqs: []
+notes: >
+  This is a Tier 1 lab — solutions are provided. The goal is to internalize both algorithms
+  well enough to re-implement from scratch. The LP integration section is NOT optional for
+  Amazon prep — behavioral signals in SWE interviews are evaluated as heavily as correctness.
+  A candidate who finishes both problems AND demonstrates LP awareness beats a candidate who
+  finishes both problems without LP integration.

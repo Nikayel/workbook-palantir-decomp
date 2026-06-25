@@ -1,0 +1,19 @@
+id: google_swe_01_algorithmic
+title: "Meeting Rooms — Algorithmic Fundamentals"
+company: google
+role: swe
+interview_moment: "Google phone screen — plain-doc coding, no IDE"
+tier: 1
+difficulty: medium
+est_minutes: 45
+primary_skill: "algorithmic problem solving with clear GCA narration"
+secondary_skills:
+  - "heap/priority queue"
+  - "sorting"
+  - "complexity analysis"
+  - "think-aloud communication"
+bloom_top: apply
+language: python
+status: published
+prereqs: []
+next_lab: "lab_02_graph_grid"

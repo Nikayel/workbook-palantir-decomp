@@ -1,0 +1,38 @@
+id: meta_swe_01_speed_drill
+company: meta
+role: swe
+tier: 2
+difficulty: medium
+est_minutes: 45
+primary_skill: "two-problem speed under time pressure"
+secondary_skills:
+  - sliding window
+  - Floyd's cycle detection
+  - hash maps
+  - two-pointer patterns
+  - time management under interview pressure
+tags:
+  - string
+  - linked list
+  - O(n)
+  - phone screen
+  - coderpad
+problems:
+  - id: p1
+    name: Longest Substring Without Repeating Characters
+    leetcode: 3
+    pattern: sliding window + hash map
+    time: O(n)
+    space: "O(min(n, alphabet_size))"
+  - id: p2
+    name: Linked List Cycle II (find start)
+    leetcode: 142
+    pattern: Floyd's cycle detection (two phases)
+    time: O(n)
+    space: O(1)
+next_lab: lab_02_codesignal_db
+prereqs: []
+notes: >
+  This lab is about PACE, not just correctness. If you can't finish both in 35 min,
+  repeat daily until you can. Speed comes from pattern recognition, not from thinking faster.
+  Drill the sliding window template and Floyd's phases until they are reflex.
