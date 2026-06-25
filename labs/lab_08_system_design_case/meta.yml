@@ -1,0 +1,20 @@
+id: palantir_08_system_design_case
+title: "System Design Case — Case Management Platform"
+company: palantir
+role: swe_fdse
+interview_moment: "Palantir FDSE decomposition round"
+tier: 3
+difficulty: hard
+est_minutes: 60
+primary_skill: "end-to-end system design with API contracts and state machines"
+secondary_skills:
+  - state machine design
+  - REST API contract definition
+  - audit log and idempotency patterns
+  - concurrent write conflict resolution
+  - database indexing strategy
+bloom_top: create
+language: javascript
+status: published
+prereqs: ["palantir_07_learning_reengineering"]
+next_lab: null

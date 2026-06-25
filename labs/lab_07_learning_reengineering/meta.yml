@@ -1,0 +1,20 @@
+id: palantir_07_learning_reengineering
+title: "Learning Reengineering — Code Review and Bug Fix"
+company: palantir
+role: swe_fdse
+interview_moment: "Palantir FDSE decomposition round"
+tier: 2
+difficulty: medium
+est_minutes: 60
+primary_skill: "code reading, debugging, and extending unfamiliar code"
+secondary_skills:
+  - mutation bug identification
+  - test-driven debugging
+  - defensive programming
+  - feature extension without regression
+  - side-effect isolation
+bloom_top: evaluate
+language: python
+status: published
+prereqs: ["palantir_06_disaster_relief"]
+next_lab: "lab_08_system_design_case"

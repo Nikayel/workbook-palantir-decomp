@@ -1,0 +1,20 @@
+id: palantir_06_disaster_relief
+title: "Disaster Relief — Supply Allocation Coordinator"
+company: palantir
+role: swe_fdse
+interview_moment: "Palantir FDSE decomposition round"
+tier: 2
+difficulty: hard
+est_minutes: 60
+primary_skill: "offline-first coordination systems under uncertainty and eventual consistency"
+secondary_skills:
+  - multi-org data synchronization
+  - conflict resolution strategies
+  - geospatial routing
+  - resource allocation under constraints
+  - life-safety system design
+bloom_top: analyze
+language: python
+status: published
+prereqs: ["palantir_05_factory_maintenance"]
+next_lab: "lab_07_learning_reengineering"

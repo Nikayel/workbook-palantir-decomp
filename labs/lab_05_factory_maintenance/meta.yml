@@ -1,0 +1,20 @@
+id: palantir_05_factory_maintenance
+title: "Factory Maintenance — Predictive Anomaly Detection"
+company: palantir
+role: swe_fdse
+interview_moment: "Palantir FDSE decomposition round"
+tier: 2
+difficulty: hard
+est_minutes: 60
+primary_skill: "streaming sensor data ingestion and threshold-based anomaly detection"
+secondary_skills:
+  - time-series windowing
+  - alert fatigue mitigation
+  - work-order lifecycle management
+  - false-positive cost analysis
+  - IoT data pipeline design
+bloom_top: analyze
+language: python
+status: published
+prereqs: ["palantir_04_supply_chain_risk"]
+next_lab: "lab_06_disaster_relief"
