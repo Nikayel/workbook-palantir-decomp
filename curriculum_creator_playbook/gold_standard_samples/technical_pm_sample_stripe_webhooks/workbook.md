@@ -5,6 +5,15 @@ Partners building on your payments platform need to know when things happen — 
 
 > Deliverable is a **design + written memo**, not code. You are scored on technical fluency, tradeoffs, and clarity — not implementation.
 
+## 🪜 Milestones — check them off as you go
+This track ships a **spec + memo, not code** — so M4 is "artifact complete & self-checked against the model answer."
+- [ ] M1 · Scoped — clarifying questions + assumptions written
+- [ ] M2 · Decomposed — entities + the polling bottleneck identified
+- [ ] M3 · Designed — endpoints, idempotency, signatures, versioning decided
+- [ ] M4 · Built — `artifacts/api_design_scaffold.md` filled **and** the ≤250-word memo written
+- [ ] M5 · Defended — survived all 3 curveballs out loud
+- [ ] M6 · Ready — self-graded ≥ 32/40 (incl. the writing row)
+
 # Part 0: Forethought
 Goal (one sentence): Design an events/webhooks API that is reliable, safe to retry, and stable for years.
 Target time: 75 minutes
@@ -55,6 +64,8 @@ State transitions (for a DeliveryAttempt):
 1. PENDING → DELIVERED (2xx from partner)
 2. PENDING → FAILED → RETRYING → (max retries) → DEAD_LETTER
 
+> 🚩 Checkpoint M2 · Decomposed — you should now have **Event, WebhookEndpoint, DeliveryAttempt** as entities and **polling** as the bottleneck. Stuck? The bottleneck is the thing that makes partners hammer your API and still miss events.
+
 # Part 3: API contract design  ← the core of a Technical-PM lab
 Fill the worked example, then complete the blanks. The full spec goes in `artifacts/api_design_scaffold.md`.
 
@@ -100,6 +111,8 @@ Why these fields: a **stable `id`** (idempotency on the consumer side), a **`typ
 | Notify partners | polling | webhooks (push) | [blank] | [blank] |
 | Pagination | offset/page | cursor | [blank] | [blank] |
 | Delivery | exactly-once | at-least-once + idempotency | [blank] | [blank] |
+
+> 🚩 Checkpoint M3 · Designed — you've decided push-vs-poll, the idempotency mechanism, signature verification, and the versioning policy. Stuck? Each "Named design decision" above must have a one-line answer before you write the spec.
 
 # Part 4: Produce the artifacts
 1. Complete `artifacts/api_design_scaffold.md` (the spec).
@@ -148,4 +161,12 @@ Total: __ / 40
 
 One thing I did well: [blank]
 One thing I missed: [blank]
+Confidence now (1–5): [blank]   ← compare to your Part 0 prediction.
 Lowest rubric row → my next action: [blank]
+
+## ✅ You're ready when…
+- [ ] You go scenario → a complete spec + memo in **< 60 min** without the hints.
+- [ ] You can explain idempotency, at-least-once delivery, and additive versioning **out loud** without notes.
+- [ ] Your memo ties each decision to **second-order developer impact** (trust, fewer tickets), not revenue.
+- [ ] You self-grade ≥ 32/40 (incl. the writing row) on **two** attempts running.
+> Any unchecked box is your next rep. Re-run cold and timed until all four are checked.

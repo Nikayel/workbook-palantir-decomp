@@ -12,6 +12,15 @@ AUTHORING NOTES (delete before shipping):
 # Scenario
 <2–6 sentences of authentic, messy, company-skinned scenario. Include ≥1 nasty data/constraint wrinkle. Pull the product surface from the company pack.>
 
+## 🪜 Milestones — check them off as you go
+<!-- For coding labs, split M4 into L1→L4 code milestones, each gated by a test group. -->
+- [ ] M1 · Scoped — clarifying questions + assumptions written
+- [ ] M2 · Decomposed — entities + the one bottleneck identified
+- [ ] M3 · Designed — contract / API / success-metric defined
+- [ ] M4 · Built — < tests green | artifact complete & self-checked >
+- [ ] M5 · Defended — survived all 3 curveballs out loud
+- [ ] M6 · Ready — self-graded ≥ <bar>/<max>
+
 # Part 0: Forethought
 Goal (one sentence): [blank]
 Target time: [blank] minutes
@@ -138,4 +147,13 @@ Total: __ / __
 
 One thing I did well: [blank]
 One thing I missed: [blank]
+Confidence now (1–5): [blank]   ← compare to your Part 0 prediction
 Lowest rubric row → my next action: [blank]
+
+## ✅ You're ready when…
+<!-- 3–5 checkable, interview-realistic signals: cold, timed, aloud. Tune N and the bar per lab. -->
+- [ ] You go scenario → working solution in < [blank] min **without** the hints.
+- [ ] You give the 90-second talk track out loud **without notes**.
+- [ ] You answer all 3 curveballs **without freezing**.
+- [ ] You self-grade ≥ <bar>/<max> on **two** attempts running.
+> Any unchecked box is your next rep. Repeat — or move up a tier — until all are checked.

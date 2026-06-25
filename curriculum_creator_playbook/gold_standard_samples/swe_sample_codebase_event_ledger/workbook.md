@@ -3,6 +3,19 @@ Status: Spec incomplete — fill in all blank fields before implementing
 # Scenario
 You've been dropped into a small service that tracks money movement for a marketplace. Every payout, charge, and refund is an **event** (`credit` or `debit`) against an account. The current code is a stub. Your job is to grow it into a working **event ledger** in four increments — exactly how a feature evolves in a real codebase. Upstream is messy: some events arrive **malformed**, and the network sometimes **delivers the same event twice**, so the same payout must not be applied twice.
 
+## 🪜 Milestones — check them off as you go
+You'll watch this build from nothing to a working, tested system. Each code milestone is gated by a **test group going green**.
+- [ ] M1 · Scoped — clarifying questions + assumptions written
+- [ ] M2 · Decomposed — entities + bottleneck identified
+- [ ] M3 · Designed — the IO contract is filled in
+- [ ] M4 · Built — Level 1 → 2 → 3 → 4, tests green after each:
+  - [ ] L1 record + query (`TestLevel1` green)
+  - [ ] L2 balance + edge cases (`TestLevel2` green)
+  - [ ] L3 refactor into the `Ledger` class (L1+L2 still green)
+  - [ ] L4 idempotency + reversal (`TestLevel4*` green, **nothing earlier broke**)
+- [ ] M5 · Defended — survived all 3 curveballs out loud
+- [ ] M6 · Ready — self-graded ≥ 36/45
+
 # Part 0: Forethought
 Goal (one sentence): Build an append-only ledger that survives malformed and duplicate events.
 Target time: 70 minutes
@@ -54,6 +67,8 @@ State transitions (for an Event):
 1. RECEIVED → (valid?) → STORED → (later) → COMPENSATED-BY a reversal entry
 2. RECEIVED → (malformed or duplicate key) → IGNORED
 
+> 🚩 Checkpoint M2 · Decomposed — you should now have **Event** (plus an implicit Account) as your entities and **reverse-chronological order with no ranking** as the bottleneck. Stuck? The bottleneck is the step that buries the signal under noise.
+
 # Part 3: System / contract design
 ## Input / Output contract
 **Input:**
@@ -85,12 +100,19 @@ State transitions (for an Event):
 |---|---|---|---|---|
 | Reversal | delete the original | append a compensating entry | [blank] | [blank] |
 
-# Part 4: Build — the 4 levels
-Open `starter.py`. Implement **in order**; run `python3 -m unittest tests.py` after each.
-- **L1:** `record_event` (store) + `get_events`.
-- **L2:** `get_balance` + reject malformed events (bad type, missing/negative amount, empty id, `bool` amount).
-- **L3:** keep all state inside the `Ledger` class (it already is — preserve behaviour as you tidy).
-- **L4:** idempotency (`idempotency_key` dedupe) + `reverse_event`, **without breaking L1–L3 tests**.
+> 🚩 Checkpoint M3 · Designed — your contract names `record_event`, `get_events`, `get_balance`, `reverse_event` with types. Stuck? Re-read the method table above before you touch code.
+
+# Part 4: Build — the 4 levels (the build-up)
+Implement **in order** in `starter.py`. After each level run `python3 -m unittest tests.py` and watch the next group go green — **that green is your checkpoint**. You're going from an empty stub to a working, tested system.
+
+- **L1 — record + query.** `record_event` (store) + `get_events`.
+  > 🚩 M4·L1 — `TestLevel1RecordAndQuery` passes.
+- **L2 — balance + edge cases.** `get_balance` + reject malformed events (bad type, missing/negative amount, empty id, `bool` amount).
+  > 🚩 M4·L2 — `TestLevel2Balance` passes (unknown account → 0, malformed ignored).
+- **L3 — refactor & encapsulate.** Keep all state inside the `Ledger` class; tidy **without changing behaviour**.
+  > 🚩 M4·L3 — L1 **and** L2 still pass. (If they don't, your refactor broke something — that's the lesson the codebase round teaches.)
+- **L4 — extend.** Idempotency (`idempotency_key` dedupe) + `reverse_event`, **without breaking L1–L3**.
+  > 🚩 M4·L4 — `TestLevel4Idempotency` + `TestLevel4Reversal` pass **and every earlier group is still green**. M4 done — nothing → a working ledger.
 
 Edge cases to handle:
 1. [blank — duplicate idempotency key]
@@ -141,4 +163,12 @@ Total: __ / 45
 
 One thing I did well: [blank]
 One thing I missed: [blank]
+Confidence now (1–5): [blank]   ← compare to your Part 0 prediction; the delta is the point.
 Lowest rubric row → my next action: [blank]
+
+## ✅ You're ready when…
+- [ ] You go scenario → **all 4 levels green in < 45 min** without the hints.
+- [ ] You can explain idempotency and "extend, don't mutate" out loud without notes.
+- [ ] You answer all 3 curveballs without freezing.
+- [ ] You self-grade ≥ 36/45 on **two** attempts running.
+> Any unchecked box is your next rep. Re-run cold and timed until all four are checked — that's interview-ready.

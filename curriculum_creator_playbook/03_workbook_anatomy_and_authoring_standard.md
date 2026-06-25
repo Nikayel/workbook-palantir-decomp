@@ -90,6 +90,51 @@ Every lab is authored at **one** of three scaffolding tiers. A *course* moves le
 
 ---
 
+## 3.5 Milestones, checkpoints & the readiness arc (make the build-up *felt*)
+
+Blanks and an 8-part spine are not enough on their own — a learner must **feel the build-up**: pass visible checkpoints, watch working code/artifacts come alive, and finish *knowing* they're ready. These three devices are **mandatory in every lab**.
+
+### A. The milestone ladder (top of every workbook)
+Right after the scenario, show the checkpoints the learner will clear, so progress is visible from rep one:
+```
+## 🪜 Milestones — check them off as you go
+- [ ] M1 · Scoped — clarifying questions + assumptions written (never frozen)
+- [ ] M2 · Decomposed — entities + the one bottleneck identified
+- [ ] M3 · Designed — contract / API / success-metric defined
+- [ ] M4 · Built — < tests green  |  artifact complete & self-checked >
+- [ ] M5 · Defended — survived all 3 curveballs out loud
+- [ ] M6 · Ready — self-graded ≥ <bar>/<max>
+```
+For **coding labs**, M4 splits into the **code milestones** (L1 → L2 → L3 → L4), each gated by a test group going green. That progression *is* the build-up: nothing → a thing that runs.
+
+### B. Checkpoint markers (between parts)
+After each major part, drop a **self-verifiable checkpoint** so the learner never wonders "am I on track?":
+```
+> 🚩 Checkpoint M2 · Decomposed — you should now have 2+ entities and exactly one bottleneck step.
+>    Stuck? Re-read the messy-data wrinkle in the scenario; the bottleneck hides there.
+```
+For coding labs the checkpoint **is the test result**: *"Run `python3 -m unittest tests.py`; the Level-2 group should now pass."* Immediate, unambiguous feedback (Principle 7) at every step.
+
+### C. The readiness arc (predict → grow → prove)
+- **Forethought (Part 0):** learner predicts confidence 1–5 *before* starting.
+- **Delta (Part 7):** they re-score confidence + the rubric; the lab shows the growth explicitly ("predicted 2 → now 4"). Growth made visible is the motivation engine (Principle 9).
+- **"You're ready when…" mastery bar (end of every lab):** 3–5 checkable, interview-realistic signals — **cold, timed, aloud**:
+```
+## ✅ You're ready when…
+- [ ] You go scenario → working solution in < <N> min **without** the hints.
+- [ ] You give the 90-second talk track out loud **without notes**.
+- [ ] You answer all 3 curveballs **without freezing**.
+- [ ] You self-grade ≥ <bar>/<max> on **two** attempts running.
+> Any unchecked box is your next rep. Repeat the lab — or the next tier — until they're all checked.
+```
+
+### Course-level readiness
+The **Tier-3 mock is the readiness gate** for a whole track. Keep a one-line **readiness scorecard** (rubric total per lab) so the learner watches the curve rise across the course. A track is "interview-ready" only when the learner clears the Tier-3 mock **at the bar, cold and timed** — that is the moment the curriculum was backward-designed to produce (Principle 1).
+
+> **PM/Technical-PM note:** these tracks don't ship production code, so M4 = "**artifact complete and self-checked against the model answer**" (a finished PR-FAQ / memo / metric tree / API spec), not passing tests. The build-up is the same — empty template → a complete, defensible artifact you can compare to the gold answer.
+
+---
+
 ## 4. The blank & reveal conventions
 
 - **Fill-in token:** `[blank]` (not markdown underscores — v1 migrated away from `____` for UX; do not regress).

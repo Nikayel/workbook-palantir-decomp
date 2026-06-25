@@ -5,6 +5,15 @@ Meta's **notifications** have become noisy. A heavy user can get 40+ notificatio
 
 > Deliverable is a **brief + metric tree + A/B design**, not code. You're scored on structure, user empathy, prioritization, metrics literacy, and communication.
 
+## 🪜 Milestones — check them off as you go
+This track ships a **brief + metric tree + A/B design, not code** — so M4 is "artifact complete & self-checked against the model."
+- [ ] M1 · Scoped — clarifying questions + assumptions written
+- [ ] M2 · Segmented — the bleeding user segment + the bottleneck named
+- [ ] M3 · Designed — a prioritized cut + a North Star **and a guardrail**
+- [ ] M4 · Built — `artifacts/metric_tree_and_brief.md` filled **and** the A/B design written
+- [ ] M5 · Defended — survived all 3 curveballs out loud
+- [ ] M6 · Ready — self-graded ≥ 28/35
+
 # Part 0: Forethought
 Goal (one sentence): Make notifications feel worth keeping on — raise value per notification, not volume.
 Target time: 70 minutes
@@ -53,6 +62,8 @@ Core entities:
 2. User
 3. Signal (relevance/affinity/recency features)
 
+> 🚩 Checkpoint M2 · Segmented — you should now have **heavy users opting out** as the bleeding segment and **reverse-chron ordering with no relevance ranking** as the bottleneck. Stuck? Ask which segment's behaviour is the hardest to reverse.
+
 # Part 3: Product design + success metric
 ## Pains (name 2–3 real ones for the segment)
 1. [blank]
@@ -72,6 +83,8 @@ Core entities:
 North Star: [blank — e.g. "7-day notification-driven *meaningful* sessions per user," not raw CTR]
 Guardrail(s): [blank — e.g. notification opt-out rate must not rise; total sends must not balloon]
 Counter-metric to watch: [blank — gaming/over-bundling hiding important items]
+
+> 🚩 Checkpoint M3 · Designed — you've made an **explicit cut** (built X first, NOT Y) and chosen a **North Star + a guardrail that can veto launch**. Stuck? If your metric is raw CTR, redo it — CTR rises even as users opt out.
 
 # Part 4: Produce the artifacts
 1. Fill `artifacts/metric_tree_and_brief.md` (the metric tree + a ≤200-word brief).
@@ -118,4 +131,12 @@ Total: __ / 35
 
 One thing I did well: [blank]
 One thing I missed: [blank]
+Confidence now (1–5): [blank]   ← compare to your Part 0 prediction.
 Lowest rubric row → my next action: [blank]
+
+## ✅ You're ready when…
+- [ ] You go prompt → a prioritized solution + metric in **< 25 min** without the hints.
+- [ ] You give the 90-second talk track out loud without notes.
+- [ ] You answer all 3 curveballs without freezing — especially "CTR up, opt-outs up: ship?"
+- [ ] You self-grade ≥ 28/35 on **two** attempts running.
+> Any unchecked box is your next rep. Re-run cold and timed until all four are checked.

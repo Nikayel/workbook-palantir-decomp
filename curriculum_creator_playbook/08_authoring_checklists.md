@@ -26,6 +26,15 @@
 - [ ] **No answer leakage**: model answers/reference solution are in separate files or collapsible `🔒` blocks — never visible next to the blank (Principle 3/10).
 - [ ] One **new concept per blank**; worked example and its blanks are physically adjacent.
 
+## B2. Milestone & readiness checklist (the "felt build-up")
+- [ ] Workbook opens with a **milestone ladder** (M1…M6) the learner checks off (`03` §3.5 A).
+- [ ] A **checkpoint marker** follows each major part with a self-verifiable success condition (`03` §3.5 B).
+- [ ] **Coding labs** build up across **code milestones** (L1→Ln), each gated by a passing **test group** — learner goes nothing → working code.
+- [ ] **PM/Technical-PM labs** define M4 as "**artifact complete & self-checked** against the model" (no fake code).
+- [ ] **Confidence delta** is shown: Part 0 prediction vs Part 7 actual ("predicted 2 → now 4").
+- [ ] Lab ends with a **"You're ready when…"** mastery bar — 3–5 **cold / timed / aloud** signals.
+- [ ] The track's **Tier-3 mock is the readiness gate**; a one-line **readiness scorecard** tracks the rising curve.
+
 ## C. Feedback & assessment checklist
 - [ ] **Analytic rubric** with **countable 1–5 descriptors** (behavioral, not adjectives) (Principle 8) — using the role's rubric rows (`04`/`05`/`06`).
 - [ ] `solution_reasoning.md` contains all **9 required sections** (`03` §7), including a **strong-vs-weak answer with the weak one annotated for *why***.
