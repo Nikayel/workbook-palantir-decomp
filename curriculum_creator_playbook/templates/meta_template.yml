@@ -1,0 +1,18 @@
+# meta.yml — required for every lab (drives catalog + coverage matrix). See 03 §5.
+id: <company>_<NN>_<slug>          # e.g. stripe_01_idempotent_payments
+title: ""                           # human title, e.g. "Make Payments Safe to Retry"
+company: ""                         # google|meta|amazon|microsoft|apple|palantir|nvidia|uber|stripe|atlassian|generic
+role: ""                            # pm | technical_pm | swe
+interview_moment: ""                # e.g. "Stripe integration round"
+tier: 2                             # 1 worked | 2 completion | 3 blank/mock
+difficulty: medium                  # intro | easy | medium | hard | mock
+est_minutes: 60
+primary_skill: ""                   # the ONE weakness this lab isolates
+secondary_skills: []
+bloom_top: evaluate                 # analyze | evaluate | create (must reach one)
+language: none                      # python | node | sql | swift | cpp | yaml | none
+swe_style: ""                       # algorithmic | codebase | n/a   (SWE only)
+has_blank_variant: false
+prereqs: []
+last_verified: ""                   # recruiting cycle the company facts were checked, e.g. "2026 summer"
+status: draft                       # draft | review | published

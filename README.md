@@ -91,5 +91,15 @@ Each core lab is designed to take about **3 hours**.
 
 ---
 
+---
+
+## 🧑‍🏫 For Curriculum Creators
+
+This repo started as a **Palantir SWE** workbook. The **[`curriculum_creator_playbook/`](./curriculum_creator_playbook/)** folder is the perfected, generalized system for building workbooks like these across **3 roles (PM · Technical PM · SWE)** and **10 companies** (Google, Meta, Amazon, Microsoft, Apple, Palantir, Nvidia, Uber, Stripe, Atlassian).
+
+It contains the learning-science principles, the authoring standard, role guides, **10 company fact-packs**, how-many-to-build counts, **authoring checklists**, templates, and **3 fully-worked gold-standard sample labs** (one per role). Start at [`curriculum_creator_playbook/README.md`](./curriculum_creator_playbook/README.md). The existing labs here are "v1" — see the [v1 audit](./curriculum_creator_playbook/10_v1_audit_and_gap_analysis.md) for what's kept and what's improved.
+
+---
+
 ## 🤝 Contributing
 Feel free to fork this repository, add your own labs, or submit PRs with better reference solutions! Star the repo if you found it useful for your Palantir prep. Good luck! 🚀

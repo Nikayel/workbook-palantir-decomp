@@ -1,0 +1,17 @@
+id: meta_01_rank_notifications
+title: "Rank the Notifications Feed (product sense + execution)"
+company: meta
+role: pm
+interview_moment: "Meta PM/RPM loop — Product Sense + data-driven Execution"
+tier: 1
+difficulty: medium
+est_minutes: 70
+primary_skill: "turning an ambiguous product space into a prioritized solution with a defensible success metric"
+secondary_skills: ["user segmentation", "RICE prioritization", "North Star + guardrail metrics", "A/B test design", "build-for-billions framing"]
+bloom_top: evaluate
+language: none          # PM lab: the artifact is a brief + metric tree, no code
+swe_style: n/a
+has_blank_variant: false
+prereqs: []
+last_verified: "2026 summer"
+status: published

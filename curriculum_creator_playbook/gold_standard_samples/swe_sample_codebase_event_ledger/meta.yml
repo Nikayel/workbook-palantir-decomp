@@ -1,0 +1,17 @@
+id: generic_codebase_event_ledger
+title: "Event Ledger — Build & Evolve a Small System (codebase style)"
+company: generic            # template for the codebase-style companies: stripe, palantir, uber, atlassian
+role: swe
+interview_moment: "Stripe integration / CodeSignal Industry-Coding-Framework / Atlassian craft round"
+tier: 1                     # worked example shown; learner finishes later levels
+difficulty: medium
+est_minutes: 70
+primary_skill: "evolving an existing codebase across progressive levels without breaking it"
+secondary_skills: ["data modeling", "edge-case handling", "refactoring/encapsulation", "idempotency"]
+bloom_top: create
+language: python
+swe_style: codebase
+has_blank_variant: false
+prereqs: []
+last_verified: "2026 summer"
+status: published

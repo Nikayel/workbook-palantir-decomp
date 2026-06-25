@@ -1,0 +1,17 @@
+id: stripe_01_events_webhooks_api
+title: "Design an Idempotent Events + Webhooks API for Partners"
+company: stripe
+role: technical_pm
+interview_moment: "Stripe technical-PM API-design screen + written memo take-home"
+tier: 1
+difficulty: medium
+est_minutes: 75
+primary_skill: "designing a developer-facing API with idempotency, delivery, and versioning tradeoffs — and writing it up"
+secondary_skills: ["webhooks vs polling", "cursor pagination", "signature verification", "backward-compatible versioning", "Stripe-style written memo"]
+bloom_top: create
+language: yaml          # the artifact is an API spec + a written memo, NOT production code
+swe_style: n/a
+has_blank_variant: false
+prereqs: []
+last_verified: "2026 summer"
+status: published
