@@ -1,19 +1,19 @@
-id: google_swe_01_algorithmic
-title: "Meeting Rooms — Algorithmic Fundamentals"
+id: google_swe_01_lru_cache
+title: "LRU Cache — Design-a-Data-Structure"
 company: google
 role: swe
-interview_moment: "Google phone screen — plain-doc coding, no IDE"
+interview_moment: "Google phone screen — plain-doc design-a-DS"
 tier: 1
 difficulty: medium
 est_minutes: 45
-primary_skill: "algorithmic problem solving with clear GCA narration"
+primary_skill: "design-a-data-structure: LRU cache with O(1) get/put"
 secondary_skills:
-  - "heap/priority queue"
-  - "sorting"
-  - "complexity analysis"
-  - "think-aloud communication"
-bloom_top: apply
+  - "doubly-linked list"
+  - "hash map"
+  - "O(1) time design"
+  - "think-aloud narration"
+bloom_top: create
 language: python
 status: published
 prereqs: []
-next_lab: "lab_02_graph_grid"
+next_lab: "lab_02_rate_limiter"

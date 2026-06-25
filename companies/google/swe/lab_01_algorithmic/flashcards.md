@@ -1,99 +1,172 @@
-# Flashcards — Google SWE Lab 01: Algorithmic Fundamentals
+# Flashcards — Google SWE Lab 01: LRU Cache Design-a-Data-Structure
 
 *10 cards for spaced repetition. Study these 24–48 hours after completing the workbook. Cover the answer and try to recall it before reading.*
 
 ---
 
-## Card 1 — GCA Scoring: Process Over Answer
+## Card 1 — LRU Eviction Policy Definition
 
-**Q:** What does GCA (General Cognitive Ability) actually measure in a Google interview, and why does it mean you should narrate your thinking even if it slows you down?
+**Q:** What does "Least Recently Used" mean as an eviction policy, and in what contexts is it a good choice?
 
-**A:** GCA measures how you reason through novel problems, not whether you recall known solutions. Interviewers score your PROCESS — how you decompose the problem, articulate tradeoffs, handle uncertainty, and update your approach. A candidate who narrates a brute force, explains why it's insufficient, and walks to the optimized approach scores higher than a candidate who silently produces the optimal answer in half the time. Narrating slows you down slightly but dramatically raises your GCA score. The rule: never go silent for more than 30 seconds.
+**A:** LRU evicts the cache entry that has not been accessed for the longest time. When the cache is full and a new entry must be inserted, the LRU entry is removed first.
 
----
-
-## Card 2 — Min-Heap for Scheduling Problems
-
-**Q:** Why is a min-heap the right data structure for the Meeting Rooms problem? What property of a heap does this problem exploit?
-
-**A:** The min-heap stores room end times and always gives O(1) access to the minimum — the room that frees up soonest. This is exactly the operation needed: for each new meeting, check whether the earliest-ending room is free (end ≤ start). If yes, reuse it. If no, open a new room. No other structure gives O(1) minimum access with O(log n) update. A sorted array would require O(n) insertion to maintain order; a hash set has no ordering. The heap is a perfect match for "I only ever need the minimum, and I update frequently."
+LRU is a good choice when access patterns exhibit temporal locality — recently accessed items are likely to be accessed again soon (web page caches, CPU memory caches, database buffer pools). It is a poor choice when access patterns are sequential scans (every item is accessed once in order, so LRU would evict items that will never be reused — this is called the "sequential flood" problem).
 
 ---
 
-## Card 3 — Sort By Start: Why It Matters
+## Card 2 — Why Doubly-Linked List for O(1) Remove
 
-**Q:** The Meeting Rooms algorithm sorts intervals by start time. What is the loop invariant this establishes, and what goes wrong if you sort by end time instead?
+**Q:** Why does O(1) removal from any position in a linked list require a doubly-linked list specifically? What operation does a singly-linked list fail to do in O(1)?
 
-**A:** Invariant after sorting by start: when we process meeting i, all meetings j < i have already been assigned to rooms. The heap contains the current end times of all occupied rooms, in sorted order. If you sort by end time instead, you process meetings in the order they finish — but a meeting with an early end time might start AFTER a meeting with a late end time. You'd free up rooms for meetings that haven't started yet and potentially give the wrong answer. Example: [[1,10],[2,3],[4,5]] sorted by end is [[2,3],[4,5],[1,10]]. Processing [1,10] last when it starts before everything else produces an incorrect room count.
+**A:** To remove a node from a doubly-linked list, you need to update two pointers: the predecessor's `next` and the successor's `prev`. A doubly-linked list gives you `node.prev` directly, so you can reach the predecessor in O(1).
 
----
+A singly-linked list only gives you `node.next`. To find the predecessor and update its `next` pointer, you must scan from the head — O(n). This makes removal from the middle of a singly-linked list O(n) unless you have the predecessor in hand.
 
-## Card 4 — Complexity Analysis: n log n
-
-**Q:** State the time and space complexity of the optimized Meeting Rooms solution and justify each.
-
-**A:** Time: O(n log n). The sort is O(n log n) and dominates. The loop runs n times; each iteration does at most one heap operation (heappush or heapreplace), each of which is O(log n). Total: O(n log n) + O(n log n) = O(n log n). Space: O(n). The heap can hold at most n entries — in the worst case, every meeting overlaps with every other, so you open n rooms and store n end times. No additional data structures are used.
+For LRU Cache: when `get(key)` is called, the node may be anywhere in the list. You need to unlink it and move it to the MRU end. That unlink must be O(1). Only a doubly-linked list makes this possible.
 
 ---
 
-## Card 5 — Why Brute Force Is O(n²)
+## Card 3 — Hash Map for O(1) Lookup: Why Store Node Pointers
 
-**Q:** Describe the brute-force approach to Meeting Rooms and explain exactly why its time complexity is O(n²).
+**Q:** In the raw doubly-linked list LRU implementation, the hash map stores Node objects (pointers), not just values. Why? What breaks if you store only the value?
 
-**A:** Brute force: sort by start time (O(n log n)). For each new meeting (n meetings), scan every existing room (up to n rooms) to find one whose end time ≤ the meeting's start time. If found, update that room's end time. If not, open a new room. The scan is O(n) in the worst case (all rooms occupied). Across n meetings: O(n) scans × O(n) cost each = O(n²) total. The key observation is that the brute force inspects every room to find the minimum, while the heap inspects only the minimum, cutting the scan to O(log n).
+**A:** The hash map must give you the Node object so you can call `_remove(node)` — which requires `node.prev` and `node.next`. If the map stored only the value, you would have the value but not the node's position in the list. To find the node and unlink it, you'd have to scan the list from the head — O(n) — which breaks the O(1) guarantee.
+
+Storing the Node pointer means: `cache[key]` gives you the node in O(1), `node.prev` and `node.next` let you unlink in O(1), and `node.val` gives you the value in O(1). All three in one lookup.
+
+Additional: Node also stores `key` so that when evicting the LRU node, you can delete it from the hash map via `del cache[node.key]` without a reverse lookup.
 
 ---
 
-## Card 6 — Googleyness Signals
+## Card 4 — Sentinel Node Pattern
 
-**Q:** Name 4 specific Googleyness signals and give one concrete interview behavior that demonstrates each.
+**Q:** What are sentinel head and tail nodes in a doubly-linked list, and what problem do they solve?
+
+**A:** Sentinel nodes are dummy nodes at the LRU end (head) and MRU end (tail) of the list that are never removed and never contain real data. They always have valid `prev` and `next` pointers.
+
+Problem they solve: without sentinels, `_remove` must handle "is this the first node?" and "is this the last node?" as special cases. `_add_to_tail` must handle "is the list empty?" Adding these checks introduces branching that is easy to get wrong.
+
+With sentinels: `_remove` always has `node.prev` and `node.next` (they are at minimum the sentinels). `_add_to_tail` always inserts between `self.tail.prev` and `self.tail`. The four-pointer-update pattern is identical regardless of list size. Zero special cases.
+
+Sentinel pattern is the standard approach for production doubly-linked list implementations for this reason.
+
+---
+
+## Card 5 — OrderedDict.move_to_end()
+
+**Q:** What does `OrderedDict.move_to_end(key)` do, what is its time complexity, and what is the common mistake when using it in LRU Cache?
+
+**A:** `move_to_end(key)` moves the specified key-value pair to the end (MRU position) of the ordered dict. By default (`last=True`), it moves to the last position. Passing `last=False` moves to the first position. Time complexity: O(1) — the OrderedDict internally uses a doubly-linked list.
+
+Common mistakes:
+1. Forgetting `move_to_end` in `get` — without it, accessing a key does NOT update its recency. The key stays at its original position and will be evicted at the wrong time.
+2. Calling `move_to_end` AFTER `self.cache[key] = value` for existing keys — in Python's OrderedDict, reassigning an existing key does NOT move it. You must call `move_to_end` explicitly (before or after the assignment, both work since the position update and value update are independent operations on the OrderedDict's internal structures).
+3. Using `popitem(last=True)` for eviction — this removes the MRU entry, not the LRU. Always use `popitem(last=False)`.
+
+---
+
+## Card 6 — When to Use OrderedDict vs Raw Doubly-Linked List
+
+**Q:** In an interview, when should you use Python's `OrderedDict` for LRU Cache versus implementing a raw doubly-linked list? What does each choice signal to the interviewer?
+
+**A:** Use `OrderedDict` first: it demonstrates you know the standard library and can write idiomatic Python quickly. It also gets you to a working, testable solution faster — important under time pressure.
+
+The interviewer will then often say: "Great — now implement it without OrderedDict." This is the more important question. It tests whether you understand the mechanism (doubly-linked list + hash map) or just knew the library shortcut.
+
+Signals from each choice:
+- OrderedDict only: demonstrates Python fluency but leaves questions about your data structures understanding.
+- Raw DLL: demonstrates you understand WHY the solution works — the pointer mechanics, the sentinel pattern, the O(1) remove proof.
+- Both in sequence (easy then hard): demonstrates both fluency and depth. This is the ideal interview arc.
+
+In a Google phone screen with 45 minutes, do the OrderedDict version first (10 min) then the raw DLL (20 min) and use the remaining time for system reasoning and curveballs.
+
+---
+
+## Card 7 — LRU vs LFU vs FIFO
+
+**Q:** Compare LRU, LFU, and FIFO as cache eviction policies. When is each one appropriate?
 
 **A:**
-1. **Intellectual humility:** When the interviewer pushes back, say "That's a great point — let me reconsider" and actually update your approach. Do not defend your first instinct past the point of reason.
-2. **Curiosity:** Ask genuine questions about the problem. "What's the expected scale of the input?" or "Would the caller care about rooms with multiple concurrent occupants?" show you're thinking beyond the spec.
-3. **Collaborative problem solving:** Explicitly invite the interviewer in. "I'm thinking min-heap here — does that resonate with you, or would you nudge me a different direction?" This is not weakness; it's Googleyness.
-4. **Comfort with ambiguity:** If the problem is underspecified, make an explicit assumption and state it clearly rather than waiting for a complete spec. "I'll assume endpoints are exclusive — let me know if that's wrong."
+
+**FIFO (First In, First Out):**
+- Evicts the entry that has been in the cache the longest, regardless of how often or recently it was accessed.
+- Simplest to implement: a queue.
+- Appropriate when all cache entries have similar lifespan expectations and access frequency is not meaningful.
+- Fails under workloads where popular items were cached early and must be repeatedly re-fetched after FIFO evicts them.
+
+**LRU (Least Recently Used):**
+- Evicts the entry that has not been accessed for the longest time.
+- Appropriate for most web and database caching workloads with temporal locality.
+- Fails under sequential scan workloads (sequential flood).
+
+**LFU (Least Frequently Used):**
+- Evicts the entry with the lowest access count. Ties broken by LRU.
+- Appropriate when access frequency is a better predictor of future access than recency — e.g., a media streaming cache where popular songs stay popular for weeks.
+- More complex to implement at O(1): requires frequency buckets + min_freq tracking.
+- Fails when frequency counts are stale — an item popular a month ago will never be evicted even if never accessed again.
 
 ---
 
-## Card 7 — Narrating Tradeoffs
+## Card 8 — Thread Safety with threading.Lock()
 
-**Q:** When an interviewer asks "what's your approach?", what is the ideal structure of your verbal response for maximum GCA score?
+**Q:** How do you make the LRU Cache thread-safe? Show the pattern, name the performance trade-off, and name a higher-performance alternative.
 
-**A:** Use a three-part structure: (1) State the brute force in one sentence. (2) Explain the bottleneck — why the brute force is slow. (3) Name the optimized approach and the insight that enables it. Example: "My brute force is to scan all rooms for each meeting — that's O(n²). The bottleneck is the linear scan. The insight is I only need the minimum end time, which a min-heap gives me in O(1) with O(log n) updates — bringing the total to O(n log n)." This structure demonstrates you know multiple approaches, understand their tradeoffs, and can communicate precisely. Never jump straight to the optimal solution without first naming the naive approach.
+**A:** Simplest correct approach — coarse-grained mutex:
+
+```python
+import threading
+
+class LRUCache:
+    def __init__(self, capacity):
+        # ... init cache, head, tail, dict ...
+        self.lock = threading.Lock()
+    
+    def get(self, key):
+        with self.lock:
+            # ... existing get logic ...
+    
+    def put(self, key, value):
+        with self.lock:
+            # ... existing put logic ...
+```
+
+`with self.lock:` acquires the lock at the top and releases it when the block exits (including on exception).
+
+Trade-off: coarse-grained mutex serializes all reads and writes. Under high read concurrency (many threads calling `get` simultaneously), all threads wait for one lock. This limits throughput.
+
+Higher-performance alternative: reader-writer lock (RWLock). Allows multiple concurrent reads but requires exclusive access for writes. In Python's standard library there is no built-in RWLock — you would use `threading.Lock` for writes and `threading.Semaphore` or a third-party library for the reader-writer pattern. In Java, `ReentrantReadWriteLock` provides this natively.
+
+In a Google interview, stating the basic Lock approach and mentioning the reader-writer lock trade-off is sufficient to demonstrate production awareness.
 
 ---
 
-## Card 8 — Edge Case Checklist for Interval Problems
+## Card 9 — Time and Space Complexity of LRU Cache
 
-**Q:** What 5 edge cases should you always check for interval / scheduling problems?
+**Q:** State the time and space complexity of the LRU Cache implemented with a doubly-linked list and hash map. Justify each.
 
 **A:**
-1. **Empty input:** `[]` → return 0 (or equivalent base case). Forgetting this is a common silent bug.
-2. **Single element:** `[[1,5]]` → return 1. Verifies your loop handles n=1 without breaking.
-3. **All overlapping:** Every meeting conflicts with every other → result equals len(intervals). Verifies the heap grows correctly.
-4. **No overlaps:** Meetings are sequential with gaps → result is 1. Verifies room reuse works.
-5. **Adjacent endpoints:** `[[1,5],[5,10]]` → answer depends on inclusive vs. exclusive spec (1 or 2). This is the question you must clarify in Part 1, and you must trace this case explicitly to prove your assumption is correctly implemented.
+
+**Time complexity:**
+- `get(key)`: O(1). One dict lookup, one `_remove` (4 pointer updates), one `_add_to_tail` (4 pointer updates). Each step is O(1).
+- `put(key, value)`: O(1). One dict lookup, one `_remove` (if existing), one `_add_to_tail`, one dict insert/delete, and optional one eviction (`_remove` on LRU + dict delete). All O(1).
+- Total: O(1) amortized for both operations. No operation scales with cache size.
+
+**Space complexity:**
+- O(capacity). The hash map holds at most `capacity` key-to-Node entries. The doubly-linked list holds at most `capacity` nodes plus 2 sentinels (constant). Total space is proportional to capacity.
+- Note: each Node object consumes constant space (key, val, prev, next). The hash map entry consumes constant space. So total space is O(capacity) × O(1) per entry = O(capacity).
 
 ---
 
-## Card 9 — Hiring Committee Packet Framing
+## Card 10 — GCA Scoring: Process Over Answer
 
-**Q:** Google's Hiring Committee reads your interview packet but never meets you. What does this mean for how you should behave during a phone screen?
+**Q:** What does Google's GCA (General Cognitive Ability) dimension measure in a phone screen, and why does it mean you should narrate design decisions — not just code decisions — as you work?
 
-**A:** Everything you say and do during the interview is transcribed or summarized by the interviewer into a written packet. The HC reads the packet cold — no video, no voice, no body language. This means: (1) Your verbal clarity matters as much as your code. If you didn't explain why you chose the heap, the packet won't mention it, and HC won't know. (2) Sloppy variable names or undocumented logic in the Google Doc looks worse in the packet than it felt in the moment. (3) Correcting yourself out loud is a positive signal — it shows metacognition. Write as if you're writing for a reader who wasn't there.
+**A:** GCA measures how you approach novel problems: how you decompose, what questions you ask, what tradeoffs you consider, and how you update when new information arrives. It is not a test of recall.
 
----
+In a design-a-DS lab, the model score comes from narrating: why you need two data structures (not one), why a doubly-linked list specifically, why sentinel nodes, what happens on the evict path. Each of these is a design decision, not a code decision. Stating the code without narrating the design leaves the interviewer unable to assess your systems thinking.
 
-## Card 10 — Plain-Doc Coding Discipline
-
-**Q:** What 3 habits should you build for coding in a plain Google Doc (no IDE) during Google phone screens?
-
-**A:**
-1. **Write your own structure.** No autocomplete means you manually open every block. Develop a habit of writing `def`, `:`, and indentation consistently before filling in the body.
-2. **Spell out variable names.** Without syntax highlighting, `r` and `rooms` look equally valid on the screen but `rooms` is dramatically easier for the interviewer to follow in real-time and in the HC packet later.
-3. **Comment the intent, not the mechanics.** In a plain doc, a comment like `# min-heap: tracks room end times` on the line where you initialize the heap signals to the interviewer (and HC) exactly what you were thinking. You won't have the ability to run the code, so comments become your only secondary communication channel.
+Practical rule: before writing ANY line of code, state the data structure and why. "I'll use a hash map and a doubly-linked list because I need O(1) lookup AND O(1) removal from an arbitrary position. A hash map alone can't maintain order. A singly-linked list can't remove in O(1) from the middle." This 30-second narration earns more GCA score than a perfectly correct implementation written in silence.
 
 ---
 
-*10 cards · Google SWE Lab 01 · Review 24–48 hrs after completing workbook*
+*10 cards · Google SWE Lab 01 · LRU Cache Design-a-DS · Review 24–48 hrs after completing workbook*
