@@ -1,0 +1,22 @@
+id: google_tpm_01_system_design_lite
+title: "Design a URL Shortener at Scale — System Design Lite"
+company: google
+role: tpm
+interview_moment: "Google Technical PM screen"
+tier: 2
+difficulty: medium
+est_minutes: 45
+primary_skill: "system-design-lite: URL shortener with scale reasoning and V1 scoping"
+secondary_skills:
+  - "base62 encoding and collision math"
+  - "CDN cache invalidation"
+  - "SQL vs NoSQL decision"
+  - "read-heavy vs write-heavy design"
+  - "build-vs-buy decisions"
+  - "V1 scoping discipline"
+  - "99.99% availability reasoning"
+bloom_top: evaluate
+language: prose
+status: published
+prereqs: []
+next_lab: null
