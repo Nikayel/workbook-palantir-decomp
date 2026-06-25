@@ -1,0 +1,21 @@
+id: meta_pm_01_product_sense
+title: "Facebook Groups Re-Engagement for 18-34 — Product Sense"
+company: meta
+role: pm
+interview_moment: "Meta PM/RPM Product Sense round"
+tier: 1
+difficulty: medium
+est_minutes: 45
+primary_skill: "product sense: segment-first diagnosis + RICE prioritization + guardrail design"
+secondary_skills:
+  - "user sub-segmentation"
+  - "RICE scoring"
+  - "North Star Metric definition"
+  - "A/B test design in social networks (network interference)"
+  - "safety vs. engagement tradeoff"
+  - "stakeholder management under timeline pressure"
+bloom_top: evaluate
+language: prose
+status: published
+prereqs: []
+next_lab: "lab_02_jedi_behavioral"

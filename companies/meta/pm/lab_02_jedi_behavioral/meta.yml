@@ -1,0 +1,22 @@
+id: meta_pm_02_jedi_behavioral
+title: "Meta Jedi Behavioral Round — 5 Dimensions with Follow-Up Depth"
+company: meta
+role: pm
+interview_moment: "Meta Jedi behavioral round"
+tier: 2
+difficulty: medium
+est_minutes: 45
+primary_skill: "Meta Jedi behavioral: 5 dimensions with follow-up depth"
+secondary_skills:
+  - "STAR with 4 follow-ups"
+  - "Be Direct vs aggressive (Meta value)"
+  - "Quantified result format"
+  - "Meta values (Move Fast, Be Direct, Long-Term Impact, Build Awesome Things)"
+  - "Behavioral story depth"
+  - "Conflict resolution without triangulation"
+bloom_top: evaluate
+language: prose
+status: published
+prereqs:
+  - "lab_01_product_sense"
+next_lab: null
