@@ -1,0 +1,22 @@
+id: atlassian_swe_01_craft_coding
+company: atlassian
+role: swe
+tier: 1
+difficulty: medium
+primary_skill: "craft coding: read unfamiliar code, test-first debugging, voluntary testing"
+secondary_skills:
+  - debugging
+  - test writing
+  - Python craft
+  - Atlassian values awareness
+est_minutes: 45
+interview_stage: Karat technical screen
+style: codebase/practical
+language: python
+next_lab: lab_02_lld_notification
+tags:
+  - test-driven
+  - bug-finding
+  - sprint-management
+  - voluntary-testing
+  - values-integration
