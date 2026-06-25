@@ -1,0 +1,24 @@
+id: apple_swe_02_ios_arc
+company: apple
+role: swe
+tier: 2
+difficulty: medium
+primary_skill: "iOS ARC memory management — retain cycles and weak references"
+secondary_skills:
+  - Swift closure capture semantics
+  - NSCache vs Dictionary
+  - @escaping closures
+  - DispatchQueue patterns
+  - memory debugging (Instruments, Debug Memory Graph)
+est_minutes: 45
+interview_stage: Technical screen (iOS team)
+style: low-level/debugging
+language: swift
+previous_lab: lab_01_implement_ds
+tags:
+  - ARC
+  - retain-cycle
+  - weak-self
+  - NSCache
+  - iOS-memory-management
+  - escaping-closures
