@@ -1,0 +1,15 @@
+id: palantir_04_supply_chain_risk
+title: "Supply Chain Risk"
+company: palantir
+role: swe_fdse
+interview_moment: "Palantir FDSE decomposition round"
+tier: 2
+difficulty: hard
+est_minutes: 60
+primary_skill: "propagating risk through a dependency graph using BFS/DFS with cycle detection"
+secondary_skills: ["risk scoring systems", "early warning signals", "multi-source data aggregation", "batch vs streaming for risk", "threshold-based alerting", "lead time buffers"]
+bloom_top: evaluate
+language: python
+status: published
+prereqs: []
+next_lab: "lab_05_factory_maintenance"

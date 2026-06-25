@@ -1,10 +1,31 @@
-Status: Spec incomplete — fill in all blank fields before implementing
+Status: Ready — work through all parts in order
 
 # Scenario
 
 You are building a system for a city's emergency dispatch center. Currently, dispatchers receive a call, look at a map, and manually decide which responder (police, fire, ambulance) to send. This takes too long and sometimes the closest responder is on a break or lacks the right equipment. They want a system to automatically recommend the top 3 best responders for an incident.
 
+## 🪜 Milestones
+
+- [ ] M1 · Scoped — clarifying questions + assumptions written
+- [ ] M2 · Decomposed — entities + the one bottleneck named
+- [ ] M3 · Designed — contract / tradeoffs / success metric defined
+- [ ] M4 · Built — tests green (`python tests.py`)
+- [ ] M5 · Defended — survived all 3 curveballs out loud
+- [ ] M6 · Ready — self-graded ≥ 35/50 on two attempts
+
+---
+
+# Part 0: Forethought
+
+Goal (one sentence): [blank]
+Target time: 60 minutes
+Confidence before starting (1–5): [blank]
+
+---
+
 # Part 1: Clarifying questions
+
+> **Before you write:** Read the scenario once. Close it. Write your questions from memory.
 
 > In a Palantir interview, demonstrating you can extract the true constraints from an ambiguous prompt is critical. Use this section to write down the questions you would ask the interviewer before writing any code.
 
@@ -41,6 +62,10 @@ Assumption: [blank]
 Think about the dispatcher, the response time, the current workflow, and the messiest data source (GPS).
 </details>
 
+> 🚩 **Checkpoint M1** — You should have 5 questions each paired with an assumption. If you skipped any, go back now.
+
+---
+
 # Part 2: Decomposition
 
 Current workflow:
@@ -62,6 +87,10 @@ State transitions (for a Responder):
 *(Tutorial: This is the database lifecycle for the core entity, NOT the user's UI flow. E.g. OPEN -> IN_PROGRESS -> RESOLVED)*
 1. [blank]
 2. [blank]
+
+> 🚩 **Checkpoint M2** — You have a workflow, exactly one bottleneck, 2+ entity names (nouns only), and state transitions that are DB lifecycle (not UI). If any are missing, fill them before continuing.
+
+---
 
 # Part 3: System / API Contract
 
@@ -110,12 +139,20 @@ Tradeoff table:
 One edge case or implementation detail that surprised you:
 [blank]
 
+> 🚩 **Checkpoint M3** — Your contract table has concrete types (not "[blank]"), you've named 2+ design decisions, and filled the tradeoff table. Do this before opening starter.py.
+
+---
+
 # Part 4: Coding Task
 Open `starter.py` and implement the logic. Run `python tests.py`.
 
 Edge cases to handle:
 1. [blank]
 2. [blank]
+
+> 🚩 **Checkpoint M4** — Run `python tests.py`. All tests must be green before moving on.
+
+---
 
 # Part 5: System Design Reasoning
 
@@ -149,12 +186,16 @@ What is the simplest version that would still help the user?
 What is the riskiest assumption?
 [blank]
 
+---
+
 # Part 6: Interview Simulation
 
 ## 90-Second Explanation
 Practice your talk track. Use the template in `templates/blank_90_second_talktrack.md`.
 
 ## Curveballs (answer out loud or write)
+
+> **Instructions:** Answer each curveball out loud (or write) before reading the next one. Time yourself — you have 90 seconds per curveball.
 
 Curveball 1: The GPS data for responders is delayed by 5 minutes.
 Your response:
@@ -174,28 +215,36 @@ Your response:
 [blank]
 [blank]
 
-# Self-grade
+---
 
-Score 1–5.
+# Part 7: Self-grade + reflection
 
-Ambiguity handling: __ / 5  
-Clarifying questions: __ / 5  
-Workflow decomposition: __ / 5  
-Data model: __ / 5  
-API/action design: __ / 5  
-System design reasoning: __ / 5  
-Coding correctness: __ / 5  
-Edge cases: __ / 5  
-MVP judgment: __ / 5  
-Communication: __ / 5  
+> Score each row 1–5 using the descriptors. Be honest — this is for you.
 
-Total: __ / 50
+| Dimension | 5 | 3 | 1 | Your score |
+|---|---|---|---|---|
+| Clarifying questions | 5 paired Q+A tied to design decisions | 3–4 questions, some assumptions, loose tie | 0–1 questions, jumped to solution | __ /5 |
+| Decomposition | Clear workflow → bottleneck, entity names are nouns (not properties), state transitions are DB lifecycle | Workflow present but bottleneck unclear; mixed properties and entities | Minimal decomp, no clear states | __ /5 |
+| API contract | Concrete types in every table cell; 2+ named decisions; tradeoff table filled | Some cells filled, 1 decision named | All blank or abstract concepts | __ /5 |
+| Coding correctness | All tests green, handles edge cases | Core logic correct, 1–2 edge cases missed | Tests fail or logic broken | __ /5 |
+| Edge cases | Named and handled: empty input, stale data, no results, concurrency | 1–2 named, not all handled | Declared done without testing | __ /5 |
+| System reasoning | Explains WHY for every decision; names what NOT to build; identifies riskiest assumption | Some WHY answers, misses a few | Describes WHAT, not WHY | __ /5 |
+| Curveball handling | Answered all 3 without freezing; each response names a concrete mitigation | Answered 2 of 3; vague mitigations | Froze or said "I don't know" | __ /5 |
+| MVP judgment | Clear V1 scope with explicit cuts; defers non-essential features with rationale | V1 defined but cuts not justified | Feature-creep or too minimal | __ /5 |
+| Communication | Narrated tradeoffs; structured response; no jargon | Understandable but verbose | Silent or jargon-heavy | __ /5 |
+| Time management | Finished core in < 60 min without hints | Finished but needed hints | Ran out of time on Part 3 | __ /5 |
 
-One thing I did well:
-[blank]
+**Total: __ / 50**
 
-One thing I missed:
-[blank]
+One thing I did well: [blank]
+One thing I missed: [blank]
+Confidence now (1–5): [blank] ← compare to your Part 0 prediction
+Lowest rubric row → my next action: [blank]
 
-One thing I will improve next lab:
-[blank]
+## ✅ You're ready when…
+- [ ] You go scenario → working solution in < 45 min **without** the hints.
+- [ ] You give the 90-second talk track out loud **without notes**.
+- [ ] You answer all 3 curveballs **without freezing**.
+- [ ] You self-grade ≥ 35/50 on **two** attempts running.
+
+> Any unchecked box is your next rep. Repeat until all four are checked.

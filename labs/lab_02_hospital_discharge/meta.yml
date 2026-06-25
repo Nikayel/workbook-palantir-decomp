@@ -1,0 +1,15 @@
+id: palantir_02_hospital_discharge
+title: "Hospital Discharge Optimization"
+company: palantir
+role: swe_fdse
+interview_moment: "Palantir FDSE decomposition round"
+tier: 1
+difficulty: medium
+est_minutes: 60
+primary_skill: "identifying administrative bottlenecks in multi-stakeholder workflows and modeling them as state machines"
+secondary_skills: ["multi-stakeholder coordination", "SLA-based alerting", "audit trails in regulated environments", "parallel vs sequential task design"]
+bloom_top: analyze
+language: python
+status: published
+prereqs: []
+next_lab: "lab_03_fraud_investigation"

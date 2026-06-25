@@ -1,0 +1,15 @@
+id: palantir_01_911_dispatch
+title: "911 Dispatch Optimization"
+company: palantir
+role: swe_fdse
+interview_moment: "Palantir FDSE decomposition round"
+tier: 1
+difficulty: medium
+est_minutes: 60
+primary_skill: "decomposing an ambiguous real-world problem into entities, workflows, and APIs"
+secondary_skills: ["handling stale/real-time data", "ranking under constraints", "human-in-the-loop design"]
+bloom_top: analyze
+language: python
+status: published
+prereqs: []
+next_lab: "lab_02_hospital_discharge"

@@ -1,0 +1,15 @@
+id: palantir_03_fraud_investigation
+title: "Fraud Investigation"
+company: palantir
+role: swe_fdse
+interview_moment: "Palantir FDSE decomposition round"
+tier: 2
+difficulty: medium
+est_minutes: 60
+primary_skill: "building analyst triage queues with risk scoring and graph-based entity linking"
+secondary_skills: ["graph-based fraud detection", "alert fatigue mitigation", "confidence scores vs hard rules", "explainability for regulatory compliance", "audit logging"]
+bloom_top: evaluate
+language: python
+status: published
+prereqs: []
+next_lab: "lab_04_supply_chain_risk"
