@@ -27,7 +27,7 @@ Four scored attributes: **General Cognitive Ability (GCA)** — your *process* o
 **Technical PM.** Folded into the PM loop + GCA — reason about technical tradeoffs and feasibility, **don't code**. System-design-lite weighted on **estimation/scoping**.
 
 ## 6. Lab build list
-- SWE: `01` algorithmic (Tier 1, plain-doc constraint) · `02` graph/grid medium (Tier 2) · `03` mock screen (Tier 3, timed, narrate-aloud).
+- SWE *workbooks*: `01` **design-a-DS** (LRU) under the plain-doc / narrate-aloud constraint (Tier 1) · `02` ambiguity-narration **decomposition-lite** lab (Tier 2) · `03` **timed mock-OA** (Tier 3). Pure DSA → the shared **drill kit** (pattern map + LeetCode/NeetCode + flashcards), *not* workbooks.
 - PM: `01` product-sense "Design X for Google users" (Tier 1) · `02` metrics/NSM (Tier 2) · `03` estimation (Tier 2) · `04` Googleyness behavioral (Tier 2).
 - Technical PM: `01` system-design-lite with heavy scoping/estimation (Tier 2) · `02` technical-tradeoff explainer (Tier 2).
 

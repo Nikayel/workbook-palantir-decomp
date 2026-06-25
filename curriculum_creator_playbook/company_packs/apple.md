@@ -24,7 +24,7 @@
 **Technical PM / EPM.** Program/execution + behavioral + a **technical presentation** + a panel that probes **system architecture on your own projects**. More TPgM than classic PM-T.
 
 ## 6. Lab build list
-- SWE: `01` practical DSA + implement-a-data-structure (Tier 1) · `02` **iOS-skin lab** (ARC/optionals/closures) (Tier 2) · `03` **embedded-skin lab** (pointers/bit-manip/"implement malloc") (Tier 2) · `04` resume-deep-dive + behavioral prep (Tier 2).
+- SWE *workbooks*: `01` **implement-a-data-structure** lab (Tier 1) · `02` **iOS-skin** practical lab (ARC/optionals/closures) (Tier 2) · `03` **embedded-skin** low-level lab (pointers/bit-manip/"implement malloc") (Tier 2) · `04` resume-deep-dive + behavioral (Tier 2). Pure DSA pattern prep → shared **drill kit**, *not* workbooks.
 - PM: `01` teardown/improve an Apple product (Tier 1) · `02` product-tradeoffs case (Tier 2).
 - Technical PM / EPM: `01` program-execution + dependency/risk lab (Tier 2) · `02` technical-presentation prep (Tier 2).
 

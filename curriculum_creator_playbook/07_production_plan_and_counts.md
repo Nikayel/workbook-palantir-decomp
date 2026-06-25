@@ -33,8 +33,10 @@ Each cell is "labs to author for a complete track." `—` = fold into another tr
 | Atlassian | 4 | 3 | 2 | 9 |
 | **Role totals** | **40** | **24** | **16** | **≈ 80 company-specific labs** |
 
+> **SWE counts are *workbooks* (system-building + behavioral + mock), not DSA puzzles** (`06` §9). Pure-DSA pattern grinding is the shared **drill kit** below — never a per-company 8-part workbook — so the SWE column deliberately excludes it.
+
 Plus a **shared/generic bank** (reused across companies, ~20 labs):
-- ~8 generic **DSA-pattern** labs (the existing `/dsa_patterns/`, brought to standard).
+- **The DSA drill kit** (NOT workbooks): the pattern map (`06` §2) → curated LeetCode/NeetCode sets → one spaced flashcard per pattern. This is where "algorithmic" prep lives; the existing `/dsa_patterns/` seeds it.
 - ~3 generic **estimation/market-sizing** labs (PM).
 - ~3 generic **SQL** + ~2 generic **API/data** labs (the existing `/api_sql_data/`).
 - ~2 generic **behavioral-STAR** templates (skin per company's values/LP).
@@ -69,11 +71,11 @@ A 6-lab track (Palantir SWE) adds two more Tier-2 labs (SQL, API). A 2–3-lab t
 
 ### Phase 1 — The MVP (~30 labs): one strong track per company, signature-first
 Build the **single highest-signal track** per company plus its signature artifact. This gives a learner *something excellent* for every company fast.
-- [ ] Amazon: LP-STAR + PR-FAQ + 1 SWE algorithmic + Work-Simulation lab.
+- [ ] Amazon: LP-STAR + PR-FAQ + Work-Simulation lab + 1 design-a-DS lab.
 - [ ] Stripe: integration + bug-squash + Technical-PM idempotent-payments memo.
 - [ ] Palantir: decomposition set (from Phase 0) + mock OA.
-- [ ] Meta: 2-medium speed drill + Jedi behavioral + product-sense.
-- [ ] Google: plain-doc algorithmic + product-sense + Googleyness behavioral.
+- [ ] Meta: CodeSignal ICF multi-stage (codebase) + Jedi behavioral + product-sense.
+- [ ] Google: plain-doc design-a-DS + product-sense + Googleyness behavioral.
 - [ ] Atlassian: Values lab + craft/LLD coding.
 - [ ] Uber: marketplace-metrics PM + routing SWE.
 - [ ] Microsoft: LLD + growth-mindset behavioral.

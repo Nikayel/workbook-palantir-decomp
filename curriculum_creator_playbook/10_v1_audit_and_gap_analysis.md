@@ -39,7 +39,7 @@ A **Palantir FDSE/SWE** interview-prep workbook with genuinely good structure:
 | G6 | **No forethought/reflection.** Labs open on the scenario and end on the rubric; the metacognition layer (goal/confidence prediction; lowest-row→next-action) is missing. | `workbook.md` Parts | `03` Parts 0 & 7 (mandatory) |
 | G7 | **Rubric descriptors are uncountable.** `labs/lab_01/workbook.md` self-grade lists dimensions but no behavioral level descriptors, so self-placement is unreliable. | self-grade section | `03` §6 countable 1–5 descriptors + exemplars |
 | G8 | **Thin/empty tests.** `labs/lab_01/tests.py` has a single `test_basic_filtering`; many edge cases the workbook *names* aren't tested. | `tests.py` | `08` checklist: tests must cover the edge cases the workbook lists |
-| G9 | **No "codebase-style" SWE labs.** v1 has decomposition + algorithmic + SQL/API, but not the Stripe-style integration/bug-squash or the CodeSignal ICF 4-level format the user explicitly wants. | repo | `06` §3 Style B + the SWE gold-standard sample |
+| G9 | **No "codebase-style" SWE labs.** v1 has decomposition + algorithmic + SQL/API, but not the Stripe-style integration/bug-squash or the CodeSignal ICF 4-level format the user explicitly wants. | repo | `06` §3.1 codebase + the SWE gold-standard sample |
 | G10 | **No authoring guidance at all.** There's no standard telling a *creator* how to build more of these consistently — which is the entire deliverable you're reading now. | repo | this playbook |
 
 ---

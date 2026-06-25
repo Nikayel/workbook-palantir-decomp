@@ -27,7 +27,7 @@ Mission: *"empower every person and every organization on the planet to achieve 
 **Technical PM.** "Technical PM" depth varies by org (Azure/platform skews technical). API design + **concept-explainer** ("explain the cloud to a child," "recursion vs iteration," "design an API for 3rd-party payments," "estimate AWS revenue").
 
 ## 6. Lab build list
-- SWE: `01` algorithmic + complexity narration (Tier 1) · `02` **LLD/OOD** ("design an A/B test class") (Tier 2) · `03` Superday mock (Tier 3) · `04` growth-mindset STAR (Tier 2).
+- SWE *workbooks*: `01` **LLD/OOD** ("design an A/B-test class") (Tier 1) · `02` a second **design-a-DS** lab (Tier 2) · `03` Superday **timed mock** (Tier 3) · `04` growth-mindset STAR (Tier 2). DSA + complexity grinding → shared **DSA drill kit**, *not* a workbook.
 - PM: `01` product design (no framework names) (Tier 1) · `02` estimation (Tier 2) · `03` behavioral (Tier 2).
 - Technical PM: `01` API design (Azure skin) (Tier 2) · `02` concept-explainer lab (Tier 2).
 

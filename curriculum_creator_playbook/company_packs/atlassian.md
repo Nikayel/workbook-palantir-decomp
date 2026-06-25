@@ -27,7 +27,7 @@ Five values (verbatim): **"Open company, no bullshit" · "Build with heart and b
 **Technical PM.** Heavier execution/craft + the **48-h take-home** (disciplined scoping + explicit tradeoffs + crisp writing a technical audience can act on).
 
 ## 6. Lab build list
-- SWE: `01` craft coding + **write-your-own-tests** lab (Tier 1) · `02` **LLD** (notification system / cab-booking) (Tier 2) · `03` **Values interview** lab (STAR mapped to all 5 values) (Tier 1, with a story-bank template) · `04` "World of Atlassian" SJT prep (Tier 2).
+- SWE *workbooks*: `01` craft coding + **write-your-own-tests** lab (Tier 1) · `02` **LLD** (notification system / cab-booking) (Tier 2) · `03` **Values interview** lab (STAR mapped to all 5 values) (Tier 1, story-bank template) · `04` "World of Atlassian" SJT prep (Tier 2) · `05` **timed mock-OA** (Tier 3). Craft + LLD are system-building; pure DSA pattern prep → shared **drill kit**.
 - PM/APM: `01` experimentation/A-B + KPI lab (Tier 2) · `02` values-mapped product case (Tier 2) · `03` Values panel (shared).
 - Technical PM: `01` 48-h execution take-home (Tier 3) · `02` KPI/SQL reasoning (Tier 2).
 

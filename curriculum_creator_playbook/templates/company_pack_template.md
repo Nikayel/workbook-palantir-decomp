@@ -17,7 +17,7 @@
 <named OA platform + format; signature rounds; any written artifact>
 
 ## 5. Role tracks
-**SWE.** <style: algorithmic | codebase; over-indexed patterns; language>
+**SWE.** <workbook style: codebase | decomposition | design-a-DS | low-level; over-indexed patterns; language. Pure DSA = a drill kit, not a workbook>
 **PM.** <round emphasis; signature artifact>
 **Technical PM.** <exists? technical emphasis; or "fold into …">
 

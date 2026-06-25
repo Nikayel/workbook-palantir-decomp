@@ -3,7 +3,14 @@
 > **Audience:** the curriculum creator.
 > **Purpose:** how to author the SWE track, including the **"codebase / practical" style** the user specifically asked about (Stripe integration & bug-squash, Palantir decomposition, the CodeSignal Industry-Coding-Framework). Pair with the company pack and `03`.
 
-The existing Palantir labs (`/labs/`, `/dsa_patterns/`, `/api_sql_data/`, `/exact_reported_problems/`) are your v1 SWE material. This guide generalizes them to 10 companies and two distinct lab styles.
+The existing Palantir labs (`/labs/`, `/dsa_patterns/`, `/api_sql_data/`, `/exact_reported_problems/`) are your v1 SWE material. This guide generalizes them to 10 companies.
+
+> **North-star decision for the SWE track: the workbook format is for *building and evolving systems*, not for grinding DSA.** The 8-part decomposition arc earns its keep only when there is ambiguity to scope, entities to model, and tradeoffs to defend — i.e. **codebase / decomposition / practical / low-level-debugging / design-a-data-structure** work. A pure algorithm puzzle ("two-pointer max subarray") has none of that, and instant-judge platforms (LeetCode / NeetCode / HackerRank) drill patterns far better than a markdown file can.
+>
+> **So, for SWE:**
+> - **Author *workbooks* for system-building** — codebase rounds, decomposition, design-a-data-structure/LLD, low-level debugging. These are the differentiated, high-signal labs (and the ones the user explicitly wants).
+> - **Handle pure DSA as *drills*, never as 8-part workbooks** — a pattern map (§2) → curated external problem sets → a spaced flashcard per pattern → one timed mock-OA *assessment*.
+> - Interns still face DSA online assessments at most companies, so DSA still matters — it just lives in a lighter modality. The **mock-OA capstone** is the only place pure DSA appears in this curriculum, and it's a Tier-3 *test*, not a teaching workbook.
 
 ---
 
@@ -26,9 +33,9 @@ Concrete intern loops worth replicating: **Google** = 2×45-min coding in a *pla
 
 ---
 
-## 2. DSA topic map (intern difficulty)
+## 2. DSA: the *drill* map (a grind list, NOT a workbook source)
 
-~87% of questions map to ~10–12 patterns. Interns skew **easy–medium**. Cover these (the existing `/dsa_patterns/` folder already seeds most):
+~87% of questions map to ~10–12 patterns. Interns skew **easy–medium**. **Do not turn these into decomposition workbooks** — point learners at curated LeetCode/NeetCode sets, attach one spaced flashcard per pattern (pattern → when-to-use → complexity), and let the timed mock-OA (§9) be the only place they appear *inside* this curriculum. The one exception is the **last row** — *design-a-data-structure* — which graduates into a real workbook (it's mini-system-building, §3.3):
 
 | Pattern | Intern difficulty | Note |
 |---|---|---|
@@ -49,17 +56,23 @@ Concrete intern loops worth replicating: **Google** = 2×45-min coding in a *pla
 
 ---
 
-## 3. The two SWE lab styles — and when to use each
+## 3. The SWE workbook styles (all are system-building)
 
-This is the most important authoring decision for SWE. **Pick a style per company.**
+Every SWE *workbook* is one of these four system-building types. (Pure DSA is a **drill**, per §2 — it is deliberately not on this list.) Pick the style from the company pack.
 
-### Style A — Algorithmic
-One well-scoped DSA problem; the learner narrates approach, optimizes Big-O, and tests edge cases. This is the classic `/labs/` + `/dsa_patterns/` format. Use for: **Google, Meta, Microsoft, Amazon, Nvidia** (Nvidia with a low-level/C++/CUDA skin — see pack).
+### 3.1 Codebase / practical — *the primary SWE workbook*
+The learner works **inside an existing/unfamiliar repo** against tests, **ships a feature** or **fixes a bug** — no whiteboard, no abstract puzzle. The flagship style for **Stripe, Palantir, Uber, Atlassian**, and the right default whenever a company's round is practical.
 
-### Style B — Codebase / practical (the "if asked by those companies" style)
-The learner works **inside an existing/unfamiliar repo** against tests, **ships a feature** or **fixes a bug** — no whiteboard, no abstract puzzle. Use for: **Stripe, Palantir, Uber, Atlassian** (Atlassian's craft/LLD rounds are philosophically aligned).
+### 3.2 Decomposition — *the Palantir-style workbook*
+A vague, unscoped real-world problem the learner **decomposes** out loud (stakeholders → entities/ontology → API contract → workflows → MVP → tradeoffs). The existing `/labs/` are the gold v1 example. **This is the SWE format that most embodies the whole workbook idea** — and the strongest argument for why interns benefit from a workbook at all.
 
-**The canonical codebase template is the CodeSignal Industry Coding Framework (ICF/ICA).** Build practical labs on this 4-level spine even when the target company doesn't literally use CodeSignal — it's the cleanest model of real feature work:
+### 3.3 Design-a-data-structure / LLD — *the gray-zone DSA that IS a workbook*
+LRU cache, rate limiter, hit-counter-with-expiry, min-stack, "design an A/B-test class," a notification system, a parking lot. These are mini-systems with a contract, state, and edge cases — so the 8-part arc fits. **This is how the "DSA-flavored" companies (Google/Meta/Microsoft/Amazon) still get real workbooks** without turning two-pointer puzzles into workbooks.
+
+### 3.4 Low-level / debugging — *the Nvidia/Apple-systems workbook*
+Find the bug in a 250-line C program; implement a primitive (thread-safe queue, `shared_ptr` with refcount, `malloc`); reason about pointers/memory/concurrency. System-building at the systems layer.
+
+The canonical spine for 3.1–3.3 is the **CodeSignal Industry Coding Framework (ICF/ICA)** — build practical labs on this 4-level model even when the company doesn't literally use CodeSignal:
 
 > **ICF spine (90 min, one project, NOT meant to be finished):**
 > - **L1 — Initial design & basic functions (~10–15 min):** define the data model + a small API surface + basic tests.
@@ -125,11 +138,12 @@ Jump to code without clarifying; not testing / ignoring edge cases (empty/null/s
 
 ## 9. What to build for the SWE track (counts in `07`)
 
-Per company, roughly:
-- 2–3 **algorithmic** labs on the patterns that company over-indexes (see pack), at rising tiers.
-- 1 **codebase/practical** lab **if the company uses that style** (Stripe, Palantir, Uber, Atlassian) — these are the highest-value, most differentiated SWE labs and the ones the user explicitly wants.
+The SWE *workbooks* per company (**not** pure-DSA — that's the shared drill kit):
+- 1–2 **system-building** labs in the company's style (§3): codebase/practical, decomposition, design-a-DS/LLD, or low-level/debugging.
 - 1 **SQL or API/data** lab where relevant (Palantir, Uber, Stripe, Technical-PM overlap).
 - 1 **behavioral/values** lab skinned to the company (§6).
-- 1 **mock** (Tier-3, full-length, timed) capstone — e.g., a Palantir-style 90-minute mock OA (the existing `/exact_reported_problems/mock_oa/` is the template).
+- 1 **timed mock-OA** capstone (Tier-3) — the *only* place pure DSA appears, and it's an assessment, not a teaching workbook. The existing `/exact_reported_problems/mock_oa/` is the template.
 
-**Style-by-company cheat sheet:** Google = algorithmic (plain-doc) · Meta = algorithmic (speed) · Microsoft = algorithmic + LLD · Amazon = algorithmic + Work-Simulation/LP · Nvidia = algorithmic with **C++/pointers/CUDA/systems** skin · Stripe = **codebase (integration + bug-squash)** · Palantir = **codebase (decomposition + HackerRank mini-projects + SQL/API)** · Uber = algorithmic + **practical Uber-domain** (routing/pricing/geo) + LLD for grads · Atlassian = algorithmic + **craft/LLD + write-your-own-tests**.
+Plus, authored **once and shared** (not per company, not a workbook): the **DSA drill kit** — the §2 pattern map → curated LeetCode/NeetCode sets → a spaced flashcard per pattern. Interns grind this alongside the workbooks; most "algorithmic" prep lives here, not in a workbook.
+
+**Style-by-company cheat sheet (the *workbook* style; DSA is always a drill on top):** Google = design-a-DS + ambiguity-narration + mock · Meta = CodeSignal-ICF multi-stage (codebase) + AI-enabled + mock · Microsoft = **LLD/OOD** ("design an A/B-test class") + mock · Amazon = **Work-Simulation + design-a-DS** + mock · Nvidia = **low-level/debugging + implement-a-primitive** (C++) · Stripe = **codebase (integration + bug-squash)** · Palantir = **decomposition + HackerRank mini-projects + SQL/API** · Uber = **practical domain (routing/pricing/geo) + rate-limiter design-a-DS** · Atlassian = **craft/LLD + write-your-own-tests** · Apple = **practical/domain (iOS, embedded "implement malloc")**. Every company also gets a behavioral/values lab + the shared DSA drill kit.
