@@ -1,0 +1,22 @@
+id: google_pm_03_estimation
+title: "How Many YouTube Videos Are Uploaded Every Minute? — Fermi Estimation"
+company: google
+role: pm
+interview_moment: "Google APM estimation round"
+tier: 2
+difficulty: easy
+est_minutes: 20
+primary_skill: "Fermi estimation with structured decomposition and sense-checking"
+secondary_skills:
+  - "assumption transparency"
+  - "rounding discipline"
+  - "order-of-magnitude thinking"
+  - "reference-point calibration"
+  - "estimation hygiene"
+bloom_top: apply
+language: prose
+status: published
+prereqs:
+  - "lab_01_product_sense"
+  - "lab_02_metrics_nsm"
+next_lab: null
