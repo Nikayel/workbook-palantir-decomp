@@ -1,0 +1,22 @@
+id: google_pm_02_metrics_nsm
+title: "YouTube Watch Time Drop — Metric Diagnosis"
+company: google
+role: pm
+interview_moment: "Google APM metrics round"
+tier: 2
+difficulty: medium
+est_minutes: 45
+primary_skill: "metric drop diagnosis: tree segmentation + hypothesis prioritization"
+secondary_skills:
+  - "metric tree decomposition"
+  - "hypothesis generation and ranking"
+  - "supply/demand/platform framework"
+  - "investigation plan design"
+  - "correlation vs causation"
+  - "A/B test and holdout design"
+bloom_top: analyze
+language: prose
+status: published
+prereqs:
+  - "lab_01_product_sense"
+next_lab: "lab_03_estimation"
