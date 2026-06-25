@@ -1,0 +1,23 @@
+id: atlassian_swe_02_lld_notification
+company: atlassian
+role: swe
+tier: 2
+difficulty: medium
+primary_skill: "LLD with Observer pattern and Open/Closed Principle"
+secondary_skills:
+  - OOD SOLID principles
+  - abstract base classes
+  - pub-sub design
+  - channel failure resilience
+  - voluntary testing
+est_minutes: 50
+interview_stage: Onsite Code Design round
+style: LLD/design
+language: python
+previous_lab: lab_01_craft_coding
+tags:
+  - observer-pattern
+  - open-closed-principle
+  - notification-system
+  - extensibility
+  - atlassian-values
