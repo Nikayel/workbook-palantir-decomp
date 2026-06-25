@@ -1,0 +1,24 @@
+id: meta_swe_03_ai_enabled
+title: "AI-Enabled Coding Interview — Harassment Detector with Sliding Window"
+company: meta
+role: swe
+interview_moment: "Meta AI-Enabled Coding Interview (Oct 2025 format)"
+tier: 2
+difficulty: hard
+est_minutes: 60
+primary_skill: "AI-enabled coding: drive the solution, catch AI mistakes, maintain full ownership"
+secondary_skills:
+  - "sliding window algorithm"
+  - "per-user stateful detection"
+  - "AI collaboration methodology"
+  - "pre-AI design discipline"
+  - "code ownership under AI assistance"
+  - "edge case identification"
+  - "multilingual fairness in ML systems"
+bloom_top: evaluate
+language: python
+status: published
+prereqs:
+  - "lab_01_speed_drill"
+  - "lab_02_codesignal_db"
+next_lab: null
