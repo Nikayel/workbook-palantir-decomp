@@ -1,0 +1,27 @@
+id: nvidia_swe_02_thread_safe_queue
+company: nvidia
+role: swe
+tier: 2
+difficulty: hard
+primary_skill: "implement-a-primitive: thread-safe bounded queue with mutex + condition variables"
+secondary_skills:
+  - RAII lock_guard and unique_lock
+  - spurious wakeup handling
+  - condition_variable predicate form
+  - deadlock analysis
+  - producer-consumer pattern
+  - speed-of-light throughput reasoning
+language: cpp
+est_minutes: 45
+interview_stage: Technical round (systems SWE)
+style: implement-a-primitive / low-level
+previous_lab: lab_01_debugging_c
+tags:
+  - thread-safe
+  - mutex
+  - condition-variable
+  - RAII
+  - producer-consumer
+  - bounded-queue
+  - spurious-wakeup
+  - nvidia-speed-of-light
