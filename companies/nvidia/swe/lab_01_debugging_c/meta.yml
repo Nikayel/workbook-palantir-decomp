@@ -1,0 +1,25 @@
+id: nvidia_swe_01_debugging_c
+company: nvidia
+role: swe
+tier: 1
+difficulty: medium
+primary_skill: "low-level debugging: dangling pointers, bounds checking, integer arithmetic in C"
+secondary_skills:
+  - C memory model (stack vs heap)
+  - pointer arithmetic
+  - integer promotion and truncation
+  - bounds checking discipline
+  - intellectual honesty in technical interviews
+language: c
+est_minutes: 45
+interview_stage: Technical round (systems SWE)
+style: low-level/debugging
+next_lab: lab_02_thread_safe_queue
+tags:
+  - dangling-pointer
+  - undefined-behavior
+  - memory-pool
+  - valgrind
+  - asan
+  - integer-arithmetic
+  - nvidia-intellectual-honesty
