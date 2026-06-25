@@ -1,101 +1,206 @@
-# Flashcards — Google SWE Lab 02: Graph/Grid Traversal
+# Flashcards — Google SWE Lab 02: Rate Limiter Sliding Window Design
 
-*10 cards for spaced repetition. Study 24–48 hours after completing the workbook.*
-
----
-
-## Card 1 — BFS vs DFS: The Choosing Rule
-
-**Q:** When facing a grid traversal problem in an interview, how do you decide between BFS and DFS? State a concrete rule of thumb.
-
-**A:** Use **DFS** when: (1) the traversal is simpler to express recursively and recursion depth isn't a concern (small-to-medium grid), or (2) you need to explore deep paths (e.g., finding a path through a maze). Use **BFS** when: (1) stack overflow is a risk (very large grids, 10k+ cells per component), (2) you need shortest-path behavior (fewest hops), or (3) you prefer iterative code. For Number of Islands specifically, both work identically — default to recursive DFS for brevity in a phone screen, but flag BFS if the interviewer mentions a large grid.
+*10 cards for spaced repetition. Study these 24–48 hours after completing the workbook. Cover the answer and try to recall it before reading.*
 
 ---
 
-## Card 2 — In-Place Marking vs Visited Set
+## Card 1 — Fixed Window vs Sliding Window: The Core Tradeoff
 
-**Q:** In a grid traversal, what are the two ways to mark cells as visited? What is the tradeoff between them?
+**Q:** Explain the "2× burst problem" in a fixed-window rate limiter. Give a concrete numeric example and explain why a sliding window avoids it.
 
-**A:** 
-- **In-place marking:** Overwrite `grid[r][c]` with a sentinel value (e.g., '0' or '2') to indicate "visited." Advantage: O(1) extra space. Disadvantage: modifies the input, which may violate the caller's expectations or break concurrent access.
-- **Separate visited set:** Use a `set` of `(r, c)` tuples. Advantage: input is unchanged; safe for read-only grids. Disadvantage: O(m×n) extra space for the set.
-In a Google interview, in-place marking is standard and expected. Always clarify: "Is it okay if I modify the grid in-place?" before doing it.
+**A:** Fixed window divides time into discrete non-overlapping buckets (e.g., each minute). The counter resets at the start of each bucket.
 
----
+Example: max_requests = 100/min. Fixed window resets at :00 each minute.
+- User sends 100 requests at 12:00:59 (end of window 1). All 100 allowed.
+- Window resets at 12:01:00.
+- User sends 100 more requests at 12:01:01 (start of window 2). All 100 allowed.
+- In the span of 3 seconds (12:00:59 to 12:01:01), the user made 200 requests — twice the limit.
 
-## Card 3 — 4-Directional vs 8-Directional Traversal
+Sliding window avoids this because the window always covers exactly the last W seconds relative to the current timestamp. At 12:01:01, the window covers 12:00:01 to 12:01:01, capturing the 100 requests at 12:00:59 — the user is blocked.
 
-**Q:** Number of Islands uses 4-directional (horizontal + vertical) adjacency. What changes if the problem uses 8-directional adjacency (including diagonals)?
-
-**A:** With 4 directions, neighbors of (r, c) are: `(r+1, c), (r-1, c), (r, c+1), (r, c-1)`. With 8 directions, add the four diagonals: `(r+1, c+1), (r+1, c-1), (r-1, c+1), (r-1, c-1)`. The traversal code changes only in the list of directions. However, 8-directional adjacency creates fewer, larger islands (more cells connect), so the count typically decreases. Always clarify adjacency definition in Part 1 — don't assume.
-
----
-
-## Card 4 — Union-Find Alternative
-
-**Q:** Describe how Union-Find (Disjoint Set Union) solves Number of Islands in 3–4 sentences. When would you prefer it over DFS?
-
-**A:** Initialize each '1' cell as its own component. For each '1' cell, union it with any adjacent '1' cells. After processing the entire grid, count the number of distinct roots — each root represents one island. Prefer Union-Find when: (1) the grid changes dynamically (cells are added/removed one at a time and you need the island count after each change), or (2) you're processing a distributed/streaming grid where DFS over the whole grid isn't feasible. Union-Find with path compression and union by rank runs in near-O(1) per operation (amortized O(α(n)) where α is the inverse Ackermann function).
+Fixed window is still commonly used in production when the 2× burst is acceptable or when simplicity is valued (Nginx rate limiting uses fixed window by default).
 
 ---
 
-## Card 5 — O(m×n) Complexity Justification
+## Card 2 — Deque for Sliding Window Log
 
-**Q:** Why is the time complexity of Number of Islands O(m×n), and not O(m×n × something)?
+**Q:** Why is a deque (collections.deque) the right data structure for the sliding window log approach? What makes a regular list inadequate?
 
-**A:** Each cell is visited at most once. When DFS (or BFS) starts from a cell, it immediately marks that cell as visited. The outer loop checks every cell, but only calls DFS on unvisited '1' cells. Each DFS call does O(1) work per cell and then marks it — ensuring it's never called again. Across all islands, the total number of DFS recursive calls equals the total number of '1' cells, which is at most m×n. Total work: O(m×n) for the outer loop + O(m×n) for all DFS calls combined = O(m×n). There's no multiplier because the marking prevents re-entry.
+**A:** The sliding window log algorithm does two things with the timestamp collection:
+1. Appends new timestamps to the back (append).
+2. Removes expired timestamps from the front (popleft).
 
----
+Deque is O(1) for both append and popleft. These are the two operations we need.
 
-## Card 6 — Why Grid Problems Map to Graphs
+A regular list's `pop(0)` (remove from front) is O(n) because it shifts all remaining elements leftward. If a user has N timestamps in the window and they all expire at once, cleanup with a list is O(N²) over all the calls it takes to clear them. With a deque, the same cleanup is O(N) total — each timestamp is popped exactly once.
 
-**Q:** State the formal mapping from a grid problem to a graph. Why does recognizing this help in interviews?
-
-**A:** Formal mapping: nodes = grid cells, edges = pairs of cells satisfying the adjacency condition (4-directional here). A grid is just a structured graph where each node has at most 4 neighbors, and adjacency is implicit in the indices rather than in an explicit adjacency list. Recognizing this helps because: (1) you can immediately apply standard graph algorithms (BFS, DFS, Union-Find, shortest path) without reinventing them for the grid format; (2) you can discuss complexity using standard graph terms (O(V + E) = O(m×n + 4×m×n) = O(m×n)); (3) you demonstrate conceptual breadth to the interviewer, which scores GCA points.
-
----
-
-## Card 7 — Recursive vs Iterative DFS Tradeoff
-
-**Q:** What is the concrete downside of recursive DFS on a very large grid, and how do you fix it?
-
-**A:** Python's default recursion limit is 1,000 calls. An island that spans the entire grid could require m×n recursive calls — easily exceeding the limit and raising a `RecursionError`. Fix options: (1) **Iterative DFS with explicit stack:** Replace recursion with a `while stack:` loop using a list as a stack. Push starting cell, pop and process, push unvisited neighbors. (2) **BFS:** Same idea but with a deque. (3) **Increase Python's recursion limit** via `sys.setrecursionlimit()` — works but is hacky and may still crash on very large inputs. In an interview, mention the recursion limit risk and offer to show the iterative version if asked.
+In CPython, `collections.deque` is implemented as a doubly-linked list of fixed-size blocks, giving true O(1) head and tail operations.
 
 ---
 
-## Card 8 — Common Grid Edge Cases
+## Card 3 — Memory Cost of the Sliding Window Log
 
-**Q:** List the 6 edge cases every grid traversal solution must handle explicitly.
+**Q:** What is the memory cost of the sliding window log approach per user, and under what conditions is it too expensive?
+
+**A:** The sliding window log stores every timestamp for each user that falls within the current window. Memory per user = O(N) where N = max_requests.
+
+This is bounded by the rate limit: once a user hits max_requests, no more timestamps are appended (blocked requests are not recorded). So the worst case is exactly max_requests timestamps per user.
+
+When is it too expensive:
+- High rate limits with many users. Example: 10,000 requests/minute, 1M active users. Each user's deque holds up to 10,000 8-byte timestamps = 80KB. Total: 80KB × 1M = 80GB of RAM for timestamps alone.
+- Contrast: sliding window counter with 60 second-buckets = 60 × 8 bytes = 480 bytes per user. More tractable.
+- Real systems: Redis LRU eviction and persistence handle the memory problem. In-memory Python dicts do not scale to millions of users without sharding.
+
+---
+
+## Card 4 — Token Bucket vs Leaky Bucket vs Sliding Window
+
+**Q:** Name the three most common rate limiting algorithms and explain the core behavioral difference between token bucket and leaky bucket.
 
 **A:**
-1. **Empty grid:** `grid = []` — check `if not grid`.
-2. **Empty row:** `grid = [[]]` — check `if not grid[0]`.
-3. **Single cell, land:** `[['1']]` → 1 island.
-4. **Single cell, water:** `[['0']]` → 0 islands.
-5. **All land:** One giant island that touches all edges → 1 island.
-6. **All water:** No islands → 0.
-The base case of your DFS must handle both out-of-bounds (r < 0, r ≥ rows, c < 0, c ≥ cols) AND already-visited/water cells (`grid[r][c] != '1'`). Combining these into one condition is idiomatic: `if r < 0 or r >= rows or c < 0 or c >= cols or grid[r][c] != '1': return`.
+
+**Sliding window log / counter:** Counts requests in the last W seconds. What we implemented. Accurate and flexible.
+
+**Token bucket:** A bucket fills with tokens at a steady rate (e.g., 10 tokens/second, max 60 tokens). Each request consumes one token. If the bucket is empty, the request is blocked.
+- Key behavior: allows bursts up to bucket capacity, then enforces average rate.
+- A user who has been idle for a minute can immediately make 60 requests (if bucket_max = 60).
+- Used by: AWS API Gateway, Stripe.
+
+**Leaky bucket:** Requests enter a queue (the bucket) and are processed at a fixed output rate. If the queue is full, requests are dropped.
+- Key behavior: smooths out bursts — no matter how many requests arrive simultaneously, they exit at a steady rate.
+- Burst unfriendly: the output rate is constant regardless of arrival pattern.
+- Used by: network traffic shaping at the router level.
+
+Key difference: token bucket ALLOWS bursts (up to bucket capacity). Leaky bucket ABSORBS and SMOOTHS bursts — requests exit at a constant rate, not the arrival rate.
 
 ---
 
-## Card 9 — Toroidal Wrapping Concept
+## Card 5 — Distributed Rate Limiting with Redis
 
-**Q:** How do you modify a grid traversal to work on a toroidal grid (where edges wrap around)?
+**Q:** How would you implement a sliding window log rate limiter across multiple servers using Redis? Name the specific Redis commands.
 
-**A:** Replace hard boundary checks with modular arithmetic. Instead of returning early when `r < 0` or `r >= rows`, compute the neighbor row as `(r + dr) % rows` and the neighbor column as `(c + dc) % cols`. This ensures cells on the left edge are adjacent to cells on the right edge, and the top row is adjacent to the bottom row. You still need to mark cells as visited to avoid infinite loops. The tricky part: a toroidal grid has no "outside" — every cell has exactly 4 neighbors. This can cause a single island to contain all '1' cells even if they're not geographically adjacent in the non-toroidal sense.
+**A:** Use a Redis sorted set per user. Key = user_id, score = timestamp, member = a unique request ID (or the timestamp itself if uniqueness within the same second is not critical).
+
+Algorithm for `is_allowed(user_id, timestamp)`:
+```
+ZREMRANGEBYSCORE user_id -inf (timestamp - window_seconds)  # remove expired
+ZADD user_id timestamp timestamp                             # record this request  
+ZCARD user_id                                               # count in-window
+EXPIRE user_id window_seconds                               # auto-cleanup after inactivity
+```
+
+For atomicity, wrap in a Lua script (EVAL) rather than MULTI/EXEC, which has limitations in clustered Redis.
+
+If ZCARD > max_requests: remove the just-added entry (ZREM) and return False.
+
+Trade-off added by Redis: ~1ms network round-trip per request vs ~1µs in-memory. At 1M req/sec, unsharded Redis becomes the bottleneck. Mitigation: shard Redis by consistent hash of user_id, or use a local sliding window cache with periodic Redis sync (accepting small over-limit windows during sync delay).
 
 ---
 
-## Card 10 — "When to Use BFS vs DFS" Rule Summary
+## Card 6 — Two-Limit Composition: Check-Then-Record Pattern
 
-**Q:** Summarize the BFS-vs-DFS decision in a single interview-ready sentence for each of the 3 most common grid problem types.
+**Q:** You need to enforce BOTH a 10 req/sec limit AND a 100 req/min limit. Describe the race condition in naive composition and how to fix it.
+
+**A:** Naive composition (sequential):
+```python
+if per_second.is_allowed(user_id, ts) and per_minute.is_allowed(user_id, ts):
+    return True
+```
+
+Race condition: `per_second.is_allowed` returns True AND records the request before `per_minute.is_allowed` returns False. The request ends up recorded in the per-second limiter but not in the per-minute limiter — state is inconsistent.
+
+Fix — separate check and record steps:
+```python
+def check_only(limiter, user_id, ts):
+    window = limiter.user_windows[user_id]
+    while window and window[0] <= ts - limiter.window_seconds:
+        window.popleft()
+    return len(window) < limiter.max_requests
+
+def record(limiter, user_id, ts):
+    limiter.user_windows[user_id].append(ts)
+
+# Composite check:
+if check_only(per_second, user_id, ts) and check_only(per_minute, user_id, ts):
+    record(per_second, user_id, ts)
+    record(per_minute, user_id, ts)
+    return True
+return False
+```
+
+In practice: the minor inconsistency of the naive approach (one limiter records a request the other blocked) results in a slightly conservative rate limiter (users blocked slightly earlier), which is usually acceptable.
+
+---
+
+## Card 7 — Monotonic Timestamp Assumption
+
+**Q:** The sliding window log implementation assumes timestamps are monotonically non-decreasing per user. What breaks if this assumption is violated?
+
+**A:** The cleanup loop `while window and window[0] <= timestamp - window_seconds` relies on the deque being sorted. The loop pops from the front until it finds an entry inside the window, then stops — assuming everything behind that entry is also inside the window.
+
+What breaks with out-of-order timestamps:
+1. An expired timestamp could be buried in the middle of the deque. The cleanup loop would stop at the front entry (which is inside the window) without removing the buried expired entry.
+2. The window count would be inflated — old requests that should have expired remain in the deque, making users appear to have used more of their limit than they actually have.
+
+Fix: if out-of-order timestamps are possible, use a sorted structure (bisect.insort into a list, or a sortedcontainers.SortedList) instead of a deque. This increases per-request time from O(1) amortized to O(log N) per insert.
+
+In practice: within a single server, system time is monotonically non-decreasing (time.time() never goes backward on a normally-operating clock). Cross-server clock skew is the main risk for distributed systems.
+
+---
+
+## Card 8 — Memory-Constrained Approximate Counting
+
+**Q:** When the sliding window log is too memory-intensive, what are two memory-efficient approximate alternatives?
 
 **A:**
-- **Island counting (this lab):** Either works identically; use DFS for brevity, BFS if grid is very large or stack overflow is a concern.
-- **Shortest path in an unweighted grid (e.g., maze):** Always BFS — it finds the shortest path by level, which DFS cannot guarantee.
-- **Detecting whether a path exists:** DFS is typically simpler; BFS works too but is heavier. Use DFS unless you also need the shortest path.
-Bonus: For problems requiring you to process cells in a specific order (e.g., by distance from source), BFS with a queue naturally gives you that ordering for free.
+
+**Sliding window counter (second-granularity buckets):**
+Store one count per second-bucket for the window duration. For a 60-second window: 60 integers × 8 bytes = 480 bytes per user. When a request arrives at second T, increment the bucket for T. Expire buckets older than T - W. To get the window count, sum all non-expired buckets.
+
+Accuracy: exact within 1-second granularity (requests within the same second are undifferentiated). For most rate limiters, 1-second precision is sufficient.
+
+**Count-Min Sketch:**
+A probabilistic data structure using multiple hash functions and a 2D array of counters. Answers "how many times has this user_id appeared?" in O(1) time and O(width × depth) space, with a bounded probability of over-counting (never under-counting — false positives only, not false negatives).
+
+Use case: DDoS protection across millions of IPs where even O(1) per user is too much total memory. Trade-off: occasional legitimate users are blocked (false positive rate depends on sketch parameters).
+
+For most interview answers: sliding window counter with second-granularity is the correct constrained-memory choice.
 
 ---
 
-*10 cards · Google SWE Lab 02 · Review 24–48 hrs after completing workbook*
+## Card 9 — Rate Limiters in Real Systems
+
+**Q:** Name three real systems that use rate limiting and describe what each protects and which algorithm they use.
+
+**A:**
+
+**Nginx (ngx_http_limit_req_module):**
+Protects web servers from request floods and brute-force login attempts. Uses a leaky bucket variant: requests are admitted at a steady rate; excess requests return 503. Config: `limit_req_zone $binary_remote_addr zone=one:10m rate=10r/s` limits per IP to 10 requests/second with a 10MB shared memory zone.
+
+**Stripe API:**
+Protects the payment processing API from runaway clients (SDK bugs, loops). Uses a token bucket per API key: an initial burst allowance that refills at a steady rate. Clients exceeding the limit receive HTTP 429 with a `Retry-After` header indicating when to retry. Implemented in Redis with Lua scripts for atomicity.
+
+**AWS API Gateway:**
+Per-stage and per-route throttling. Token bucket: burst limit (e.g., 5,000 requests — the bucket size) and rate limit (e.g., 10,000 requests/second — the refill rate). Exceeding either returns HTTP 429. Configured in the AWS console or via CloudFormation.
+
+Common thread: all three use rate limiting as a denial-of-service mitigation, not as a business logic constraint. The algorithm choice (leaky vs token bucket vs sliding window) reflects the specific burst tolerance of the service.
+
+---
+
+## Card 10 — GCA Narration: State Tradeoffs Before Choosing
+
+**Q:** When an interviewer gives you a design-a-DS problem with multiple valid approaches, what is the GCA-optimal narration structure before you start coding?
+
+**A:** Use a three-part structure: (1) Name the approaches. (2) Compare them on the dimensions that matter for this specific problem. (3) Commit with rationale.
+
+Example for Rate Limiter:
+
+"I can see three approaches. Fixed window is O(1) time and O(1) space per user, but it allows up to 2× the limit at window boundaries — not acceptable for strict enforcement. Sliding window log is exact but uses O(N) memory per user and O(N) cleanup time in the worst case. Sliding window counter is O(1) time, O(W) memory per user, and approximately accurate.
+
+Given that the problem says 'millions of requests per second' and 'optimize for speed,' I'll start with the sliding window log because it is exact and easy to reason about — then note that for production I would switch to the sliding window counter for memory efficiency. Implementing the log approach now."
+
+This narration earns GCA points because it demonstrates: awareness of the full problem space, ability to reason about tradeoffs across time and memory, and commitment with explicit rationale rather than defaulting to the first approach that came to mind.
+
+---
+
+*10 cards · Google SWE Lab 02 · Rate Limiter Sliding Window Design · Review 24–48 hrs after completing workbook*

@@ -1,43 +1,42 @@
-# Google SWE Lab 02 — Graph/Grid Traversal
-## Number of Islands (Tier 2 — Completion)
+# Google SWE Lab 02 — Design-a-Data-Structure
+## Rate Limiter — Sliding Window Design (Tier 2 — Completion)
 
-**Tier:** 2 (Completion) — Structure and contract are provided. The key algorithmic choices — traversal method, visited-marking strategy, neighbor logic — are left blank for you to fill in. You cannot pass this lab by copying; you have to supply the substance.
+**Tier:** 2 (Completion) — The structure, comparison table, and model solution are provided. The key choices — which approach to use and why, what data structure tracks per-user requests, how to implement the sliding window logic — are left blank for you to fill in. You cannot pass this lab by copying; you have to supply the substance.
 
-**Before you start:** Set a timer for 50 minutes. Write all code in a plain text area. No IDE. Narrate out loud.
+**Before you start:** Set a timer for 45 minutes. Write all code in a plain text area. No IDE. Narrate out loud.
 
-**Prerequisite:** You should have completed Lab 01 (Meeting Rooms) before this lab. The GCA narration habits from Lab 01 apply here too.
+**Prerequisite:** You should have completed Lab 01 (LRU Cache) before this lab. The modeling-before-coding habit from Lab 01 applies here too. This lab adds a new skill: comparing multiple approaches and choosing one with explicit reasoning.
 
 ---
 
 ## Milestones
 
-- [ ] M1 · Clarified — asked at least 2 substantive questions before writing any code
-- [ ] M2 · Approached — stated whether you're using BFS or DFS and WHY (the choice is yours to make)
-- [ ] M3 · Coded — filled in all 4 TODO blocks in the starter code with working logic
-- [ ] M4 · Tested — walked through at least 3 test cases out loud, including at least 1 edge case **(hard gate)**
-- [ ] M5 · Optimized — stated time complexity O(m×n), discussed Union-Find as a stretch alternative
-- [ ] M6 · Ready — self-graded ≥ 24/35 on two separate attempts
+- [ ] M1 · Clarified — asked about window type (fixed vs sliding), per-user vs global, thread safety, memory budget
+- [ ] M2 · Compared — named at least 2 approaches (fixed window, sliding window log, sliding window counter) with tradeoffs
+- [ ] M3 · Chosen — selected sliding window counter or log with rationale
+- [ ] M4 · Coded — `is_allowed(user_id, timestamp)` working with all 5 edge cases
+- [ ] M5 · Extended — described how to support two simultaneous rate limits (e.g., 10/sec AND 100/min)
+- [ ] M6 · Ready — self-graded ≥ 28/35 on two separate attempts
 
 ---
 
 ## Part 0 — Forethought
 
-**Goal:** Count the number of islands in a grid using graph traversal, while narrating clearly for GCA scoring. Make an explicit choice between BFS and DFS and defend it.
+**Goal:** Design a rate limiter that correctly enforces N requests per W seconds per user. Understand three distinct approaches, choose one explicitly, implement it, and reason about its limits. The interviewer is testing whether you can model a time-based system, not whether you know a formula.
 
-**Target time:** 50 minutes. Suggested breakdown:
-- 5 min — clarifying questions
-- 8 min — approach (BFS vs DFS decision)
-- 3 min — contract review
-- 20 min — fill in the TODO blocks
-- 7 min — test cases out loud (M4 gate)
-- 5 min — complexity and Union-Find mention
-- 7 min — curveballs
+**Target time:** 45 minutes total. Suggested breakdown:
+- 5 min — clarifying questions (Part 1)
+- 8 min — three-approach comparison (Part 2)
+- 3 min — contract (Part 3)
+- 15 min — implementation + tests (Part 4)
+- 7 min — system reasoning (Part 5)
+- 7 min — curveballs (Part 6)
 
-**Your BFS/DFS decision (fill in before starting Part 4):**
+**Your approach choice (fill in before Part 4):**
 
-I will use: [ ] BFS [ ] DFS
+I will implement: [ ] Fixed window  [ ] Sliding window log  [ ] Sliding window counter
 
-My reason (write one sentence): [blank — you must state this before coding]
+My reason (one sentence): [blank — commit before coding]
 
 **Confidence rating before starting (circle one):** 1 — 2 — 3 — 4 — 5
 
@@ -49,247 +48,342 @@ My reason (write one sentence): [blank — you must state this before coding]
 
 *The scenario: You're in a Google phone screen, plain Google Doc. The interviewer says:*
 
-> "Given an m×n grid of '0's (water) and '1's (land), count the number of islands. An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically."
+> "Design a rate limiter that allows at most N requests per window of W seconds per user_id. If the limit is exceeded, return False. Otherwise record the request and return True. It will be called millions of times per second. Optimize for speed."
 
-*Ask your questions before writing any code.*
+*Ask your questions before designing.*
 
-**Q1: What type are the grid values — characters ('0'/'1') or integers (0/1)?**
-Assumption: [blank — make a choice and state it]
+**Q1: Is the window fixed (e.g., 12:00:00–12:00:59) or sliding (e.g., "the last 60 seconds from now")?**
+Assumption: [blank — the answer changes your entire approach. Sliding window is more accurate but harder to implement.]
 
-**Q2: Can the grid be empty, or have zero rows/columns?**
-Assumption: [blank]
+**Q2: Is rate limiting per user, per IP, or global?**
+Assumption: [blank — per user_id, as stated. But confirm: is user_id a string or integer?]
 
-**Q3: Is diagonal adjacency considered? (i.e., are cells touching at corners part of the same island?)**
-Assumption: [blank — the problem says horizontal/vertical, but confirm you heard it]
+**Q3: Is thread safety required?**
+Assumption: [blank — in a multi-threaded server, concurrent requests for the same user_id could race on shared state.]
 
-**Q4: Is the grid modified in place allowed, or must I preserve the input?**
-Assumption: [blank — this determines whether you mark cells in-place or use a separate visited set]
+**Q4: What is the memory budget per user?**
+Assumption: [blank — this determines whether you can store every timestamp (log approach) or must use approximate counting.]
 
-**Q5: What is the expected grid size? Does it affect my approach choice (BFS vs DFS stack depth)?**
-Assumption: [blank]
+**Q5: Are timestamps guaranteed to be monotonically increasing per user?**
+Assumption: [blank — if yes, you can use deque and only pop from the front. If not, you need a sorted structure.]
 
-**Checkpoint M1:** Check the box above if you asked at least 2 questions before proceeding to Part 2.
+**Q6: What happens to users who have no requests in the window — do they expire from memory?**
+Assumption: [blank — relevant for memory management in long-running systems. For this lab, assume inactive users stay in the dict.]
+
+**Checkpoint M1:** Check the box above if you asked at least 3 of these before proceeding to Part 2.
 
 ---
 
-## Part 2 — Decomposition
+## Part 2 — Decomposition: Three Approaches
 
-*Fill in the blanks. This is Tier 2 — you supply the substance.*
+*This is Tier 2 — fill in the blank cells in the comparison table. Understanding all three approaches is the learning goal.*
 
-### The Core Insight
+### The Core Problem
 
-A grid can be modeled as a graph where:
-- Each cell is a node
-- Two cells are connected by an edge if they are [blank — what relationship must they have?]
+A rate limiter answers the question: "How many of this user's requests have arrived in the last W seconds?" and blocks the request if the count exceeds N.
 
-Counting islands becomes: count the number of [blank — what graph concept?] in this graph.
+The challenge: you need this count in O(1) or O(log N) per request, across potentially millions of users.
 
-### Algorithm Sketch
+### Approach Comparison Table
 
-1. Iterate over every cell in the grid.
-2. When we find a cell containing [blank], we've found the start of a new island.
-3. We increment our counter and immediately [blank] from that cell — visiting and marking every connected land cell.
-4. After the traversal, all cells of that island are [blank — what state are they in?], so we won't count them again.
-5. We continue until every cell has been visited.
+Fill in the cells marked [blank]:
 
-### BFS vs DFS — Your Choice
+| Approach | Memory per user | Accuracy | Time per request | When to use |
+|---|---|---|---|---|
+| **Fixed window** | O(1) — one counter + one window-start timestamp | Can allow up to 2× the limit at window boundaries (burst problem) | O(1) | [blank — when is 2× burst acceptable?] |
+| **Sliding window log** | O(N) per user — stores every timestamp in the window | [blank — perfect or approximate?] | O(N) per request (cleanup pass) | [blank — when is exact correctness worth the memory cost?] |
+| **Sliding window counter** | O(W) per user — stores one counter per second-bucket in the window | [blank — exact or approximate? Why?] | O(1) amortized | [blank — best general-purpose choice? Why?] |
 
-**Arguments for DFS:**
-- Simpler recursive implementation (fewer lines of code)
-- Stack depth is bounded by O(m×n) in worst case — could cause stack overflow on very large grids
-- Easier to write in a Google Doc quickly
+*Model answers (read after filling in your own):*
 
-**Arguments for BFS:**
-- Iterative (uses an explicit queue), no risk of stack overflow
-- More natural for "spreading from a point" problems
-- Slightly more code in a plain doc
+- Fixed window / When to use: When requests are bursty in a pattern that aligns with your window boundaries — e.g., batch jobs that run at the top of the minute. Also acceptable when a 2× burst at the boundary is tolerable (many rate limiters in practice use this).
+- Sliding window log / Accuracy: Perfect — stores every timestamp so the count is exact for any window position. No approximation error.
+- Sliding window log / When to use: When exact accuracy is critical and N is small (e.g., N ≤ 1000 requests/min for a financial API where exact enforcement matters more than memory).
+- Sliding window counter / Accuracy: Approximate — uses a weighted average of two fixed windows to estimate the count over the sliding window. Error is small in practice (< 1%) but technically not exact.
+- Sliding window counter / When to use: Best default for most systems. O(1) time, O(W) memory per user (bounded by window size, not request count), and the approximation error is negligible for most rate-limiting use cases.
 
-**Your choice and reasoning (fill in):** [blank — commit to one and defend it]
+### The Sliding Window Log Approach (Used in Part 4)
 
-**Checkpoint M2:** Check the box above after committing to a traversal method and writing your reason.
+**Data structure per user:** a deque of timestamps, in ascending order.
+
+**Algorithm for `is_allowed(user_id, timestamp)`:**
+1. Get or create the deque for this user.
+2. Remove all timestamps from the front of the deque that are older than `timestamp - window_seconds` (they are outside the window).
+3. If `len(deque) < max_requests`: append `timestamp` and return True.
+4. Else: the window is full. Return False (do NOT append).
+
+**Why deque and not a list?**
+[blank — fill in your answer before reading below]
+
+*Model answer:* Deque gives O(1) append to the back and O(1) pop from the front. A list's `pop(0)` is O(N) because it shifts all elements. The cleanup step in step 2 pops from the front, so a list would make cleanup O(N²) in the worst case.
+
+**Why timestamps are stored (not just a counter)?**
+[blank — fill in your answer]
+
+*Model answer:* A counter alone cannot tell you which requests are still inside the window. When W seconds pass, you need to remove requests that are now outside the window. Without timestamps, you cannot identify which requests to remove.
+
+**Checkpoint M2:** Check the box above if you filled in all table cells and answered the two sub-questions above.
 
 ---
 
 ## Part 3 — Contract
 
-*This is provided for you (Tier 2 perk). Review it before coding.*
+*The class interface you are implementing:*
 
-**Function signature:**
+```python
+class RateLimiter:
+    def __init__(self, max_requests: int, window_seconds: int):
+        # [blank — what data structure do you use to track per-user requests?]
+        # Hint: you need one structure per user; you do not know users in advance.
+        pass
+    
+    def is_allowed(self, user_id: str, timestamp: int) -> bool:
+        # timestamp is an integer (seconds, monotonically increasing per user)
+        # Returns True if the request is within the rate limit and records it.
+        # Returns False if the limit is exceeded (request is NOT recorded).
+        # [blank — implement sliding window logic here]
+        pass
 ```
-num_islands(grid: List[List[str]]) -> int
-```
 
-**Input:**
-- `grid`: An m×n 2D list of strings, where each cell is either '1' (land) or '0' (water).
-- Dimensions: 1 ≤ m, n ≤ 300.
-- Grid may be empty (return 0) or have no islands (return 0).
+**Preconditions:**
+- `max_requests` ≥ 1. `window_seconds` ≥ 1.
+- `timestamp` values for a given `user_id` are monotonically non-decreasing.
+- `user_id` is a string (or any hashable type).
 
-**Output:**
-- A single integer: the number of islands.
+**Postconditions:**
+- If `is_allowed` returns True: the request at `timestamp` has been recorded and counts toward future rate limit checks.
+- If `is_allowed` returns False: the request was NOT recorded. The state is unchanged.
+- Calls across different `user_id` values are independent.
 
-**Edge cases:**
-- Empty grid `[]` or `[[]]` → return `0`
-- Grid of all water → return `0`
-- Grid of all land (one giant island) → return `1`
-- Single cell `[['1']]` → return `1`
-- Single cell `[['0']]` → return `0`
-- Grid with multiple disconnected 1-cell islands → return count of those cells
-
-**Modification note:** In-place marking (changing '1' → '0' or '2' during traversal) is permitted and is the standard approach for this problem in interviews.
+**Edge cases you must handle:**
+- First request ever from a user → always True (window is empty).
+- Two requests at exactly the same timestamp → both count separately.
+- Exactly `max_requests` in the window → allow the next one (the window is not yet full).
+- `max_requests + 1` in the window → block the next one.
+- A burst of requests all at timestamp 0 followed by requests at timestamp W → requests at timestamp W are inside a fresh window (the old ones have expired).
 
 ---
 
 ## Part 4 — Code
 
-*Fill in every TODO block. Do not skip any. Each blank represents a genuine algorithmic decision you must make.*
+*Fill in the blank implementation below. Write the complete class. Do not skip any edge case.*
+
+### Your Implementation
 
 ```python
-def num_islands(grid):
-    if not grid or not grid[0]:
-        return 0
+from collections import defaultdict, deque
+
+class RateLimiter:
+    def __init__(self, max_requests: int, window_seconds: int):
+        # [blank — initialize your per-user tracking structure]
+        pass
     
-    rows, cols = len(grid), len(grid[0])
-    count = 0
-    
-    def dfs(r, c):
-        # TODO: base case — what stops the recursion?
-        # (Think: when should we return immediately without doing anything?)
-        # [blank — fill in the base case condition]
-        
-        # TODO: mark visited — how do you avoid revisiting this cell?
-        # (Think: what value do you write back to grid[r][c]? Why?)
-        # [blank — fill in the marking logic]
-        
-        # TODO: explore neighbors — which 4 directions do you recurse into?
-        # (Think: up/down/left/right as (r±1, c) and (r, c±1))
-        # [blank — fill in 4 recursive calls]
-    
-    for r in range(rows):
-        for c in range(cols):
-            if grid[r][c] == '1':
-                # TODO: what do you do when you find an island cell?
-                # (Think: two things happen here)
-                # [blank — fill in]
-    
-    return count
+    def is_allowed(self, user_id: str, timestamp: int) -> bool:
+        # [blank — implement the sliding window log algorithm]
+        # Step 1: Get the deque for this user
+        # Step 2: Remove expired timestamps (older than timestamp - window_seconds)
+        # Step 3: Check if under limit; if yes, record and return True; else return False
+        pass
 ```
 
-### Your Completed Implementation
-
-*Write the full, filled-in version here. This is what you'd have in the Google Doc.*
+### Model Solution (Read AFTER your implementation)
 
 ```python
-# YOUR COMPLETE IMPLEMENTATION
+from collections import defaultdict, deque
 
-def num_islands(grid):
-    # [blank — write the complete filled-in version here]
-    pass
+class RateLimiter:
+    def __init__(self, max_requests: int, window_seconds: int):
+        self.max_requests = max_requests
+        self.window_seconds = window_seconds
+        self.user_windows = defaultdict(deque)  # user_id -> deque of timestamps
+    
+    def is_allowed(self, user_id: str, timestamp: int) -> bool:
+        window = self.user_windows[user_id]
+        
+        # Remove timestamps outside the sliding window
+        # A timestamp t is outside the window if t <= timestamp - window_seconds
+        # (i.e., it happened more than window_seconds seconds before now)
+        while window and window[0] <= timestamp - self.window_seconds:
+            window.popleft()
+        
+        if len(window) < self.max_requests:
+            window.append(timestamp)
+            return True
+        return False
 ```
+
+**Annotations:**
+
+- `defaultdict(deque)` — creates a new empty deque automatically for any new user_id. Avoids an `if user_id not in self.user_windows` check.
+- `window[0] <= timestamp - self.window_seconds` — this is the boundary condition. If the oldest timestamp is AT MOST `window_seconds` seconds before now, it is outside the window. If it is strictly LESS than `window_seconds` ago, it is also outside. The `<=` handles the boundary correctly: a request at `t - W` is exactly at the boundary and counts as expired.
+- The while loop pops from the front until all expired entries are removed. Because timestamps are monotonically increasing, once `window[0]` is inside the window, all subsequent entries are too.
+- We check `len(window) < self.max_requests` AFTER cleanup, so the count reflects only valid in-window requests.
+- False case does NOT append — the blocked request is not recorded.
 
 ---
 
-### Narration Practice — Test Cases Out Loud
+### Test Cases (Trace Through Manually)
 
-**Test 1:** Empty grid `[]` → Expected: `0`
-Trace: [blank — where in your code does this get caught?]
+**Test 1:** Basic allow/block
+```
+rl = RateLimiter(max_requests=2, window_seconds=10)
+rl.is_allowed("user1", 1)   # True  — window: [1]
+rl.is_allowed("user1", 2)   # True  — window: [1, 2]
+rl.is_allowed("user1", 3)   # False — window: [1, 2], count=2, blocked
+rl.is_allowed("user1", 11)  # True  — timestamp 1 expires (1 <= 11-10=1); window: [2, 11]
+rl.is_allowed("user1", 12)  # False — window: [2, 11], count=2 (2 > 12-10=2 is False, so 2 stays); blocked
+```
 
-**Test 2:** 
-```
-[['1','1','1'],
- ['1','1','1'],
- ['1','1','1']]
-```
-Expected: `1` (one giant island)
-Trace: [blank — trace through the outer loop and show why count reaches exactly 1]
+Wait — trace more carefully for Test 1 step 5:
+- timestamp=12, window_seconds=10. Expiry threshold = 12 - 10 = 2. window[0]=2. Is 2 <= 2? Yes — pop. window: [11]. Is window empty? Yes, stop. len(window)=1 < 2. Append 12. Return True. window: [11, 12].
 
-**Test 3:**
+Corrected Test 1:
 ```
-[['1','1','0','0','0'],
- ['1','1','0','0','0'],
- ['0','0','1','0','0'],
- ['0','0','0','1','1']]
+rl.is_allowed("user1", 12)  # True  — timestamp 2 expires; window: [11, 12]
+rl.is_allowed("user1", 13)  # False — window: [11, 12], count=2, blocked
 ```
-Expected: `3`
-Trace: [blank — identify the 3 islands and show when count increments]
 
-**Test 4:** `[['0','0','0'],['0','0','0']]` → Expected: `0` (all water)
+Trace: [blank — work through these step by step]
+
+**Test 2:** Different users are independent
+```
+rl = RateLimiter(max_requests=1, window_seconds=5)
+rl.is_allowed("alice", 1)   # True
+rl.is_allowed("bob", 1)     # True  — bob's window is separate
+rl.is_allowed("alice", 2)   # False — alice's window: [1], count=1
+rl.is_allowed("bob", 2)     # False — bob's window: [1], count=1
+```
+
 Trace: [blank]
 
-**Test 5:** Single-cell grid `[['1']]` → Expected: `1`
+**Test 3:** Boundary — same timestamp
+```
+rl = RateLimiter(max_requests=3, window_seconds=10)
+rl.is_allowed("user1", 5)   # True  — window: [5]
+rl.is_allowed("user1", 5)   # True  — window: [5, 5]
+rl.is_allowed("user1", 5)   # True  — window: [5, 5, 5]
+rl.is_allowed("user1", 5)   # False — count=3, blocked
+```
+
 Trace: [blank]
 
-**Checkpoint M4 (hard gate):** Check the box only after narrating at least 3 of these test cases out loud. Do not proceed to Part 5 until M4 is checked.
+**Test 4:** Window expiry — full fresh window
+```
+rl = RateLimiter(max_requests=2, window_seconds=60)
+rl.is_allowed("user1", 0)   # True  — window: [0]
+rl.is_allowed("user1", 30)  # True  — window: [0, 30]
+rl.is_allowed("user1", 59)  # False — both 0 and 30 are still inside (0 > 59-60=-1)
+rl.is_allowed("user1", 60)  # True  — 0 expires (0 <= 60-60=0); window: [30, 60]
+```
+
+Trace: [blank]
+
+**Test 5:** First request from a new user
+```
+rl = RateLimiter(max_requests=5, window_seconds=60)
+rl.is_allowed("newuser", 100)   # True — empty deque created automatically
+rl.is_allowed("newuser", 200)   # True
+```
+
+Trace: [blank]
+
+**Checkpoint M4:** Check the box at the top when you have traced all 5 tests and understand each step.
 
 ---
 
-## Part 5 — System / Reasoning Write-Up
+## Part 5 — System Reasoning
 
-*This section is mostly blank (Tier 2). Answer in your own words.*
+*Answer these in writing before looking at the model answers.*
 
-**Q1: What is the time complexity of your solution? Justify it.**
+**Q1: What is the time complexity of `is_allowed` and why is it O(1) amortized?**
 [blank]
 
-*Hint: You visit each cell at most once (marked as visited after first visit). The total number of cells is m×n. Each dfs call is O(1) amortized across all calls.*
+*Model answer:* In the worst case, a single call to `is_allowed` pops O(N) entries from the deque (if N entries just expired). But each timestamp is appended once and removed at most once. Across all calls for a user, total pops ≤ total appends. Amortized over all calls: O(1) per call. In the common case (few expirations per call), it is O(1) in the actual sense too.
 
-**Q2: What is the space complexity? Where does the space go?**
+**Q2: What is the space complexity per user?**
 [blank]
 
-*Hint: Consider two sources — the recursion stack and the in-place marking (no extra array). What is the worst-case recursion depth?*
+*Model answer:* O(N) per user, where N = max_requests. The deque holds at most `max_requests` timestamps (once the limit is reached, new blocked requests are not appended). Total space across all users: O(users × max_requests).
 
-**Q3: Why does marking cells as visited (in-place or via a set) prevent double-counting?**
+**Q3: Why does the fixed window approach allow up to 2× the rate limit at a boundary?**
 [blank]
 
-**Q4: If you used in-place marking, you modified the input grid. Is this always acceptable? When might you NOT want to modify the input?**
+*Model answer:* Consider max_requests=100, window_seconds=60, with a fixed window per minute. A user sends 100 requests at second 59 (end of window 1). The window resets at second 60. They send 100 more requests at second 61 (start of window 2). Both sets are within their respective fixed windows. But in the span of 3 seconds (59–61), the user made 200 requests — twice the limit. A sliding window would catch this; a fixed window does not.
+
+**Q4: How does your sliding window log handle the case where `max_requests` changes dynamically?**
 [blank]
 
-**Q5: Describe Union-Find as an alternative approach in 3–4 sentences. When would you prefer it over DFS/BFS?**
+*Model answer:* It handles it transparently. The deque stores raw timestamps; the limit is read from `self.max_requests` at call time. Changing `self.max_requests` between calls immediately takes effect on the next `is_allowed` check without any state migration. Fixed-window counters must be reset when the limit changes, since the counter itself encodes the limit.
+
+**Q5: If this rate limiter runs on a single machine, what is the failure mode when the machine crashes?**
 [blank]
 
-*Hint: Union-Find treats each '1' cell as its own component initially, then unions adjacent '1' cells. The number of components after all unions = the number of islands. Preferred when you need to answer dynamic queries (e.g., add water/land cells one by one and count islands at each step).*
+*Model answer:* All in-memory state (the `user_windows` dict) is lost. After restart, every user's request history is empty. Users who were rate-limited just before the crash can immediately make max_requests new requests. For most rate limiters, this is an acceptable trade-off — brief leniency after a restart. For strict enforcement, persist state to Redis or another external store before responding.
+
+**Checkpoint M5 (Extended):** Describe how you would support TWO rate limits simultaneously: 10 requests per second AND 100 requests per minute.
+
+[blank — your design]
+
+*Model answer:* Compose two `RateLimiter` instances:
+```python
+class MultiRateLimiter:
+    def __init__(self):
+        self.per_second = RateLimiter(10, 1)
+        self.per_minute = RateLimiter(100, 60)
+    
+    def is_allowed(self, user_id: str, timestamp: int) -> bool:
+        # Both limits must pass; neither records if the other blocks
+        # Problem: if per_second passes but per_minute blocks, per_second has already recorded
+        # Solution: check both before recording either
+        ...
+```
+
+The naive composition has a race condition: `per_second.is_allowed` may record the request before `per_minute.is_allowed` rejects it. Fix: separate the "check" and "record" steps, or always check both before recording either. Alternatively, accept the small inconsistency (one limiter may have recorded a request that the other rejected) — in practice, this is tolerable since the request is ultimately blocked.
 
 ---
 
-## Part 6 — Interview Simulation
+## Part 6 — Curveballs
 
-### 90-Second Narration
+### Curveball 1 — Memory Constrained
 
-*Set a timer. Without notes, narrate your complete approach — clarification, decomposition, algorithm choice, complexity — in 90 seconds.*
-
-[blank — your narration notes or reflection afterward]
-
----
-
-### Curveball 1 — Largest Island Area
-
-**Interviewer:** "Now, instead of counting the number of islands, find the area of the largest island."
-
-**Your answer:** [blank]
-
-*Things to address:* How does your traversal change? You'd accumulate a count during each DFS/BFS (each cell contributes 1 to the area). Track the max across all starting cells. Your base case remains the same. Time complexity stays O(m×n).
-
----
-
-### Curveball 2 — Toroidal Grid (Wrapping Edges)
-
-**Interviewer:** "What if the grid wraps around — the left edge connects to the right edge, and the top edge connects to the bottom edge? (Like a torus or a globe.)"
-
-**Your answer:** [blank]
-
-*Things to address:* Your neighbor computation needs to use modular arithmetic: up = `(r - 1) % rows`, down = `(r + 1) % rows`, left = `(c - 1) % cols`, right = `(c + 1) % cols`. The rest of the algorithm is identical. This can create fewer, larger islands since cells across opposite edges now touch. The time complexity stays O(m×n).
-
----
-
-### Curveball 3 — Scaling to 1 Million Rows
-
-**Interviewer:** "What if the grid is 1,000,000 rows × 1,000,000 columns? What breaks?"
+**Interviewer:** "Memory is constrained — you have 1KB per user. With a 60-second window and up to 1000 requests, the deque is too large. What do you do?"
 
 **Your answer:** [blank]
 
 *Things to address:*
-- Recursive DFS will overflow the call stack for a 1-trillion-cell grid with one giant island (stack depth = number of cells).
-- Solution: switch to iterative DFS (explicit stack) or BFS (explicit queue). Either eliminates the recursion depth limit.
-- Memory: storing the grid itself is O(m×n) = O(10^12) — 1 terabyte if each cell is 1 byte. You'd need a sparse representation or streaming approach.
-- Parallelism: break the grid into tiles, process each tile on a separate machine, then resolve border conflicts using Union-Find on the boundaries.
+- 1000 timestamps × 8 bytes each = 8KB per user. Over budget.
+- Option 1: Fixed window counter — O(1) per user, but 2× burst problem. Acceptable if the use case tolerates it.
+- Option 2: Sliding window counter — store one counter per second bucket. 60 buckets × 8 bytes = 480 bytes per user. Within budget and more accurate than fixed window.
+- Option 3: Approximate counting (Count-Min Sketch) — probabilistic, sublinear memory, some false positives (may rate-limit legitimate users). Use for extremely tight memory budgets.
+- The right answer here: sliding window counter with second-granularity buckets. Approximately accurate, memory-bounded at O(W) not O(N).
+
+---
+
+### Curveball 2 — Distributed Rate Limiting
+
+**Interviewer:** "Multiple servers run this rate limiter. A user's requests could hit any server. How do you make it distributed?"
+
+**Your answer:** [blank]
+
+*Things to address:*
+- The in-memory approach breaks in distributed setting: each server has its own `user_windows` dict. A user can make max_requests on each server without triggering any single limiter.
+- Solution: use Redis as shared state. Redis supports atomic increment (INCR), expiring keys (EXPIRE), and sorted sets (ZADD/ZRANGEBYSCORE for the sliding window log).
+- Sliding window log in Redis: use a sorted set (key = user_id, score = timestamp). On each request: ZADD to add the timestamp, ZREMRANGEBYSCORE to remove expired entries, ZCARD to count — all in one Lua script for atomicity.
+- Trade-off: Redis adds network latency (~1ms) per rate limit check vs in-memory (~1µs). At millions of requests/second, Redis becomes a bottleneck. Mitigation: shard Redis by user_id, or use a local cache with periodic sync to Redis.
+
+---
+
+### Curveball 3 — Two Simultaneous Limits
+
+**Interviewer:** "You need to support TWO limits: 10 req/sec AND 100 req/min. How do you extend the class?"
+
+**Your answer:** [blank]
+
+*Things to address:*
+- Simplest: compose two `RateLimiter` instances (per-second and per-minute). A request is allowed only if BOTH return True.
+- Problem: if you call `is_allowed` on each sequentially, the first may record the request before the second blocks it.
+- Fix: in `is_allowed`, first do a "check only" pass on both limiters, then "record" on both if both pass. This requires splitting the check and record steps.
+- Alternative: accept the minor inconsistency and accept that one limiter may occasionally record a blocked request. In practice, this leads to a slightly conservative limiter (users may be blocked slightly earlier than the strict limit), which is usually acceptable.
 
 ---
 
@@ -299,13 +393,13 @@ Trace: [blank]
 
 | Dimension | 5 — Strong | 3 — Adequate | 1 — Weak | Your Score |
 |---|---|---|---|---|
-| Communication / think-aloud | Explicitly stated BFS vs DFS choice with reasoning before coding; narrated base case, marking strategy, and neighbor logic out loud | Made the BFS/DFS choice but didn't explain why; coded silently after | No BFS/DFS explanation; went straight to code; interviewer can't follow the reasoning | __ /5 |
-| Problem solving | Mapped grid to graph problem explicitly; named traversal approach; mentioned Union-Find as alternative in Part 5 | Solved correctly but didn't articulate the graph abstraction | Got stuck or produced incorrect solution; didn't recognize this as a graph traversal problem | __ /5 |
-| Correctness | All 5 test cases pass; handles empty grid, all-land, all-water, multi-island, single-cell | Core logic correct; 1 edge case missed (e.g., empty grid check missing) | Fails on basic cases; visited marking buggy causing infinite loop or double-counting | __ /5 |
-| Code quality | All 4 TODOs filled with clear, named logic; base case covers both out-of-bounds AND water cells; no redundant checks | All TODOs filled but logic slightly convoluted or redundant | One or more TODOs missing or incorrect; code would not run without fixes | __ /5 |
-| Testing and edge cases | Traced all 5 test cases out loud, including all-land and multi-island; checked M4 gate | Traced 2–3 cases, skipped at least one edge case | Declared done after coding; no tracing | __ /5 |
-| Complexity analysis | Correct O(m×n) time and O(m×n) space (for recursion stack); compared to Union-Find; mentioned stack overflow risk for very large grids | Stated O(m×n) but didn't break down where the space comes from | No complexity stated or wrong (e.g., said O(n²) without defining n) | __ /5 |
-| Time management | Completed all TODOs and tested in < 35 min; curveballs in remaining time | Finished TODOs but rushed on testing; ran out of time for curveballs | Did not complete all TODOs within time | __ /5 |
+| Communication / think-aloud | Named all three approaches before coding; stated the choice and reason; narrated the cleanup loop logic out loud | Coded after naming one approach; some narration | Jumped straight to code; no comparison; interviewer cannot follow reasoning | __ /5 |
+| Design / approach comparison | Filled in all table cells correctly; explained why deque beats list for cleanup; explained sliding window log vs counter tradeoff | Filled in most cells; one major gap (e.g., why deque) | Could not compare approaches; did not know difference between fixed and sliding window | __ /5 |
+| Correctness | All 5 test cases pass; correct boundary condition (<=, not <) in cleanup; blocked requests not recorded | 3-4 tests pass; off-by-one error in boundary condition or blocks-record-anyway bug | Fails basic allow/block test; cleanup loop incorrect | __ /5 |
+| System reasoning (Part 5) | Answered all 5 questions correctly; correctly explained amortized O(1); described 2× burst in fixed window | Answered 3-4 questions; one wrong or missing (e.g., fixed window burst not explained correctly) | Could not explain amortized complexity; did not know fixed window burst problem | __ /5 |
+| Extension (M5) | Described two-limiter composition with correct identification of the race condition between check and record | Described composition but missed the race condition | Could not extend to two simultaneous limits | __ /5 |
+| Curveballs | Handled all 3 curveballs with specific, correct answers; named Redis ZADD for distributed case | Handled 1-2 curveballs; generic or incomplete | Could not reason about memory constraints or distributed limits | __ /5 |
+| Time management | Completed Part 4 and Part 5 within 45 minutes; curveballs in remaining time | Completed Part 4 but rushed on Part 5 | Did not finish implementation within time | __ /5 |
 
 **Total: __ / 35**
 
@@ -313,13 +407,14 @@ Trace: [blank]
 
 ## You're Ready When...
 
-- You fill all 4 TODOs correctly without referring to a hint
-- You trace the 3-island test case correctly without running code
-- You explain the Union-Find alternative coherently in Part 5
-- You self-grade ≥ 24/35 on two separate attempts
+- You implement `is_allowed` from scratch in under 10 minutes without hints
+- You trace Test 1 correctly step by step without running code
+- You explain the 2× burst problem in the fixed window approach without hesitation
+- You answer Curveball 2 (distributed rate limiting) with specific mention of Redis ZADD
+- You self-grade ≥ 28/35 on two separate attempts
 
-**Next lab:** [→ Lab 03: Mock Phone Screen — Anagram Pairs](../lab_03_mock_screen/workbook.md)
+**Next lab:** [→ Lab 03: Mock Phone Screen](../lab_03_mock_screen/workbook.md)
 
 ---
 
-*Google SWE Lab 02 · Tier 2 (Completion) · v1.0*
+*Google SWE Lab 02 · Tier 2 (Completion) · Design-a-Data-Structure · v2.0*

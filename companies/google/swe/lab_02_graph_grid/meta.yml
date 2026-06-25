@@ -1,21 +1,20 @@
-id: google_swe_02_graph_grid
-title: "Number of Islands — Graph/Grid Traversal"
+id: google_swe_02_rate_limiter
+title: "Rate Limiter — Sliding Window Design"
 company: google
 role: swe
-interview_moment: "Google phone screen — plain-doc coding, no IDE"
+interview_moment: "Google phone screen — design-a-DS with multiple approach tradeoffs"
 tier: 2
 difficulty: medium
-est_minutes: 50
-primary_skill: "graph traversal (BFS/DFS) on a 2D grid"
+est_minutes: 45
+primary_skill: "design-a-data-structure: rate limiter with sliding window"
 secondary_skills:
-  - "BFS vs DFS tradeoff reasoning"
-  - "in-place visited marking"
-  - "4-directional grid neighbor logic"
-  - "Union-Find as an alternative"
-  - "recursion depth / stack overflow awareness"
-bloom_top: analyze
+  - "deque"
+  - "hash map"
+  - "time window design"
+  - "memory vs accuracy tradeoff"
+bloom_top: evaluate
 language: python
 status: published
 prereqs:
-  - "lab_01_algorithmic"
+  - "google_swe_01_lru_cache"
 next_lab: "lab_03_mock_screen"
