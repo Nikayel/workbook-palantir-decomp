@@ -1,0 +1,24 @@
+id: apple_swe_01_implement_ds
+company: apple
+role: swe
+tier: 1
+difficulty: easy
+primary_skill: "implement-a-data-structure: min-stack with O(1) auxiliary tracking"
+secondary_skills:
+  - data structure invariants
+  - O(1) amortized analysis
+  - extension without regression
+  - DRI communication (explain to junior)
+  - MonotonicStack use cases
+est_minutes: 40
+interview_stage: Technical screen
+style: implement-a-primitive / design-a-data-structure
+language: python
+language_alt: swift
+next_lab: lab_02_ios_arc
+tags:
+  - min-stack
+  - auxiliary-stack
+  - invariant-design
+  - getmax-extension
+  - apple-craft
