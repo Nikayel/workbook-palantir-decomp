@@ -29,7 +29,7 @@
 **Technical PM.** The decomposition round *is* the technical-product test (ontology/data-pipeline). No separate track.
 
 ## 6. Lab build list
-- SWE/FDSE: `01`–`06` the existing decomposition labs, brought to standard (Tier 1→3 across the set) · `07` **SQL window/sessionization** lab · `08` **API pagination/CRUD** lab · `09` **HackerRank mini-project OA** (Tier 3, timed) · `10` **90-min mock OA** (existing) (Tier 3).
+- SWE/FDSE: `01`–`06` the existing decomposition labs, brought to standard (Tier 1→3 across the set) · `07` **SQL window/sessionization** lab · `08` **API pagination/CRUD** lab · `09` **HackerRank mini-project OA** (Tier 3, timed) · `10` **90-min mock OA** (existing) (Tier 3). All decomposition / practical / SQL / API — **the exemplar of "SWE workbook = system-building."** Pure DSA appears only *inside* the mock OA, never as a standalone workbook.
 - Deployment Strategist / "PM": `01` decomposition with a customer-outcome framing (Tier 1) · `02` ontology data-model lab (Tier 2).
 
 ## 7. Authenticity notes

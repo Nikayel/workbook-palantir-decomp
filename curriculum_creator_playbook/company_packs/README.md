@@ -21,15 +21,17 @@ Interview processes change and many official pages block scraping. Each pack fla
 
 ## Cross-company quick reference
 
-| Company | SWE style | Signature artifact to drill | Core values lens |
+> **SWE column = the *workbook* style (system-building).** Pure DSA is a **shared drill kit** (pattern map → LeetCode/NeetCode → flashcards), **never** a per-company workbook — see `06` §2–3 & §9.
+
+| Company | SWE *workbook* style (DSA = drills) | Signature artifact to drill | Core values lens |
 |---|---|---|---|
-| **Google** | algorithmic (plain Google Doc) | product sense + Googleyness; system-design-lite | GCA · RRK · Leadership · Googleyness |
-| **Meta** | algorithmic (speed; Blind-75) | "Jedi" behavioral; data-driven execution; AI-prototype | Move Fast · Be Direct · Meta-Metamates-Me |
-| **Amazon** | algorithmic + Work Simulation | **PR-FAQ** + **LP-mapped STAR** + PMT explainers | 16 Leadership Principles · Bar Raiser |
-| **Microsoft** | algorithmic + LLD | structured product design w/o naming frameworks | growth mindset · Model-Coach-Care |
-| **Apple** | algorithmic, team/domain-specific | teardown/improve an iconic product; domain depth | secrecy · craft · functional org · DRI |
-| **Palantir** | **codebase (decomposition + HackerRank)** | the **decomposition round** (ontology/data-pipeline) | mission · Forward Deployed · decomposition |
-| **Nvidia** | algorithmic w/ **C++/pointers/CUDA** | low-level systems + GPU explainer | Speed of Light · Intellectual Honesty |
-| **Uber** | algorithmic + practical domain | two-sided **marketplace metrics** + JAM | 8 cultural norms (ownership, do the right thing) |
+| **Google** | design-a-DS + decomp-lite + mock | product sense + Googleyness; system-design-lite | GCA · RRK · Leadership · Googleyness |
+| **Meta** | codebase ICF multi-stage + mock | "Jedi" behavioral; data-driven execution; AI-prototype | Move Fast · Be Direct · Meta-Metamates-Me |
+| **Amazon** | Work-Simulation + design-a-DS + mock | **PR-FAQ** + **LP-mapped STAR** + PMT explainers | 16 Leadership Principles · Bar Raiser |
+| **Microsoft** | LLD/OOD + design-a-DS + mock | structured product design w/o naming frameworks | growth mindset · Model-Coach-Care |
+| **Apple** | practical/domain (iOS, embedded) + impl-a-DS | teardown/improve an iconic product; domain depth | secrecy · craft · functional org · DRI |
+| **Palantir** | **decomposition** + HackerRank + SQL/API | the **decomposition round** (ontology/data-pipeline) | mission · Forward Deployed · decomposition |
+| **Nvidia** | low-level/debugging + primitives (C++) | low-level systems + GPU explainer | Speed of Light · Intellectual Honesty |
+| **Uber** | practical domain + design-a-DS + mock | two-sided **marketplace metrics** + JAM | 8 cultural norms (ownership, do the right thing) |
 | **Stripe** | **codebase (integration + bug-squash)** | **written memo** + API idempotency/ledgers | Users first · **writing culture** · rigor |
-| **Atlassian** | algorithmic + **craft/LLD + write tests** | the standalone **Values interview** | 5 values ("no bullshit"…"don't #@!% the customer") |
+| **Atlassian** | **craft/LLD** + write-your-own-tests | the standalone **Values interview** | 5 values ("no bullshit"…"don't #@!% the customer") |

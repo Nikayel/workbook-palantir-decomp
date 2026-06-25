@@ -28,7 +28,7 @@ Operating Principles: *We haven't won yet · Move with urgency and focus · Thin
 **Technical PM.** The **highest API/developer bar of the 10.** Technical screens ~entirely **API design + system architecture**: resource modeling, **idempotency** (idempotency keys, safe retries), **financial invariants** (double-entry ledgers, debits = credits), **backward-compatible/extensible API versioning** "for the next 10 years." Write it up as a Stripe memo.
 
 ## 6. Lab build list
-- SWE: `01` **integration lab** (ship a feature vs a payments-style API in a provided repo, ICF spine) (Tier 1→2) · `02` **bug-squash lab** (failing test in an unfamiliar repo, incl. a **race condition**; rubric rewards diagnosis) (Tier 2) · `03` 3-part progressive implementation OA (Tier 2).
+- SWE *workbooks*: `01` **integration lab** (ship a feature vs a payments-style API in a provided repo, ICF spine) (Tier 1→2) · `02` **bug-squash lab** (failing test in an unfamiliar repo, incl. a **race condition**; rubric rewards diagnosis) (Tier 2) · `03` 3-part progressive implementation OA (Tier 2) · `04` humility/collaboration behavioral (Tier 2). All codebase/system-building — Stripe has **no pure-DSA round**, so no DSA-drill dependency here.
 - PM: `01` **written product memo** (Tier 1 worked → Tier 2) · `02` developer-product sense case (Tier 2).
 - Technical PM: `01` **idempotent payments API design** + **double-entry ledger invariants** + **10-yr versioning**, written as a memo (**flagship Technical-PM lab**) (Tier 1→2) · `02` webhook + pagination design (Tier 2).
 

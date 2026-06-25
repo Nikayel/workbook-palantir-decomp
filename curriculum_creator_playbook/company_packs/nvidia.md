@@ -26,7 +26,7 @@ Five values (Code of Conduct): **Innovation** ("Dream big, start small. Take ris
 **PM / Technical PM.** Higher technical bar than peers. Know the product lines (data center, gaming RTX, robotics, automotive) + stack (**CUDA / TensorRT / cuDNN**); explain how GPUs accelerate training/inference via parallel matrix ops; **HW-SW constraint tradeoffs** (memory bandwidth, training-vs-inference economics) + "explain deep learning to a non-technical audience."
 
 ## 6. Lab build list
-- SWE: `01` **pointers/memory output-prediction + debugging** lab (C/C++) (Tier 1) · `02` **implement-a-primitive** (thread-safe queue / shared_ptr) (Tier 2) · `03` OS/concurrency reasoning (Tier 2) · `04` **CUDA kernel-optimization** lab (Tier 2, team-gated stretch).
+- SWE *workbooks*: `01` **pointers/memory output-prediction + debugging** lab (C/C++) (Tier 1) · `02` **implement-a-primitive** (thread-safe queue / shared_ptr) (Tier 2) · `03` OS/concurrency reasoning (Tier 2) · `04` **CUDA kernel-optimization** lab (Tier 2, team-gated stretch) · `05` **timed mock-OA** (Tier 3). All low-level/system-building; pure DSA + aptitude grinding → shared **drill kit**, *not* workbooks.
 - Technical PM: `01` HW-SW constraint tradeoff lab (Tier 2) · `02` "explain deep learning simply" + GPU-product sense (Tier 2).
 
 ## 7. Authenticity notes

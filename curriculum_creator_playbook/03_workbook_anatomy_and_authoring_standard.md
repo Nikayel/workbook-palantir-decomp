@@ -229,9 +229,12 @@ The 8-part spine is constant; the **content of Parts 3–4** and the **rubric di
 
 ### SWE lab
 - **Part 3** is the IO contract / data-structure design; **Part 4** is real coding against `tests`.
-- **Two SWE lab styles** (pick per company — see `06`):
-  - **Algorithmic** (Google/Meta/Microsoft/Amazon/Nvidia): one well-scoped DSA problem, narrate + optimize + test.
-  - **Codebase / practical** (Stripe/Palantir/Uber/Atlassian): the **CodeSignal Industry-Coding-Framework template** — one project-style problem in **4 progressive levels** (L1 design+basic functions → L2 core logic+edge cases → L3 refactor/encapsulate → L4 extend without breaking earlier levels), or a **bug-squash** (failing test in an unfamiliar repo) or **integration** (ship a feature against a provided API).
+- **SWE *workbooks* are system-building only** (see `06` §3) — **pure DSA is a drill kit, never a workbook.** The four workbook styles:
+  - **Codebase / practical** (Stripe/Palantir/Uber/Atlassian): the **CodeSignal Industry-Coding-Framework template** — one project-style problem in **4 progressive levels** (L1 design+basic functions → L2 core logic+edge cases → L3 refactor/encapsulate → L4 extend without breaking earlier levels), or a **bug-squash** / **integration** round.
+  - **Decomposition** (Palantir): a vague problem decomposed out loud (entities/ontology → contract → workflows → MVP).
+  - **Design-a-data-structure / LLD** (Google/Meta/Microsoft/Amazon): LRU, rate limiter, "A/B-test class" — mini-systems that fit the 8-part arc.
+  - **Low-level / debugging** (Nvidia/Apple): find-the-bug, implement-a-primitive (thread-safe queue, `malloc`), pointers/memory.
+  - *(Pure DSA pattern grinding → the shared drill kit + a timed mock-OA, not a workbook.)*
 - **Rubric rows:** Communication (think-aloud) · Problem solving (multiple approaches + Big-O) · Correctness · Code quality/readability · Testing & edge cases · Debugging/self-correction · Time management.
 
 ---

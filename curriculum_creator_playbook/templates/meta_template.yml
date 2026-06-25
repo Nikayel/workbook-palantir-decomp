@@ -11,7 +11,7 @@ primary_skill: ""                   # the ONE weakness this lab isolates
 secondary_skills: []
 bloom_top: evaluate                 # analyze | evaluate | create (must reach one)
 language: none                      # python | node | sql | swift | cpp | yaml | none
-swe_style: ""                       # algorithmic | codebase | n/a   (SWE only)
+swe_style: ""                       # codebase | decomposition | design_a_ds | low_level | n/a   (SWE only; pure DSA = a drill, never a workbook)
 has_blank_variant: false
 prereqs: []
 last_verified: ""                   # recruiting cycle the company facts were checked, e.g. "2026 summer"

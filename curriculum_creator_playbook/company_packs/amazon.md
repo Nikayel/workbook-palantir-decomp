@@ -28,7 +28,7 @@ Two more defining mechanisms: the **Bar Raiser** (a trained, neutral interviewer
 **Technical PM (PMT).** ~½ behavioral (LPs), ½ technical — but technical = **architecture/system-design *explainers*, NOT coding** ("how do the internet/APIs work," CS principles, simplify complex tech). MBA interns: often two back-to-back 45-min sessions.
 
 ## 6. Lab build list
-- SWE: `01` sliding-window/graph algorithmic (Tier 1) · `02` medium algorithmic (Tier 2) · `03` **Work-Simulation inbox-triage LP lab** (Tier 2) · `04` **LP-STAR behavioral** (Tier 1, with a story-bank template).
+- SWE *workbooks*: `01` **Work-Simulation inbox-triage LP lab** (Tier 2) · `02` **design-a-DS/LLD** lab (Tier 2) · `03` **LP-STAR behavioral** (Tier 1, story-bank template) · `04` **timed mock-OA** (Tier 3). Sliding-window/graph/string pattern prep → shared **DSA drill kit**, *not* workbooks.
 - PM: `01` **PR-FAQ** lab (Tier 1 worked → Tier 2) · `02` product case + Dive-Deep metrics (Tier 2) · `03` LP-STAR (shared with SWE).
 - Technical PM (PMT): `01` **architecture explainer** ("design a URL shortener / rate limiter" conceptually, no code) (Tier 2) · `02` PMT phone-screen mock (½ LP, ½ technical) (Tier 3).
 

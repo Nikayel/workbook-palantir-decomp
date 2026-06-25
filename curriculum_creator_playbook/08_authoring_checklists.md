@@ -73,7 +73,7 @@
 
 ## H. Company-pack completion checklist (per company)
 - [ ] All 8 pack sections filled (`company_packs/README.md` template).
-- [ ] SWE **style** decided (algorithmic vs codebase) and justified.
+- [ ] SWE **workbook style** decided per `06` §3 (codebase / decomposition / design-a-DS / low-level) — pure DSA is a drill kit, not a workbook.
 - [ ] The **signature artifact** is identified and has a lab in the build list.
 - [ ] Facts re-verified this recruiting cycle; dates/OA/AI-policy flagged if stale.
 

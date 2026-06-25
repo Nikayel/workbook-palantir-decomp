@@ -26,7 +26,7 @@ Six core values (Zuckerberg, Feb 2022): **Move Fast** (now "move fast *together*
 **Technical PM.** No separate TPM track; strengthen the PM loop with technical-feasibility depth (metrics, light API/data).
 
 ## 6. Lab build list
-- SWE: `01` two-medium speed drill (Tier 2, timed) · `02` CodeSignal 4-stage in-memory-DB (Tier 2, ICF spine) · `03` AI-enabled coding lab (Tier 2) · `04` Jedi behavioral (Tier 2).
+- SWE *workbooks*: `01` **CodeSignal 4-stage in-memory-DB** (codebase / ICF spine) (Tier 2) · `02` AI-enabled coding lab (Tier 2) · `03` Jedi behavioral (Tier 2) · `04` **timed mock-OA** (Tier 3). The two-medium *speed* prep → shared **DSA drill kit**, *not* a workbook.
 - PM/RPM: `01` "Build for billions" product sense (Tier 1) · `02` execution/metrics + A/B (Tier 2) · `03` design+prototype an AI feature (Tier 2) · `04` Leadership & Drive STAR (Tier 2).
 
 ## 7. Authenticity notes

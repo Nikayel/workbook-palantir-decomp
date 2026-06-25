@@ -29,7 +29,7 @@ Eight **cultural norms** (post-2017 reset by Khosrowshahi, employee-voted): *We 
 **Technical PM (TPgM).** Distributed system-design + dependency/risk + take-home case.
 
 ## 6. Lab build list
-- SWE: `01` graph/shortest-path routing lab (Tier 1) · `02` **rate-limiter / hit-counter-with-expiry design-a-DS** lab (Tier 2) · `03` sliding-window moving-average (Tier 2) · `04` ownership/"do the right thing" behavioral (Tier 2).
+- SWE *workbooks*: `01` **practical Uber-domain** routing/dispatch lab (Tier 1) · `02` **rate-limiter / hit-counter-with-expiry design-a-DS** lab (Tier 2) · `03` ownership/"do the right thing" behavioral (Tier 2) · `04` **timed mock-OA (CodeSignal GCA-style)** (Tier 3). Sliding-window/graph pattern prep → shared **DSA drill kit**, *not* workbooks.
 - PM/APM: `01` **two-sided marketplace metric** lab (Tier 1) · `02` JAM-session ideation (Tier 2, 24-h-prompt format) · `03` metric-drop root-cause (Tier 2).
 - Technical PM: `01` distributed system-design-lite (Tier 2) · `02` take-home case (Tier 3).
 
