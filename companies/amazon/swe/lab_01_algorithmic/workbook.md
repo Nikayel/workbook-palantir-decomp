@@ -1,630 +1,480 @@
 Status: Ready — work through all parts in order
 
-# Amazon SWE Lab 01 — Algorithmic: Binary Search on Answer + Graph Shortest Path
+# Amazon SWE Lab 01 — Work-Simulation Inbox Triage
+## LP Inbox Lab (Tier 2 — Completion)
 
-**Role:** SWE | **Tier:** 1 (worked solutions provided — read, understand, then blank and redo) | **Est. time:** 90 min | **Difficulty:** Medium
+**Role:** SWE | **Tier:** 2 (structure provided, substance is yours to fill in) | **Est. time:** 50 min | **Difficulty:** Medium
 
 ---
 
 ## Scenario
 
-You're taking Amazon's OA. 90 minutes. Two problems. The clock is running.
+You're a software engineer on the Amazon Prime team, three months into the job. You log into your laptop Monday morning and find a backlog of messages that arrived over the weekend. You have 50 minutes to process them before your 10am standup.
 
-Problem 1: You have a list of order processing times and k workers. Each worker handles one order at a time. Workers can be assigned orders in parallel, but orders cannot be split. Find the minimum total time needed to process all orders. (If k workers can each take one order simultaneously, what's the fastest we can finish everything?)
+Each message requires you to read it, decide on the best response or action, and record which Leadership Principle guided your decision. Your responses are scored against Amazon's Leadership Principles — not by correctness in the technical sense, but by whether they reflect the LP-driven decision-making framework Amazon uses to evaluate all employees.
 
-Problem 2: You have a warehouse modeled as a graph. Nodes are storage locations. Edges are corridors with integer weights representing walking time in seconds. A delivery robot starts at the entrance node and must visit a set of required item locations. Find the minimum time for the robot to reach all required items (the robot can start from the entrance and reach each item via the shortest path — it does not need to return to the entrance).
+This is not a coding lab. It tests LP awareness in practical SWE scenarios.
 
-You must finish both. Time management is the test within the test. Go.
+**The clock is running. Go.**
 
 ---
 
 ## Milestones
 
-- [ ] M1 · Clarified — both problems scoped; tie-breaking and graph connectivity assumptions noted
-- [ ] M2 · Approached — P1: binary search on answer + feasibility check; P2: Dijkstra or BFS
-- [ ] M3 · Coded — both worked solutions read, understood, and re-implemented from scratch
-- [ ] M4 · Tested — Amazon OA-style edge cases tested: k > n orders; disconnected graph; single worker; all items at start
-- [ ] M5 · LP check — named which LPs are reflected in your approach and edge case handling
-- [ ] M6 · Ready — self-graded ≥ 28/35
+- [ ] M1 · LP mapped — can name all 16 LPs from memory (or from your list) before starting the inbox
+- [ ] M2 · Inbox processed — worked through all 12 scenarios, selected and recorded a response for each
+- [ ] M3 · LP linked — each response explicitly linked to 1-2 LPs with behavioral reasoning ("I chose A because LP X means... and in this context that looks like...")
+- [ ] M4 · STAR prepared — drafted one STAR story per distinct scenario type that arose in the inbox
+- [ ] M5 · Defended — explained 3 counter-intuitive LP choices (e.g., why "Disagree and Commit" is NOT the same as compliant silence, or why "Dive Deep" is not "perfectionism")
+- [ ] M6 · Ready — self-graded ≥ 28/35 on two separate attempts
 
 ---
 
-## Part 0: Forethought
+## Part 1 — LP Warm-Up
 
-**Goal:** Understand both algorithms deeply enough to re-implement from scratch without hints. This is a Tier 1 lab — you start with the solution, but the goal is to internalize it completely.
+**Before opening the inbox, do this cold.**
 
-**Target time:** 90 min (20 min reading/understanding + 30 min blank re-implementation + 20 min testing + 20 min LP integration and curveballs)
+"Without looking at any list, write down as many of the 16 Amazon Leadership Principles as you can. Then check against the answer below."
 
-**Confidence before reading solutions (1–5):** ___
+Your list (fill in):
+1. [blank]
+2. [blank]
+3. [blank]
+4. [blank]
+5. [blank]
+6. [blank]
+7. [blank]
+8. [blank]
+9. [blank]
+10. [blank]
+11. [blank]
+12. [blank]
+13. [blank]
+14. [blank]
+15. [blank]
+16. [blank]
 
-**Confidence after re-implementing (1–5):** ___
+**The 16 Amazon Leadership Principles (check your answers):**
+1. Customer Obsession
+2. Ownership
+3. Invent and Simplify
+4. Are Right, A Lot
+5. Learn and Be Curious
+6. Hire and Develop the Best
+7. Insist on the Highest Standards
+8. Think Big
+9. Bias for Action
+10. Frugality
+11. Earn Trust
+12. Dive Deep
+13. Have Backbone; Disagree and Commit
+14. Deliver Results
+15. Strive to be Earth's Best Employer
+16. Success and Scale Bring Broad Responsibility
 
----
+How many did you get? Score: __ / 16
 
-## Part 1: Clarifying Questions
-
-### Problem 1 — Parallel Order Processing
-
-**Category: Goal**
-Question: Do I need to return the minimum total time, or the assignment of orders to workers?
-Assumption: Return the minimum time (integer). Assignment is not needed.
-
-<details>
-<summary>Hint</summary>
-If they ask for the assignment, binary search still finds the optimal time limit, and you'd recover the assignment by greedily assigning during the feasibility check. For the OA, always confirm the return type.
-</details>
-
-**Category: Users / Input**
-Question: Can a single order take longer than the target time? (i.e., min(orders) > time_limit in the binary search)
-Assumption: The lower bound of binary search is max(orders) — we can never finish faster than the longest single order, even with infinite workers.
-
-<details>
-<summary>Hint</summary>
-This is why lo = max(orders), not 0 or 1. Setting lo too low wastes binary search iterations and introduces a subtle bug where `can_finish(mid)` never returns True for the first few iterations.
-</details>
-
-**Category: Data**
-Question: Are order processing times positive integers?
-Assumption: All values are positive integers ≥ 1.
-
-<details>
-<summary>Hint</summary>
-If orders can be 0, you'd skip those workers (a worker assigned to 0-length orders can do infinitely many in 0 time). The feasibility check would break. Assume positive for the standard problem.
-</details>
-
-**Category: Constraints**
-Question: Can k > len(orders)?
-Assumption: Yes. If k ≥ n, each order gets its own worker. Time = max(orders). The binary search handles this naturally — lo = max(orders) is already the correct answer.
-
-<details>
-<summary>Hint</summary>
-Test this edge case explicitly. Many candidates code a solution that errors when k > n because they try to "allocate" exactly k workers. Binary search doesn't do this — it just asks "can we finish in time X?" which naturally handles k > n.
-</details>
-
-**Category: Scale**
-Question: How large are orders and k?
-Assumption: n and k up to 10^4, order values up to 10^9. Binary search over [max_order, sum_orders] is log(sum) ≈ log(10^13) ≈ 43 iterations. Each iteration is O(n). Total: O(n log(sum)) — well within limits.
-
-<details>
-<summary>Hint</summary>
-Sum of orders can be up to n × max_value = 10^4 × 10^9 = 10^13. log2(10^13) ≈ 43 iterations. So O(n log(sum)) ≈ 4×10^5 operations. Fast.
-</details>
+**Checkpoint M1:** Check the box if you attempted this cold before peeking.
 
 ---
 
-### Problem 2 — Warehouse Robot Shortest Path
+## Part 2 — LP Framework for SWE
 
-**Category: Goal**
-Question: Should I return the time to reach ALL required items, or the time to visit them in an optimal sequence?
-Assumption: I should return the maximum shortest-path distance from the entrance to any required item. The robot can take multiple optimal paths in parallel (conceptually) — it needs to reach all items, and the bottleneck is the hardest-to-reach one.
+*The 4 most load-bearing LPs for SWE candidates in both OA and interviews. Fill in what each LP actually means in code behavior — not the abstract phrase, but the specific action it drives.*
 
-<details>
-<summary>Hint</summary>
-If the robot must visit items in sequence (traveling salesman variant), this becomes NP-hard. The problem as stated — shortest path from entrance to each item — is tractable. Clarify this immediately or you'll spend 30 minutes on the wrong algorithm.
-</details>
+**Customer Obsession** — "Leaders start with the customer and work backwards."
+In code decisions, this looks like: [blank]
 
-**Category: Data**
-Question: Are edge weights positive? Can there be negative weights?
-Assumption: All weights are positive integers (walking time ≥ 1 second). Dijkstra requires non-negative weights. If negative weights were present, we'd need Bellman-Ford.
+*Model answer:* Choosing a simpler API surface even if the implementation is harder. Writing tests that simulate user behavior, not implementation details. Raising a concern about a feature that works technically but will confuse users. Advocating for performance improvements that affect user-facing latency, even if backend metrics look fine.
 
-<details>
-<summary>Hint</summary>
-Dijkstra fails with negative weights because it assumes that once a node is "settled" (popped from the heap), its shortest path is final. A negative edge discovered later could produce a shorter path, which Dijkstra won't revisit.
-</details>
+**Ownership** — "Leaders are owners. They act on behalf of the entire company, beyond just their own team."
+When a bug is found, Ownership looks like: [blank]
 
-**Category: Constraints**
-Question: Is the graph connected? Can some required items be unreachable?
-Assumption: I'll handle disconnected graphs. If a required item is unreachable (dist = infinity), I'll return -1 or raise an error.
+*Model answer:* Filing a clear bug report with reproduction steps, severity assessment, and immediate mitigation (not just flagging it and moving on). Not saying "that's the other team's code." Checking whether the same bug exists in related systems. Staying through the incident even if your shift ended.
 
-<details>
-<summary>Hint</summary>
-This is an important edge case. In Amazon's warehouse context, disconnected graph = broken corridor. The robot cannot reach the item. The business answer: flag the item as unreachable, alert operations. The code answer: check if dist[item] == float('inf') after Dijkstra.
-</details>
+**Dive Deep** — "Leaders operate at all levels, stay connected to the details."
+In a testing and debugging context, Dive Deep looks like: [blank]
 
-**Category: Scale**
-Question: How large is the graph?
-Assumption: Up to 10^4 nodes and 10^5 edges. Dijkstra with a binary heap is O((V + E) log V) = O((10^4 + 10^5) × 14) ≈ 1.5×10^6 — fine.
+*Model answer:* Not accepting "it works on my machine." Running the bug under the exact same conditions as production. Reading the stack trace all the way to the root cause, not stopping at the first plausible explanation. Writing a regression test that pins the exact failure condition before fixing.
+
+**Deliver Results** — "Leaders focus on the key inputs and deliver with the right quality and in a timely fashion."
+In scope decisions, Deliver Results affects choices in this way: [blank]
+
+*Model answer:* Knowing which features are MVP and which are nice-to-have — and cutting the latter under time pressure without being asked. Communicating deadline risk early enough that the team can adjust. Not letting perfect be the enemy of shipped. Choosing a testable, complete subset over a speculative, large one.
 
 ---
 
-## Checkpoint M1 — Scoped
+## Part 3 — Inbox: 12 Scenarios
 
-Mark M1 complete when: assumptions for all clarifying questions are written. Key decision confirmed for P2: robot finds shortest path to each item independently (not traveling salesman sequence).
-
----
-
-## Part 2: Approach Planning
-
-### Problem 1 — Binary Search on Answer
-
-**Why binary search?**
-
-The classic "minimize the maximum" or "what's the minimum X such that we can achieve Y?" pattern calls for binary search on the answer.
-
-Here: "What is the minimum time T such that k workers can finish all n orders within T minutes?"
-
-For a fixed T, the feasibility check is: worker i can handle `floor(T / order[j])` copies of order j. But here each order is processed exactly once. So worker assigned to unlimited orders up to time T can handle `floor(T / order_time)` orders (since each order is processed once with no repetition — wait, this needs precision):
-
-Actually: for a fixed time limit T, a single worker can process orders sequentially. How many orders of processing time `t_j` can one worker handle in T minutes? `floor(T / t_j)`. If we sum this over all orders and the total is ≥ n, then k workers can collectively finish all n orders in T minutes.
-
-Wait — that's not quite right either. Let me be precise:
-
-"Given time limit T and k workers, can we assign all n orders such that each worker's total time ≤ T?"
-
-For each order with processing time `t_j`, a single worker can process `floor(T / t_j)` such orders within T minutes. Sum over all orders: `sum(T // t for t in orders)` = total orders any one worker could handle if they only worked on that type of order. But with k workers, we can handle `k × (orders per worker)` — no, this isn't right structurally because orders have different lengths.
-
-The correct feasibility: how many orders can ONE worker handle in time T? If orders are assigned greedily (one at a time, smallest first... no, order doesn't matter for counting), a worker handles orders one after another. The maximum number of orders of type t a worker can do in time T is `T // t`. So total capacity across ALL orders = `sum(T // t for t in orders)`. If this total ≥ n with k workers, that means... no, this counts how many of each order type can be done, not the total.
-
-The cleaner version: total capacity of k workers in time T = k workers × (number of orders one worker can do). But orders have different durations. The standard formulation:
-
-Number of orders that can be processed = sum over all order types j: floor(T / order_time[j]). If this sum × (1/k)... no.
-
-Let me re-read: the standard "Koko eats bananas" / "minimum shipping capacity" form:
-
-**Binary search on answer T.** Feasibility check: can k workers each work for at most T time and collectively process all orders? For order j with processing time t_j, one worker processes exactly one order j (takes t_j time). So worker i can handle `floor(T / t_i)` orders? No — a worker can be assigned any mix of orders. 
-
-The simplest correct reading: each worker is assigned a contiguous block of orders (sorted). Binary search finds T such that greedily assigned blocks can each fit in T. This is the "split array largest sum" variant.
-
-The implementation below uses the Koko-bananas variant: `sum(ceil(order / T))` = minimum workers needed. If this ≤ k, then T is feasible.
-
-**Both variants appear in Amazon OAs.** Know both.
-
-Brute force: Try every possible T from 1 to sum(orders). For each T, check if k workers can finish. O(sum × n) — too slow.
-
-Optimized: Binary search T in [max(orders), sum(orders)]. O(n log(sum)).
-
-**Binary search invariant:** lo = smallest T we know might work = max(orders). hi = largest T we might need = sum(orders) (1 worker does all).
+*For each scenario: select the best response (A, B, or C), name the primary LP, and write 1-2 sentences explaining the LP-to-behavior link. There is always a best answer, though the differences are sometimes subtle.*
 
 ---
 
-### Problem 2 — Dijkstra Shortest Path
+### Scenario 1 — The Load Bug
 
-Dijkstra's algorithm finds shortest paths from a single source to all other nodes in a weighted graph with non-negative edge weights.
+Your manager asked you to ship a feature by Friday. It's Tuesday afternoon. You discover that the current implementation will fail under load > 1,000 concurrent users due to a race condition you introduced. The demo on Thursday uses 500 users max. The real rollout is 50,000 users on Monday.
 
-**Why Dijkstra and not BFS?** BFS finds shortest paths in unweighted graphs (all edge weights = 1). Dijkstra handles weighted edges.
+**Options:**
+A) Raise the issue now, propose a fix, and risk missing Friday's demo deadline
+B) Ship Friday, file a ticket for the load issue after the demo, and don't mention it to your manager
+C) Stay late Tuesday and Wednesday, fix the architecture silently, and ship on time without mentioning the delay risk
 
-**Why Dijkstra and not Bellman-Ford?** Bellman-Ford handles negative weights but is O(VE) — slower. Since we assumed non-negative weights, Dijkstra's O((V+E) log V) is better.
+Best response: [blank]
 
-**Algorithm:**
-1. Initialize dist[start] = 0, dist[all others] = infinity.
-2. Use a min-heap (priority queue). Push (0, start).
-3. Pop the minimum-distance node. For each neighbor, if current dist + edge_weight < dist[neighbor], update and push to heap.
-4. When a node is popped from the heap and its stored distance matches the distance in the heap (not stale), it's "settled."
-5. After Dijkstra completes, return `max(dist[item] for item in required_items)`.
+LP: [blank]
 
----
+Reasoning: [blank]
 
-## Checkpoint M2 — Approached
-
-Mark M2 complete when: you can explain binary search on answer without looking at notes, AND you can trace Dijkstra on a 5-node graph by hand.
+*Model answer:* A. Ownership — raising the issue before it becomes a production incident IS the ownership behavior. "Acting on behalf of the whole company" means you cannot knowingly ship a defect that will fail in production. B violates Insist on the Highest Standards AND Earn Trust. C is better than B (you fix it) but violates Earn Trust — your manager cannot make a good decision about the Thursday demo without knowing the risk. LP-driven behavior: communicate the risk AND the fix plan simultaneously.
 
 ---
 
-## Part 3: Worked Solutions
+### Scenario 2 — The Senior Engineer's PR
 
-This is Tier 1. Read, understand, trace, then blank and re-implement.
+A colleague's PR has a subtle race condition you spotted in review. You've re-read the code three times and are confident the bug exists. They are a senior engineer with 8 years at Amazon, and they push back in the review thread: "You're overthinking this — it's not a race condition."
 
-### Worked Solution — Problem 1
+**Options:**
+A) Defer to their seniority and approve the PR
+B) Escalate to your manager before responding
+C) Write a test case that reproduces the race condition and share it in the PR thread
 
-```python
-import math
+Best response: [blank]
 
-def min_time_to_process(orders: list[int], k: int) -> int:
-    """
-    Binary search on answer T.
-    Feasibility: with time limit T, how many orders can k workers process?
-    Each worker can process ceil(order_time / T)... wait, let's think clearly:
-    
-    For time limit T, how many orders can k workers handle?
-    For each order of processing time t, it takes one worker t time to complete.
-    In T time, one worker can complete floor(T / t) orders of type t.
-    But this ignores mixing — a worker can do order A then order B.
-    
-    Simpler: for T time per worker, total "slots" = k * T time units.
-    Can we fit all orders (each consuming its processing time) into k workers each
-    capped at T? This is a bin packing problem — NP-hard in general.
-    
-    BUT: if we sort orders and assign to workers greedily (or use the 
-    "minimum number of workers" formula), it becomes tractable.
-    
-    Standard approach: can_finish(T) = sum(ceil(t / T) for t in orders) <= k
-    This asks: for each order t, how many time slots of length T does it take?
-    ceil(t/T). If total slots across all orders <= k, we can fit in k workers.
-    """
-    def can_finish(time_limit: int) -> bool:
-        # Each order t takes ceil(t / time_limit) = 1 worker-slot of time_limit
-        # (since each order is processed as a single unit, ceil(t/time_limit) = 1 
-        # if t <= time_limit, which is always true since lo >= max(orders))
-        # Simpler: sum(math.ceil(t / time_limit) for t in orders)
-        # But since time_limit >= max(orders), ceil(t/time_limit) is always 1.
-        # So can_finish = len(orders) <= k? That's just "enough workers for 1 each."
-        # 
-        # The correct interpretation for this problem style:
-        # How many orders can ONE worker do in time_limit (working sequentially)?
-        # Answer: time_limit // t for each order type t.
-        # Total capacity across k workers = k * (total that one worker can do)?
-        # No — workers are identical, so:
-        # 
-        # Revised correct interpretation (most common OA version):
-        # Orders list has individual order times. k workers run in parallel.
-        # Worker i takes the first available order, processes it, takes the next.
-        # Min time = binary search on T; can_finish(T) = 
-        #   total orders processable across all workers in time T.
-        # For time T: worker can process orders greedily — for order with time t,
-        # takes t time. In T total time, one worker does sum of chosen orders <= T.
-        # 
-        # The classical "k workers, minimize makespan" feasibility check:
-        # Given T, greedily assign orders to workers (sort descending, assign to 
-        # least-loaded worker). Can we finish in T?
-        # 
-        # For binary search to work cleanly, use the simpler check:
-        # sum(math.ceil(t / time_limit) for t in orders) <= k
-        # This works when orders are indivisible and each worker can take
-        # multiple orders up to time_limit total.
-        workers_needed = sum(math.ceil(t / time_limit) for t in orders)
-        return workers_needed <= k
+LP: [blank]
 
-    lo = max(orders)      # can't finish faster than the slowest single order
-    hi = sum(orders)      # upper bound: 1 worker does everything sequentially
+Reasoning: [blank]
 
-    while lo < hi:
-        mid = (lo + hi) // 2
-        if can_finish(mid):
-            hi = mid      # mid might be optimal — shrink upper bound
-        else:
-            lo = mid + 1  # mid is too short — need more time
-
-    return lo
-
-# Alternative: if orders = worker processing times (each worker processes in parallel,
-# no multi-order assignment), then: answer = max(orders) if k >= len(orders) else
-# binary search with can_finish(T) = sum(1 for t in orders if t <= T)
-# -- this is a different problem formulation. Know which one you're solving.
-```
-
-**Trace on a small example:**
-`orders = [3, 7, 2, 5]`, `k = 2`
-- lo = 7, hi = 17
-- mid = 12: ceil(3/12) + ceil(7/12) + ceil(2/12) + ceil(5/12) = 1+1+1+1 = 4 workers needed. 4 > 2 → lo = 13
-- mid = 15: ceil(3/15)+ceil(7/15)+ceil(2/15)+ceil(5/15) = 1+1+1+1 = 4 > 2 → lo = 16
-- mid = 16: same = 4 > 2 → lo = 17
-- lo = hi = 17. Return 17.
-
-Is 17 correct? With 2 workers: worker 1 takes [7, 5] = 12 min? No, they run in parallel... the binary search answer depends on interpretation. If workers take orders sequentially (no parallel within a worker), and we want minimum time where all orders are done:
-
-Actually for this variant: `sum(math.ceil(t / T) for t in orders) <= k` means "if each order takes ceil(t/T) worker-slots-of-length-T, do we have enough slots (k slots total)?" Since k=2 and there are 4 orders, each taking at least 1 slot, we always need ≥ 4 slots which exceeds k=2. This formulation seems off for this problem.
-
-**The cleaner variant for this OA problem:** each worker can hold exactly one order at a time. With k=2 workers and 4 orders, the minimum time is achieved by assigning optimally: worker 1 → [7, 2] = 9 min, worker 2 → [5, 3] = 8 min. Max = 9 min. This is the "partition into k groups to minimize maximum sum" problem.
-
-```python
-def min_time_to_process_v2(orders: list[int], k: int) -> int:
-    """
-    Minimize the maximum load across k workers.
-    Binary search on time T.
-    can_finish(T): greedily assign orders to workers. 
-    A worker can take as many orders as fit within T total time.
-    Sort orders descending. Assign each order to the worker with most remaining capacity.
-    Actually: can_finish(T) = number of workers needed if each worker works up to T.
-    Greedily: sort descending, assign each to least-loaded worker (but this is O(n log k)).
-    
-    Simpler check: can_finish(T) = number of "buckets" of capacity T needed to hold all orders.
-    This is a bin-packing lower bound. Exact answer requires first-fit decreasing.
-    
-    For interview purposes, the O(n log k) greedy check works:
-    """
-    import heapq
-    
-    def can_finish(T: int) -> bool:
-        if max(orders) > T:
-            return False
-        # Greedy: sort descending, assign each order to least-loaded worker
-        heap = [0] * k  # k workers, each starting with 0 load
-        heapq.heapify(heap)
-        for order in sorted(orders, reverse=True):
-            load = heapq.heappop(heap)
-            if load + order > T:
-                return False
-            heapq.heappush(heap, load + order)
-        return True
-    
-    lo = max(orders)
-    hi = sum(orders)
-    while lo < hi:
-        mid = (lo + hi) // 2
-        if can_finish(mid):
-            hi = mid
-        else:
-            lo = mid + 1
-    return lo
-```
+*Model answer:* C. Have Backbone; Disagree and Commit — but the "disagree" phase here requires evidence, not assertion. Writing a test that reproduces the race condition is backbone backed by data. It respects the senior engineer by letting the code speak rather than asserting authority. A violates Have Backbone. B violates Earn Trust (escalating before doing the work to prove your point makes you look like you're avoiding a difficult conversation). LP note: backbone without evidence is stubbornness; backbone with evidence is engineering rigor.
 
 ---
 
-### Worked Solution — Problem 2
+### Scenario 3 — The Ambiguous Spec
 
-```python
-import heapq
+Your tech lead left a Slack message Friday at 6pm: "Build the user export feature by Wednesday." There is no design doc, no API spec, and no ticket. It's Monday morning. Your lead is in Tokyo and won't be online for 6 hours.
 
-def shortest_path_to_all_items(
-    graph: dict,       # node -> list of (neighbor, weight)
-    start: int,        # entrance node
-    required_items: list[int]   # nodes that must be visited
-) -> int:
-    """
-    Dijkstra from start node to all nodes.
-    Return max(dist[item] for item in required_items).
-    If any item is unreachable, return -1.
-    """
-    # Initialize distances
-    dist = {node: float('inf') for node in graph}
-    dist[start] = 0
+**Options:**
+A) Wait for your lead to come online before starting anything
+B) Write a design doc with your best interpretation of the scope, send it to your lead now, and start on the parts you're confident about
+C) Build the full feature as you imagine it and show it to your lead Wednesday
 
-    # Min-heap: (distance, node)
-    heap = [(0, start)]
+Best response: [blank]
 
-    while heap:
-        d, node = heapq.heappop(heap)
+LP: [blank]
 
-        # Stale entry check: if we already found a shorter path, skip
-        if d > dist[node]:
-            continue
+Reasoning: [blank]
 
-        # Explore neighbors
-        for neighbor, weight in graph[node]:
-            new_dist = dist[node] + weight
-            if new_dist < dist[neighbor]:
-                dist[neighbor] = new_dist
-                heapq.heappush(heap, (new_dist, neighbor))
-
-    # Check if all required items are reachable
-    for item in required_items:
-        if dist.get(item, float('inf')) == float('inf'):
-            return -1  # unreachable item
-
-    return max(dist[item] for item in required_items)
-```
-
-**Trace on a small example:**
-
-```
-Graph:
-entrance(0) --5-- A(1)
-entrance(0) --2-- B(2)
-B(2) --3-- A(1)
-B(2) --8-- C(3)
-A(1) --4-- C(3)
-
-required_items = [A(1), C(3)]
-```
-
-| Step | heap pop | dist[0] | dist[1] | dist[2] | dist[3] |
-|---|---|---|---|---|---|
-| init | — | 0 | inf | inf | inf |
-| pop (0,0) | explore neighbors | 0 | 5 | 2 | inf |
-| pop (2,2) | explore B's neighbors | 0 | min(5, 2+3)=5 | 2 | min(inf,2+8)=10 |
-| pop (5,1) | explore A's neighbors | 0 | 5 | 2 | min(10, 5+4)=9 |
-| pop (9,3) | C settled | 0 | 5 | 2 | 9 |
-
-Result: max(dist[1], dist[3]) = max(5, 9) = 9 seconds.
+*Model answer:* B. Bias for Action — "Many decisions and actions are reversible and do not need extensive study." Starting the parts you're confident about (e.g., setting up the scaffolding, reviewing the user data model) while simultaneously documenting your interpretation and sending it for review is the high-agency move. A is too passive. C risks building the wrong thing for two days. The design doc is not "studying too long" — it takes 30 minutes and de-risks the Wednesday deadline significantly.
 
 ---
 
-## Part 4: Blank Re-Implementation
+### Scenario 4 — The Cost-Aware Design
 
-Read the worked solutions above until you understand them. Then close this section and implement both from scratch in a separate file or IDE. Come back only if you are stuck for more than 10 minutes.
+You are designing a new service that needs to store 10M user records. You could use DynamoDB (simple, fully managed, ~$500/month for this load) or build a custom Redis cluster (more complex, requires ops, ~$80/month). Your manager says "don't over-engineer it" but also "we're watching costs."
 
-**Re-implementation checklist:**
-- [ ] P1: Binary search with lo = max(orders), hi = sum(orders)
-- [ ] P1: can_finish(T) correctly implemented and tested
-- [ ] P1: Returns correct answer for k > n (answer = max(orders))
-- [ ] P2: Dijkstra with min-heap initialized correctly
-- [ ] P2: Stale entry check (d > dist[node]: continue)
-- [ ] P2: Returns -1 for unreachable required items
-- [ ] P2: Returns max(dist[item]) over required_items
+**Options:**
+A) Use DynamoDB because it's simpler and your time is worth more than $420/month
+B) Build the Redis cluster because $5,040/year in savings is meaningful at scale
+C) Propose both options to your manager with total cost of ownership (including engineering time) and let them decide
 
----
+Best response: [blank]
 
-## Checkpoint M3 — Coded
+LP: [blank]
 
-Mark M3 complete when: your re-implementation passes all test cases below WITHOUT looking at the reference solutions.
+Reasoning: [blank]
+
+*Model answer:* C, with an LP pull: this is a Frugality situation ("accomplish more with less") but it also invokes Are Right, A Lot (you need data to know if you're right) and Earn Trust (your manager said "I'm watching costs" — presenting them with a real tradeoff earns trust more than unilaterally picking one). If pushed to choose without manager input: A, because Frugality does NOT mean always choose the cheapest option — it means being resourceful. Engineering time at $200/hr means 2 hours/month of ops time wipes out the Redis savings. Frugality requires calculating total cost, not just cloud spend.
 
 ---
 
-## Part 5: Test Cases
+### Scenario 5 — The Slow Feature
 
-### Problem 1 Edge Cases
+While implementing a new feature, you discover that the existing database query it depends on takes 800ms for users with > 500 orders (about 12% of Prime users). The feature works correctly but will be slow for a significant minority. The deadline is Thursday.
 
-```python
-# Basic case
-assert min_time_to_process([3, 7, 2, 5], 2) == 9  # [7,2] and [5,3]
+**Options:**
+A) Ship it — the feature works. File a ticket to optimize the query later.
+B) Delay the feature until you can optimize the query.
+C) Ship the feature but add a metric that alerts when p95 latency exceeds 500ms, and commit to fixing the query in the next sprint.
 
-# k >= n: each order gets its own worker
-assert min_time_to_process([3, 7, 2, 5], 4) == 7  # bottleneck = max order
+Best response: [blank]
 
-# k = 1: one worker does all
-assert min_time_to_process([3, 7, 2, 5], 1) == 17  # sum of all
+LP: [blank]
 
-# Single order
-assert min_time_to_process([10], 5) == 10
+Reasoning: [blank]
 
-# All same
-assert min_time_to_process([5, 5, 5, 5], 2) == 10  # 2 workers × 2 orders each × 5
-```
-
-### Problem 2 Edge Cases
-
-```python
-# Build test graph
-graph = {
-    0: [(1, 5), (2, 2)],
-    1: [(3, 4)],
-    2: [(1, 3), (3, 8)],
-    3: []
-}
-
-# Start at 0, must visit 1 and 3
-assert shortest_path_to_all_items(graph, 0, [1, 3]) == 9
-
-# Required item is unreachable
-graph_disconnected = {
-    0: [(1, 5)],
-    1: [],
-    2: [(3, 1)],  # disconnected component
-    3: []
-}
-assert shortest_path_to_all_items(graph_disconnected, 0, [2]) == -1
-
-# Required item is the start node
-assert shortest_path_to_all_items(graph, 0, [0]) == 0
-
-# All items at same distance
-graph2 = {
-    0: [(1, 3), (2, 3), (3, 3)],
-    1: [], 2: [], 3: []
-}
-assert shortest_path_to_all_items(graph2, 0, [1, 2, 3]) == 3
-```
+*Model answer:* C. Customer Obsession + Deliver Results in tension. C threads the needle: you deliver on schedule, but you are not ignoring the customer experience (adding the metric and the explicit commitment). A without the metric violates Customer Obsession — you are knowingly degrading the experience for 12% of Prime users without any plan to detect or address it. B violates Deliver Results unless the deadline was set knowing the query was an issue. The metric is the LP-aware move: it shows you internalized the customer impact and created accountability.
 
 ---
 
-## Checkpoint M4 — Tested
+### Scenario 6 — The Junior Developer
 
-Mark M4 complete when: all test cases pass. Record which test case surprised you the most.
+A junior engineer on your team is stuck on a bug for 3 hours. You could fix it for them in 10 minutes. Their approach is inefficient and the code quality is low. You have your own work to do.
 
-Surprising test case: ___
+**Options:**
+A) Fix it for them directly — it's faster and you're both behind
+B) Ask them to explain the bug to you, then guide them to the fix with questions, then review the final code with feedback on quality
+C) Tell them to check Stack Overflow and come back if still stuck
 
----
+Best response: [blank]
 
-## Part 5 (Extended): LP Integration
+LP: [blank]
 
-This section is specific to Amazon. After finishing the algorithmic problems, answer these LP-grounded questions.
+Reasoning: [blank]
 
-**Dive Deep (LP 12) — "Stay connected to the details":**
-After implementing Dijkstra, which edge case did you almost miss? What would have happened in production if that edge case hit?
-___
-
-**Insist on the Highest Standards (LP 7) — "Relentlessly high standards":**
-Is your code readable enough that a new team member could understand it without you explaining it? What would you change?
-___
-
-**Bias for Action (LP 9) — "Speed matters. Many decisions are reversible":**
-If you had only 30 minutes left in the OA, what would you cut first to still submit something that passes?
-___
-
-**Invent and Simplify (LP 3) — "Expect and require innovation AND simplicity":**
-Is there a simpler data structure than a min-heap for Dijkstra in this specific problem (small graph, small weights)? What's the tradeoff?
-___
-
-**Ownership (LP 2) — "Act on behalf of the whole company":**
-If your Dijkstra was deployed for the warehouse robot and a bug caused the robot to take a longer path for 1% of orders, how would you detect and fix it? What monitoring would you add?
-___
-
-**Which LP does declaring "done" without testing violate?**
-___
+*Model answer:* B. Hire and Develop the Best — "Leaders are always looking for ways to raise the performance bar." Teaching the debugging process and giving code quality feedback IS the Amazon behavior, even under time pressure. A is efficient but does not develop the junior engineer — next week they have the same problem and you spend 10 more minutes. C is dismissive. B costs you 30 minutes but builds the team's capability. This is an explicit LP trade-off: short-term output vs. long-term team quality. Amazon scores this as B.
 
 ---
 
-## Part 6: Interview Simulation
+### Scenario 7 — The Small Feature with Big Implications
 
-### 90-Second Talk Track
+You're implementing a "share cart" feature — users can send a link that lets a friend see their current shopping cart. An edge case: the cart can contain items from the user's wish list, which they may not want to share publicly. No one has flagged this.
 
-"Let me confirm my understanding: P1 is minimizing makespan across k parallel workers — binary search on the answer, feasibility check is O(n). P2 is single-source shortest path from the warehouse entrance to all required items — Dijkstra with a min-heap. For P1, my search space is [max(orders), sum(orders)]. I'll time-box P1 to 35 minutes and move to P2 regardless. Starting now."
+**Options:**
+A) Implement as specced — the product team didn't ask you to handle wish list privacy
+B) Implement as specced and add a comment in the PR noting the potential privacy leak for the product team to decide
+C) Pause implementation, file a design note about the wish list privacy edge case, get product team alignment, then implement
 
-[During coding:] "Binary search: lo = max(orders) because we can't do better than the slowest order. Feasibility check: [explain can_finish]. For P2: dist initialized to inf, min-heap with (0, start), stale entry check on pop. After Dijkstra, return max dist over required items, or -1 if any is inf."
+Best response: [blank]
 
-### Curveballs
+LP: [blank]
 
-**Curveball 1:** "What if workers can split orders — do half the work each?"
+Reasoning: [blank]
 
-Instructions: Think about what changes in the binary search. You have 90 seconds.
-
-<details>
-<summary>Hint</summary>
-If orders can be split, then with k workers you can always parallelize any single order across all k workers. The minimum time becomes: ceiling(sum(orders) / k). No binary search needed — it's just division. The binary search approach works for INDIVISIBLE tasks; once tasks are splittable, the problem collapses to a scheduling / resource allocation formula.
-
-Real follow-up: "What if orders are partially splittable — you can split but only into integer chunks?" Then binary search on T, and can_finish changes to: for each order t, workers needed = ceil(t / T). This is the ceil(t/T) formulation from the first worked solution.
-</details>
-
-___
-
-**Curveball 2:** "The graph is a DAG (directed, acyclic). Does Dijkstra still work? Is there a better algorithm for DAGs?"
-
-Instructions: Two separate questions. Answer both.
-
-<details>
-<summary>Hint</summary>
-Does Dijkstra work on a DAG? Yes — Dijkstra works on any directed graph with non-negative edge weights. A DAG is a special case. It will produce correct results.
-
-Is there a better algorithm? Yes. On a DAG with non-negative weights, you can use topological sort + relaxation, which is O(V + E) — faster than Dijkstra's O((V+E) log V). Process nodes in topological order; when you process node u, relax all outgoing edges. This works because in a DAG, once you've processed all predecessors of u, the shortest path to u is finalized.
-
-The interviewers is testing: do you know when Dijkstra is "good enough" vs. when problem structure enables a better algorithm.
-</details>
-
-___
-
-**Curveball 3:** "Amazon uses this warehouse routing for 100M packages per day. What's your bottleneck and how would you scale?"
-
-Instructions: Think systems, not just algorithm. Mention at least 3 concerns.
-
-<details>
-<summary>Hint</summary>
-1. **Precomputation:** For a static warehouse graph, run Dijkstra once from the entrance and cache all shortest paths. Don't recompute per package. Cost: O((V+E) log V) once, then O(1) per query.
-
-2. **Graph updates:** When a corridor closes (edge removed), how do you update the cache? Options: invalidate and rerun (simple), or dynamic shortest path algorithms (complex). In practice: flag the path as invalid, reroute affected packages in real time.
-
-3. **Distributed:** 100M packages/day = ~1200 packages/second. Each package needs a path. If single-threaded, O(1) cached lookups are fine. At scale, distribute path lookups across a fleet of stateless services.
-
-4. **Multi-item per robot:** Real warehouse robots may collect multiple items per trip (TSP variant for short lists). Precomputed pairwise distances between all locations enable faster greedy TSP.
-
-5. **LP: Dive Deep** — "which metric tells you the routing is degrading?" Average path length deviation from optimal, corridor congestion, robot idle time.
-</details>
-
-___
+*Model answer:* C. Success and Scale Bring Broad Responsibility — "We must be humble and thoughtful about the secondary effects of our actions." A privacy leak in a share feature is not a minor edge case — it violates customer trust and potentially regulations (GDPR, CCPA if in scope). B is better than A (at least you flagged it) but "adding a comment" is insufficient for a live privacy issue — it could ship without anyone reading the comment. C pauses velocity for safety, which is the LP-aligned choice. This LP is specifically about not letting scale and success blind you to the harm you can cause.
 
 ---
 
-## Part 7: Self-Grade + Reflection
+### Scenario 8 — The New Technology
 
-### SWE Rubric
+Your team's principal engineer proposes migrating from the existing Python service to a Rust microservice for performance. You have no Rust experience. The project timeline is 8 weeks. You will be the primary implementer.
 
-| Dimension | 1 | 2 | 3 | 4 | 5 | Score |
-|---|---|---|---|---|---|---|
-| **Communication / think-aloud** | Silent | Occasional narration | Explains steps when asked | Consistent narration | Leads interviewer, explains tradeoffs and LP connections | ___ |
-| **Problem solving** | Could not approach either problem | One approach with major hints | Both approaches with nudges | Both approaches independently | Identified multiple approaches + chose best with justification | ___ |
-| **Correctness** | Both wrong | One correct | Both correct with edge case bugs | Both correct, minor issues | Both correct, all edge cases including k>n and disconnected graph | ___ |
-| **Code quality** | Unreadable | Functional but messy | Readable | Clean, well-named | Production-quality; self-documenting; easy to extend | ___ |
-| **Testing & edge cases** | No testing | Happy path only | 1–2 edge cases | Systematic edge case testing | Predicted all failure modes before coding | ___ |
-| **Debugging** | Could not debug | Found bugs with heavy hints | Found bugs with nudge | Found independently | Caught own bugs in tracing; explained root cause | ___ |
-| **Time management** | Never finished P1 | P1 only | Both, significantly over time | Both within 90 min | Both within 70 min with time for LP discussion | ___ |
+**Options:**
+A) Push back on the proposal — you don't know Rust and 8 weeks is not enough time to learn and deliver
+B) Accept the project, immediately start learning Rust in parallel with current work, and flag risks to your manager within the first week
+C) Accept the project silently and figure it out as you go
 
-**LP Awareness Row (Amazon-specific)**
+Best response: [blank]
 
-| Dimension | 1 | 2 | 3 | 4 | 5 | Score |
-|---|---|---|---|---|---|---|
-| **LP awareness in approach** | No mention | Generic mention | Named 1–2 LPs with weak connection | Named 3+ LPs with specific connection to code decisions | Wove LPs naturally into coding narration; could name which LP each edge case reflects | ___ |
+LP: [blank]
 
-**Total: ___ / 40**
+Reasoning: [blank]
 
-### Reflection
+*Model answer:* B. Learn and Be Curious — "Leaders are never done learning and always seek to improve." B is the Amazon behavior: you take the challenge, you invest in learning, AND you are transparent about the risk (flagging early). A can be right if you genuinely believe 8 weeks is unrealistic — Have Backbone applies. But the LP-aligned instinct is to try and learn, not to refuse based on unfamiliarity. C is the worst choice: taking on risk without surfacing it violates Earn Trust and Ownership. The LP distinction between B and C: "flag risks early" is the critical behavior.
 
-Which algorithm was harder to trace by hand?
+---
 
-___
+### Scenario 9 — The Design Decision You Disagree With
 
-Which LP integration question stumped you?
+Your team voted 4-1 to use a shared database approach instead of your proposed event-sourcing architecture. You believe the shared database will cause scaling problems in 18 months. The decision is now final.
 
-___
+**Options:**
+A) Continue to advocate for event sourcing — this is too important to let go
+B) Accept the decision and implement the shared database approach with the same care and quality you would have given event sourcing
+C) Implement it but do it half-heartedly since you think it's the wrong call
 
-What would a Bar Raiser ask that isn't in the curveballs?
+Best response: [blank]
 
-___
+LP: [blank]
 
-### Ready-When Checklist
+Reasoning: [blank]
 
-- [ ] I can implement binary search on answer (with can_finish) from scratch in < 15 minutes
-- [ ] I can implement Dijkstra from scratch in < 15 minutes
-- [ ] I know why lo = max(orders) not 0 in the binary search
-- [ ] I understand the stale entry check in Dijkstra and why it's needed
-- [ ] I can explain Dijkstra vs BFS vs Bellman-Ford in 2 sentences each
-- [ ] I can name which LP each curveball tests
-- [ ] My implementations pass all listed test cases without looking at reference solutions
+*Model answer:* B. Have Backbone; Disagree and Commit — "Once a decision is determined, commit wholly." The distinction: "Disagree and Commit" means you made your case (backbone), the team decided, and now you execute with full commitment (commit). A violates Disagree and Commit — relitigating a settled decision undermines team trust. C violates Insist on the Highest Standards. B is exactly the LP: you may still believe you were right, and you may revisit the decision if new evidence emerges in 18 months, but right now you build the shared database at full quality. Common misconception: people think "Commit" means "agree you were wrong." It does not. It means "execute as if you proposed this."
+
+---
+
+### Scenario 10 — The Performance Data
+
+You and a colleague each built a candidate implementation of the same service. Benchmarks show your implementation is 15% faster. In the design review meeting, your colleague presents their version first and does not show the benchmark comparison.
+
+**Options:**
+A) Present your benchmark data immediately and recommend your implementation
+B) Wait until after the meeting to share the data privately with your manager
+C) Ask your colleague in the meeting: "Can we also look at the benchmark comparison between the two implementations before deciding?"
+
+Best response: [blank]
+
+LP: [blank]
+
+Reasoning: [blank]
+
+*Model answer:* C. Are Right, A Lot + Earn Trust in combination. C presents the data in the right venue (the design review meeting, where the decision is being made) without being adversarial. A is right on the LP but the framing matters — immediately "recommending your implementation" may come across as poaching. C invites comparison rather than asserting superiority. B is too passive — waiting until after the meeting means the decision may be made without the data. LP note: Are Right, A Lot is not about being right in an argument; it is about ensuring decisions are made with the best available data.
+
+---
+
+### Scenario 11 — The Bar Raiser Feedback
+
+You're in a debrief after a candidate interview. You gave the candidate a "Strong Hire." Two other interviewers gave "No Hire." The Bar Raiser agrees with the No Hires. You are asked if you want to change your vote.
+
+**Options:**
+A) Change your vote to No Hire to reach consensus
+B) Maintain your Strong Hire with a clear explanation of the specific behaviors that led to that rating
+C) Abstain — you've presented your view, the group can decide
+
+Best response: [blank]
+
+LP: [blank]
+
+Reasoning: [blank]
+
+*Model answer:* B. Have Backbone; Disagree and Commit — but also Hire and Develop the Best. The Bar Raiser process is designed to surface dissent, not suppress it. If you saw behaviors that genuinely meet the bar, changing your vote under social pressure violates Have Backbone. B requires you to articulate specifically what you saw: "The candidate gave a specific example in the leadership dimension that showed X behavior. I'm maintaining Strong Hire based on that." If the Bar Raiser and other interviewers have compelling counter-evidence you hadn't considered, updating your vote is correct — that is "updating with evidence," not "caving to pressure." The distinction is critical.
+
+---
+
+### Scenario 12 — The Ethical Edge Case
+
+You are asked to implement a feature that personalizes Prime recommendations for users aged 12-17. The algorithm uses behavioral data to surface items with high purchase probability. You have personal concerns about the ethics of behavioral targeting for minors.
+
+**Options:**
+A) Implement the feature as requested — it's legal and you were asked to do it
+B) Raise the concern with your manager and the product team, document the conversation, and implement if directed after the conversation
+C) Refuse to implement it until the ethics review board signs off
+
+Best response: [blank]
+
+LP: [blank]
+
+Reasoning: [blank]
+
+*Model answer:* B. Success and Scale Bring Broad Responsibility — "We will be scrutinized for our impact on society." The LP asks you to be "thoughtful about the secondary effects of our actions." Raising the concern is the LP-aligned move — you are not refusing (that would be premature without more information) and you are not silently complying (that would abdicate responsibility). Documenting the conversation protects you, the team, and the product. If the answer after the conversation is "we've considered this, here's our mitigation, proceed," then B leads to implementation. If the answer reveals a real problem, your flag may have prevented a regulatory incident. A is incomplete because it skips the "thoughtful" requirement. C overcorrects — refusing work before raising the concern skips the collaborative step.
+
+**Checkpoint M2:** Check the box above when you have a recorded response and LP for all 12 scenarios.
+
+---
+
+## Part 4 — STAR Story Bank
+
+*For each scenario type that appeared in the inbox, draft one STAR story from your own experience. If you don't have a real example, draft a plausible one from a project you worked on. The goal is to have a story ready, not to invent facts.*
+
+**Scenario types to cover:**
+
+| Type | LP | Your STAR story |
+|---|---|---|
+| Raised a difficult issue early | Ownership / Earn Trust | [blank] |
+| Disagreed with a senior person and held your ground | Have Backbone | [blank] |
+| Made a decision under ambiguity without waiting | Bias for Action | [blank] |
+| Optimized for the right cost — not always the cheapest | Frugality | [blank] |
+| Taught or mentored someone instead of solving for them | Hire and Develop | [blank] |
+| Raised an ethical or privacy concern proactively | Success and Scale | [blank] |
+| Committed fully to a decision you disagreed with | Disagree and Commit | [blank] |
+
+**STAR format reminder:**
+- **S** — Situation: 1-2 sentences of context. What was the setting?
+- **T** — Task: What was your specific responsibility? Say "I", not "we."
+- **A** — Action: What did YOU do specifically? This is 60% of the story. Be concrete.
+- **R** — Result: What happened? Quantify if possible. What was the measurable outcome?
+
+**Common STAR mistakes:**
+- Saying "we" throughout — the interviewer is assessing YOU, not your team.
+- A result like "the project succeeded" — this is not a result. "Latency dropped from 800ms to 200ms, and the feature launched on schedule" is a result.
+- A story that is all Situation with no Action — front-loading context at the expense of what you actually did.
+
+**Checkpoint M4:** Check the box when you have at least 4 STAR stories drafted.
+
+---
+
+## Part 5 — LP Reasoning: The Hard Questions
+
+*Answer these without looking at the LP list. These probe nuance, not recall.*
+
+**Q1: Which LP pair is most commonly confused with each other, and why?**
+[blank]
+
+*Model answer:* Have Backbone; Disagree and Commit is most commonly confused with Earn Trust. People assume "backbone" means being combative, and "earn trust" means always agreeing to keep the peace. The reality: backbone without respect is stubbornness; Earn Trust without backbone is sycophancy. They are complementary — you disagree with evidence and respect (earning trust in the process), and you commit fully after the decision (also earning trust). The confusion appears in interviews when candidates describe "I disagreed" stories as Earn Trust stories, or vice versa.
+
+**Q2: What is the difference between "Deliver Results" and "Bias for Action"?**
+[blank]
+
+*Model answer:* Bias for Action is about the START of work — moving quickly under ambiguity, not over-analyzing, making reversible decisions fast. Deliver Results is about the END — ensuring the thing you started actually ships, with the right quality, on time. You can have Bias for Action without Deliver Results (you move fast but nothing ships). You can have Deliver Results without Bias for Action (you eventually deliver but it took twice as long as it should have because you waited for perfect information). They operate at different points in the timeline of work.
+
+**Q3: How does "Dive Deep" show up in a code review context?**
+[blank]
+
+*Model answer:* Dive Deep in code review means: not approving code you don't understand, asking questions about specific lines rather than leaving high-level "looks good" comments, running the code locally to verify behavior rather than trusting the description, and catching edge cases in tests (or asking for them). It is the opposite of rubber-stamping. The failure mode is: "this engineer is too senior to need my review," which violates Dive Deep. "Leaders stay connected to the details" means senior people are MORE rigorous in review, not less.
+
+**Q4: Why is "Insist on the Highest Standards" NOT the same as perfectionism?**
+[blank]
+
+*Model answer:* Insist on the Highest Standards is calibrated to what "high" means in the specific context — a one-off script has different quality standards than a customer-facing API. Perfectionism is uncalibrated — it applies the same infinite-quality bar to every output, which violates Deliver Results. The LP says "relentlessly high standards" but it also implies knowing WHAT you are being rigorous about. High standards on correctness and testing; flexibility on which font to use in an internal doc. Perfectionism conflates these.
+
+**Checkpoint M5:** Check the box when you can explain the Disagree and Commit / Earn Trust confusion and the Deliver Results / Bias for Action difference verbally, without notes.
+
+---
+
+## Part 6 — Curveballs
+
+### Curveball 1 — A/B Test with an Unexpected Signal
+
+**Your A/B test shows a 2% lift in click-through rate on a new product recommendation module. But users are spending 15% less time on the page overall. Product wants to ship. What LP guides your recommendation?**
+
+**Your answer:** [blank]
+
+*Things to address:*
+- Customer Obsession — "work backwards from the customer." A 15% reduction in time on page may indicate users are finding what they want faster (positive) or finding the page less engaging (negative). The click-through lift alone does not tell you which.
+- Dive Deep — what does "time on page" mean in this context? Is it a good or bad signal? You need to understand the root before recommending.
+- Are Right, A Lot — you need more data before you can be confident you're right. What does the full funnel look like? Did conversion increase?
+- Recommendation: do not ship on click-through alone. Run a secondary analysis on downstream conversion and user satisfaction signals. Present the ambiguity to product. This is Customer Obsession in practice: you are not satisfied with a metric that could be masking user harm.
+
+---
+
+### Curveball 2 — The Ethically Questionable Feature
+
+**You're asked to work on a feature that enables geo-targeted advertising to users under 16. You think this is ethically questionable. What do you do, step by step?**
+
+**Your answer:** [blank]
+
+*Things to address:*
+- Success and Scale Bring Broad Responsibility — this LP directly applies. You are not just an implementer; you are accountable for the downstream impact.
+- Step 1: Understand the full context before reacting. Is there a legal review? Is this feature regulated in your markets?
+- Step 2: Raise the concern explicitly with your manager and the product team. "I have concerns about this feature's impact on users under 16. Has this gone through legal and ethics review?" This is backbone.
+- Step 3: If the answer is yes and the concerns are addressed, implement. Disagree and Commit.
+- Step 4: If the answer is "we haven't thought about it," pause until it goes through the appropriate review. This is not obstruction — it is responsibility.
+- What you do NOT do: implement silently (violates Success and Scale) or refuse without raising concerns first (violates the collaborative process).
+
+---
+
+### Curveball 3 — Bar Raiser Asks About Failure
+
+**"Tell me about a time you failed. Be specific." What LP does a strong answer demonstrate, and what makes the answer strong?**
+
+**Your answer:** [blank]
+
+*Things to address:*
+- The LP is Learn and Be Curious — "leaders are never done learning." A strong failure story demonstrates that you learned something durable from the failure, not that you have some kind of character flaw.
+- A strong answer structure: (1) what the failure was, specifically and without minimizing — say "I" not "we"; (2) why it happened — your specific decisions that contributed; (3) what you did to recover; (4) what you changed about how you work as a result; (5) evidence that the change stuck.
+- What makes it weak: vague failures ("I worked too hard and burned out"), failures that are clearly actually successes ("I failed to ship the feature in two weeks but we shipped it in three"), or failures with no lasting behavioral change.
+- What makes it strong: a real mistake with real consequences, owned without excuse, with a specific behavioral change that you can demonstrate is still in effect. The Bar Raiser is looking for self-awareness and intellectual honesty, not for you to be perfect.
+
+---
+
+## Part 7 — Behavioral Rubric
+
+*Self-grade after completing all 12 inbox scenarios and the STAR bank. Score yourself as the Bar Raiser would after reading your write-ups cold.*
+
+| Dimension | 5 | 3 | 1 | Your Score |
+|---|---|---|---|---|
+| LP recall | Named 14-16 LPs correctly from memory in Part 1 | Named 10-13 | Named < 10 | __ /5 |
+| LP-to-behavior mapping | Linked each scenario to the specific LP with a behavioral explanation ("this LP means X; in this context that looks like Y") | Named the LP but explained it abstractly or without connecting to the scenario | Wrong LP or no explanation given | __ /5 |
+| Nuance — LP tensions | Named at least 2 LP tensions explicitly (e.g., Bias for Action vs. Deliver Results, Backbone vs. Earn Trust) in your scenario explanations | Named 1 tension | No tensions identified — treated each LP as isolated | __ /5 |
+| STAR quality | Stories have specific quantified results, "I" language throughout, clear behavioral Action section that is ≥ 60% of the story | Stories present but vague — "we" language, unclear results, no numbers | Generic stories or no stories drafted | __ /5 |
+| Ethical reasoning | Identified the stakeholder at risk, named the relevant LP, described the trade-off, and named the action (scenarios 7, 12, curveballs) | Named the LP but was vague about the trade-off or the specific action | Did not identify the ethical dimension or defaulted to "just follow instructions" | __ /5 |
+| Communication / structure | Each response is concise (2-4 sentences), structured (response → LP → reason), and LP is visible in the reasoning — not stated as an afterthought | Understandable but wandering; LP is named but not used to explain the choice | Responses are long paragraphs without structure; LP mentioned in passing or not at all | __ /5 |
+| Time management | Processed all 12 scenarios with LP and reasoning in < 50 min | Processed 9-11 scenarios | Processed < 9 scenarios in 50 min | __ /5 |
+
+**Total: __ / 35**
+
+---
+
+## You're Ready When...
+
+- You score 14/16 on LP recall in Part 1 without looking
+- You can defend your answer for Scenarios 2, 9, and 11 (the three most commonly mishandled) without notes
+- You have at least 4 STAR stories drafted, each with a quantified result and "I" language
+- You can explain Disagree and Commit vs. Earn Trust without confusing them
+- You self-grade ≥ 28/35 on two separate attempts
+
+**What to do if you scored below 24/35:** Go back to the 16 LPs and write a one-sentence behavioral definition for each from a SWE context. Not the Amazon phrase — the behavior. Then redo the inbox.
+
+**Next lab:** [→ Lab 02: Design-a-DS](../lab_02_design_ds/workbook.md)
+
+---
+
+*Amazon SWE Lab 01 · Tier 2 (Completion) · Work-Simulation LP Inbox · v2.0*

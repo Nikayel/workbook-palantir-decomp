@@ -1,227 +1,201 @@
-# Amazon SWE Lab 01 — Flashcards
+# Flashcards — Amazon SWE Lab 01: Work-Simulation LP Inbox Triage
 
-10 cards. Study until each answer comes in < 5 seconds.
-
----
-
-## Card 01 — Binary Search on Answer Template
-
-**Q:** Write the binary search on answer template from memory.
-
-**A:**
-```python
-def solve(inputs, k):
-    def can_finish(limit):
-        # Check: given this limit, can k workers (or units) handle all inputs?
-        # Return True if feasible, False if not
-        ...
-
-    lo = [minimum possible answer]   # e.g., max(inputs) for makespan problems
-    hi = [maximum possible answer]   # e.g., sum(inputs) for 1-worker case
-
-    while lo < hi:
-        mid = (lo + hi) // 2
-        if can_finish(mid):
-            hi = mid       # mid is feasible — try lower
-        else:
-            lo = mid + 1   # mid is too low — need more
-
-    return lo
-```
-
-**When to use:** "Minimize the maximum" or "find the smallest X such that Y is possible." The feasibility check must be monotone: if X works, X+1 also works.
+*10 cards for spaced repetition. Study these 24–48 hours after completing the workbook. Cover the answer and try to recall it before reading.*
 
 ---
 
-## Card 02 — Dijkstra Time Complexity
+## Card 1 — The 16 Leadership Principles (Group 1: Customer + Ownership + Invention + Judgment)
 
-**Q:** What is Dijkstra's time complexity with a binary heap, and what does each term come from?
+**Q:** Name the first four Amazon Leadership Principles and give one specific SWE behavior that demonstrates each.
 
 **A:**
+1. **Customer Obsession** — "Leaders start with the customer and work backwards."
+   SWE behavior: Choosing a simpler API surface even if the backend implementation is harder, because users find the complex API confusing.
 
-**O((V + E) log V)**
+2. **Ownership** — "Leaders are owners and act on behalf of the entire company."
+   SWE behavior: Finding a bug in someone else's code during review and filing a complete bug report with reproduction steps and severity — not just flagging it and moving on.
 
-- **V log V**: Each of the V nodes is popped from the heap at most once. Each pop is O(log V) for a binary heap.
-- **E log V**: Each of the E edges causes at most one push to the heap. Each push is O(log V).
-- Combined: O((V + E) log V).
+3. **Invent and Simplify** — "Leaders expect and require innovation and simplification from their teams."
+   SWE behavior: Replacing a 500-line custom parser with a 30-line use of an existing library, then writing tests to verify behavioral equivalence.
 
-**With Fibonacci heap:** O(E + V log V) — better when E >> V. Rarely used in practice due to implementation complexity.
-
-**BFS comparison:** O(V + E) — same traversal cost but no heap. Works for unweighted graphs only.
-
-**When V and E are similar order:** O(E log V) is the dominant term.
+4. **Are Right, A Lot** — "Leaders are right a lot. They have strong judgment and good instincts."
+   SWE behavior: Pushing back on a design decision with a benchmark, not an opinion. Updating your position when better data arrives — even if it contradicts your earlier judgment.
 
 ---
 
-## Card 03 — When to Binary Search vs Greedy
+## Card 2 — The 16 Leadership Principles (Group 2: Learning + Hiring + Standards + Thinking)
 
-**Q:** How do you decide between binary search on answer vs a direct greedy algorithm?
+**Q:** Name LPs 5 through 8 and give one specific SWE behavior for each.
 
 **A:**
+5. **Learn and Be Curious** — "Leaders are never done learning and always seek to improve themselves."
+   SWE behavior: Spending 2 hours reading the RFC for a protocol you are implementing rather than guessing at the edge cases.
 
-**Use binary search on answer when:**
-- The answer is a numeric range (time, capacity, size)
-- Feasibility is monotone: if X works, X+1 also works
-- Computing feasibility for a fixed X is straightforward (usually O(n) or O(n log n))
-- Direct calculation of the optimal value is non-obvious
+6. **Hire and Develop the Best** — "Leaders raise the performance bar with every hire and every interaction."
+   SWE behavior: In a code review, explaining WHY a pattern is better — not just marking it wrong — turning the review into a teaching moment for the author.
 
-**Use greedy when:**
-- Local optimal choice leads to global optimum (provable exchange argument)
-- The answer has a direct formula (e.g., if tasks are splittable: answer = ceil(total_work / k))
-- Greedy gives O(n log n) and binary search would give O(n log n) anyway — greedy is simpler
+7. **Insist on the Highest Standards** — "Leaders have relentlessly high standards."
+   SWE behavior: Rejecting a PR that works correctly but has no test coverage for edge cases, even when the team is under deadline pressure.
 
-**Distinguishing signal:** If you find yourself wanting to try "what if the answer is X?" — that's the binary search framing. If you find yourself wanting to build the answer up incrementally — that's greedy.
+8. **Think Big** — "Leaders create and communicate a bold direction that inspires results."
+   SWE behavior: Proposing that a single-team internal script could be turned into a platform for the whole org, and writing the one-pager design doc unprompted.
 
 ---
 
-## Card 04 — Which LPs Show in SWE Code
+## Card 3 — The 16 Leadership Principles (Group 3: Action + Frugality + Trust + Depth)
 
-**Q:** Name 4 Leadership Principles that a SWE can demonstrate through code and explain how.
+**Q:** Name LPs 9 through 12 and give one specific SWE behavior for each.
 
 **A:**
+9. **Bias for Action** — "Speed matters. Many decisions and actions are reversible and do not need extensive study."
+   SWE behavior: Launching a 1% traffic experiment to validate a hypothesis in 2 hours rather than spending three weeks in design review for a decision that can be reversed.
 
-| LP | How it shows in SWE code |
-|---|---|
-| **Dive Deep (LP 12)** | Testing edge cases (k > n, empty input, disconnected graph). Staying connected to details means not declaring "done" without testing boundary conditions. |
-| **Insist on the Highest Standards (LP 7)** | Code readability, naming, no magic numbers. Comments that explain WHY, not what. A Bar Raiser can read your code and understand your thinking. |
-| **Bias for Action (LP 9)** | Attempting a brute force first, then optimizing. Not paralyzed by "what if it's not optimal" — write something that works, then improve. |
-| **Invent and Simplify (LP 3)** | Choosing a simpler algorithm when it's sufficient. Not over-engineering. Using O(n) when O(n log n) isn't needed. |
+10. **Frugality** — "Accomplish more with less. Constraints breed resourcefulness, self-sufficiency, and invention."
+    SWE behavior: Using a managed database that costs $500/month instead of building a custom data store that would consume 3 weeks of engineering time — because the total cost of ownership of the custom solution is higher.
 
-**Pro move:** In an Amazon interview, name the LP when you make a decision: "I'm going to write the brute force first — Bias for Action — then we can optimize once we have something working."
+11. **Earn Trust** — "Leaders listen attentively, speak candidly, and treat others respectfully."
+    SWE behavior: Writing a post-incident report that names your own mistake specifically, describes its blast radius, and states exactly what you changed — not a vague "improved team communication."
+
+12. **Dive Deep** — "Leaders operate at all levels, stay connected to the details, audit frequently."
+    SWE behavior: Reading the stack trace all the way to the root cause rather than stopping at the first plausible explanation. Running the bug under production conditions before declaring it fixed.
 
 ---
 
-## Card 05 — Bar Raiser Role
+## Card 4 — The 16 Leadership Principles (Group 4: Backbone + Results + Employer + Scale)
 
-**Q:** What is the Bar Raiser's job, and how does it differ from a standard interviewer?
+**Q:** Name LPs 13 through 16 and give one specific SWE behavior for each.
 
 **A:**
+13. **Have Backbone; Disagree and Commit** — "Leaders are obligated to respectfully challenge decisions they disagree with, even when doing so is uncomfortable."
+    SWE behavior: Writing a test case that reproduces a race condition you spotted in a senior engineer's PR, sharing it in the PR thread, and maintaining the objection until the evidence is acknowledged — not deferring to seniority.
 
-The Bar Raiser is a trained, certified Amazon employee (often from a different team) who participates in every interview loop. Their job:
+14. **Deliver Results** — "Leaders focus on the key inputs for their business and deliver them with the right quality and in a timely fashion."
+    SWE behavior: Cutting a non-critical feature from the sprint scope to ship the core feature on time, proactively notifying the PM rather than waiting to be told you are behind.
 
-1. **Independent assessment:** They evaluate independently of the hiring team. If the team wants to hire and the Bar Raiser says "no hire," the candidate does not get an offer.
+15. **Strive to be Earth's Best Employer** — "Leaders work every day to create a safer, more productive, higher performing, more diverse, and more just work environment."
+    SWE behavior: Noticing that a newer team member's ideas are being talked over in design review and explicitly inviting them to finish their thought.
 
-2. **Hold the bar:** They assess whether the candidate would raise the average quality of the team — not just "is this person good enough," but "is this person better than the bottom 50% of current employees at this level?"
-
-3. **LP depth:** Bar Raisers are trained to probe LP stories for specifics. Generic STAR answers fail. "I worked on a project" = fail. "I identified a 40% latency spike on the payment service, traced it to a database query, proposed a caching layer, and deployed it in 48 hours — improving p99 latency from 800ms to 120ms" = Bar Raiser-level specificity.
-
-4. **Veto authority:** The only person in the loop who can unilaterally block a hire.
+16. **Success and Scale Bring Broad Responsibility** — "We must be humble and thoughtful about the secondary effects of our actions."
+    SWE behavior: Raising a privacy concern about a feature that is legally compliant but that could expose user behavioral data to third parties — raising it before implementation, not after.
 
 ---
 
-## Card 06 — Work Simulation Scoring on LPs
+## Card 5 — The Four Load-Bearing LPs for SWE Candidates
 
-**Q:** How is Amazon's Work Simulation (inbox triage) scored, and what is the key insight for doing well?
+**Q:** Which four LPs are most commonly evaluated in Amazon SWE Work Simulations and behavioral interviews? Why these four specifically?
 
-**A:**
+**A:** Customer Obsession, Ownership, Dive Deep, and Deliver Results.
 
-The Work Simulation presents scenarios as emails/messages from stakeholders. You choose how to respond from multiple options. Each scenario maps to 1–2 Leadership Principles.
+**Why these four:** They map directly to the core SWE behaviors that distinguish strong from weak candidates:
 
-**Scoring:** Your response is scored on how well it aligns with the LP the scenario tests. The "correct" answer is the one that most clearly demonstrates the target LP.
+- **Customer Obsession:** Do you make decisions that serve users, or decisions that serve your own convenience or the speed of implementation?
+- **Ownership:** When something goes wrong, do you act like it is your problem regardless of whose code or system it is?
+- **Dive Deep:** Do you understand your system at the detail level, or do you accept "it works" without knowing why — until it doesn't?
+- **Deliver Results:** Do you ship things, or do you spin in planning, refinement, and stakeholder alignment indefinitely?
 
-**Key insight:** The correct answer is NOT necessarily the most efficient answer or the nicest answer. It's the answer that demonstrates the specific LP being tested. Examples:
-
-- Scenario about customer complaint → Customer Obsession response (prioritize customer, even at short-term cost)
-- Scenario about peer disagreement → Have Backbone response (respectfully push back, provide evidence, commit after decision)
-- Scenario about missing data before a decision → Dive Deep response (get the data, don't guess)
-
-**Preparation:** Before the OA, read through all 16 LPs and internalize the defining behavior for each. When you see a scenario, ask: "Which LP is this testing?" Then choose the answer that best exemplifies that LP — even if it's the harder or less comfortable option.
+The other LPs matter too, but these four appear in nearly every Work Simulation scenario and every SWE behavioral loop. If you can only internalize four LPs in depth before an Amazon interview, make it these four.
 
 ---
 
-## Card 07 — Amazon OA Format
+## Card 6 — Bar Raiser Role and Veto
 
-**Q:** What are the 3 components of the Amazon SWE OA, and how much time is allotted for each?
+**Q:** What is the Bar Raiser in Amazon's hiring process, what authority do they have, and how should this affect how you prepare?
 
-**A:**
+**A:** The Bar Raiser is a specially trained Amazon employee from a different team who joins the interview loop as an independent evaluator. They are not the hiring manager and have no interest in filling the headcount.
 
-| Component | Time | Format |
-|---|---|---|
-| Coding problems | ~70 min | 2 medium LeetCode-style problems in a code editor with test cases |
-| Work Simulation | ~35 min | Inbox triage — choose response from multiple-choice options for ~8–10 email scenarios |
-| Work Style Assessment | ~15 min | Self-report personality/work preferences; used for calibration, not pass/fail |
+**Authority:** The Bar Raiser has effective veto power. If the Bar Raiser votes No Hire, the candidate does not receive an offer — even if the rest of the loop is unanimously positive. This asymmetry is intentional and designed to prevent teams from "lowering the bar" under pressure to hire quickly.
 
-**Total:** ~2 hours
+**What they evaluate:** Whether the candidate would raise the average performance bar of the team they are joining — not "good enough to do the job" but "better than the bottom 50% of current employees at this level." They probe specifically for LP specificity in STAR stories and for candidates who say "we" instead of "I."
 
-**Strategy:**
-1. Coding first (most heavily weighted). Don't start WS until coding is submitted.
-2. For each coding problem: read, identify pattern, brute force in words, optimize, code, test.
-3. For WS: go with your gut on LP alignment. Overthinking is not rewarded.
-4. Work Style Assessment: there are no "right" answers. Be authentic — inconsistent responses (trying to game it) are detected.
+**Preparation implications:**
+- Have STAR stories with quantified results and "I" language ready for failure, backbone, ownership, and dive-deep scenarios.
+- The Bar Raiser will ask the most uncomfortable question in your loop — often about a genuine failure or a time you disagreed with a direction. They are testing self-awareness and intellectual honesty, not perfection.
+- Generic LP mentions ("I always think about the customer") fail. Specific behavioral evidence ("I re-ran the benchmark after the senior engineer pushed back, found it supported my original position, and shared the results") passes.
 
 ---
 
-## Card 08 — STAR Structure for LP Stories
+## Card 7 — LP Tension Examples (Bias for Action vs Think Big; Backbone vs Earn Trust)
 
-**Q:** Write out the STAR structure with Amazon-specific guidance for each component.
+**Q:** Name two common LP tension pairs that appear in SWE scenarios. For each pair, describe how they pull in opposite directions and how Amazon expects you to resolve it.
 
 **A:**
 
-**S — Situation (1–2 sentences)**
-Set the context. Team size, company stage, what was at stake. Be specific about scale.
-Bad: "I was working on a big project."
-Good: "I was leading backend development for a 3-person team building Amazon's internal supplier onboarding tool, handling 500 new suppliers per week."
+**Bias for Action vs. Think Big:**
+- Tension: Bias for Action says "make reversible decisions fast, stop over-analyzing." Think Big says "consider the broader system implications, don't optimize locally at the expense of the bigger picture."
+- Resolution: use reversibility as the decision rule. Reversible actions (a feature flag, a 1% experiment, a local refactor) → Bias for Action wins, move fast. Irreversible or hard-to-undo actions (a database schema, a public API contract, an architectural choice that will touch 10 teams) → Think Big wins, take time to consider second-order effects.
+- SWE example: ship an MVP behind a flag immediately (Bias for Action), but design the public API contract carefully in a design review (Think Big), because changing an API contract after customers depend on it is extremely costly.
 
-**T — Task (1 sentence)**
-What were YOU specifically responsible for? Not "we" — "I."
-Bad: "We needed to reduce latency."
-Good: "I was responsible for identifying and fixing the root cause of a 3x latency regression that was blocking the November launch."
-
-**A — Action (3–5 sentences, most important)**
-What YOU did. Specific steps. Obstacles you overcame. Evidence you were driving, not following.
-Bad: "I worked with the team to find the problem and fix it."
-Good: "I ran a profiling session and traced the spike to a missing database index. I proposed adding the index, wrote the migration script, tested it in staging against production-scale data, and deployed with monitoring. When the index degraded write performance by 8%, I rolled back and proposed a caching layer instead."
-
-**R — Result (1–3 sentences)**
-Quantified outcome. What changed? What did you learn?
-Bad: "The latency improved."
-Good: "P99 latency dropped from 800ms to 120ms. The launch shipped on time. I documented the profiling workflow and it's now standard practice for the team."
+**Have Backbone; Disagree and Commit vs. Earn Trust:**
+- Tension: Backbone says "challenge decisions you disagree with, even upward, even when it's uncomfortable." Earn Trust says "listen attentively, treat people respectfully, be aware of your own biases."
+- Resolution: Backbone requires evidence and respect simultaneously. Earn Trust requires candor, not compliance. The two LPs are complementary, not opposed. You disagree WITH EVIDENCE (which builds trust by demonstrating rigor). You commit fully AFTER THE DECISION (which also builds trust by demonstrating reliability). A candidate who defers to avoid conflict fails Backbone. A candidate who keeps pushing after the decision fails Earn Trust.
 
 ---
 
-## Card 09 — "Invent and Simplify" in Code
+## Card 8 — STAR Structure with "I" Language and Quantified Results
 
-**Q:** What does "Invent and Simplify" look like in a SWE interview, and what is its opposite?
+**Q:** What are the four STAR components? What is the most common failure mode in each, and how do you fix it?
 
 **A:**
 
-**Invent and Simplify (LP 3)** in code means:
-- Choosing the simplest algorithm that meets the requirements
-- Not over-engineering for hypothetical future needs
-- Recognizing when O(n log n) is overkill and O(n) is sufficient
-- Writing readable, maintainable code over clever-but-unreadable code
+**Situation:** 1–2 sentences of context. What was the setting, what was at stake, what was the scale?
+- Common failure: too much context. Five sentences of backstory before anything happens.
+- Fix: assume the interviewer is smart. State the minimum needed to understand why the task was hard.
 
-**Examples:**
-- Using a dict instead of a Trie when there's no prefix query
-- Using BFS instead of Dijkstra for an unweighted graph
-- Writing a single loop instead of three map/filter chains
+**Task:** Your specific responsibility. Must say "I", not "we."
+- Common failure: "Our team needed to reduce the p99 latency."
+- Fix: "I was responsible for identifying and fixing the root cause of the 3× latency regression that was blocking the November launch."
 
-**Its opposite:** Premature optimization. Building infrastructure for problems you don't have. Adding abstraction layers that don't reduce complexity.
+**Action:** What you specifically did. This is 60% of the story. Be concrete — name the specific decision, the specific tool, the specific obstacle.
+- Common failure: "I worked with the team to investigate and resolve the issue."
+- Fix: "I profiled the production traffic replay and found a missing index on the orders table. I wrote the migration, tested it against a production-scale dataset in staging, and deployed with a canary that monitored write latency. When the index increased write latency by 8%, I rolled back and proposed a read-through caching layer instead."
 
-**Interview signal:** When you choose your algorithm, say: "I'm using a hash map here — simpler than a Trie, and since we don't need prefix queries, it's sufficient. Invent and Simplify." This explicitly demonstrates LP awareness.
+**Result:** Quantified outcome. What changed? What did you learn? What stuck?
+- Common failure: "the project was a success" or "my manager was happy."
+- Fix: "P99 latency dropped from 800ms to 120ms, shipping the November launch on time. The profiling workflow I used is now the team standard for latency investigations."
+
+Quantification rule: if you cannot find an exact number, use a direction and a reasonable estimate. "Roughly 40% fewer support tickets" beats "significantly fewer support tickets" which beats "fewer support tickets."
 
 ---
 
-## Card 10 — k-Worker Scheduling Pattern
+## Card 9 — Disagree and Commit: Meaning and Misreadings
 
-**Q:** Describe the k-worker scheduling pattern and its two common formulations.
+**Q:** What does "Disagree and Commit" actually mean? Name two common misreadings and explain why each is wrong.
 
-**A:**
+**A:** Disagree and Commit means: when you disagree with a decision, you make your position known clearly and with supporting evidence (disagree). Once the decision is made through the proper process, you execute it with full effort, as if you had proposed it yourself (commit).
 
-The k-worker scheduling (parallel processing) pattern appears frequently in Amazon OAs. It has two common formulations:
+**Misreading 1: "Commit means I was wrong."**
+Wrong. Committing to a decision does not mean accepting that you were wrong or that you agree with the outcome. You may still believe your original position was better. The LP asks you to execute the team's decision at full quality regardless. Your belief about the architecture does not change your quality of implementation.
 
-**Formulation 1: Minimize makespan (minimum time to complete all tasks)**
-- Binary search on T
-- can_finish(T): use greedy assignment (sort tasks descending, assign to least-loaded worker using min-heap)
-- lo = max(tasks), hi = sum(tasks)
-- Time: O(n log(sum) × n log k)
+**Misreading 2: "Disagree means I keep raising the issue until I get my way."**
+Wrong. The "disagree" phase happens ONCE — before the decision is made. Once the decision is made, the disagree phase is over. Continuing to relitigate a settled decision is not backbone; it is a failure to commit and a violation of Earn Trust. If material new evidence arrives after the decision (e.g., the architecture you warned about begins failing at the predicted load 6 months later), you can re-open the discussion with that new data — that is not relitigating, it is new information.
 
-**Formulation 2: Minimize workers needed (given time budget T, what's the min k?)**
-- Direct formula: workers_needed = sum(ceil(task / T) for task in tasks)
-- No binary search needed — one pass
+**Misreading 3: "Commit means visible compliance, private resistance."**
+Wrong. "Commit wholly" is explicit in the LP. Half-hearted implementation that "technically follows" the decision while avoiding the spirit of it violates both Disagree and Commit and Insist on the Highest Standards. The Bar Raiser will probe for this: "How did you implement the decision after you lost the argument?" is a standard probe for full vs. superficial commitment.
 
-**Formulation 3: Minimize time to process all tasks where each task goes to exactly one worker, workers work in parallel**
-- If workers are identical and tasks indivisible: binary search on T, greedy assignment
-- If tasks are splittable: answer = ceil(sum(tasks) / k) — just division
+---
 
-**Key insight:** Always clarify which formulation you're solving before you code. "Minimize makespan" vs "minimize workers needed" vs "splittable tasks" are three different problems with different solutions.
+## Card 10 — Amazon Writing Culture as a Signal in Work Simulation
+
+**Q:** Amazon is known for a writing culture (6-page narratives over slides, PR/FAQ documents). How does this appear in the SWE OA Work Simulation, and what writing behaviors earn higher scores?
+
+**A:** Amazon's writing culture reflects the belief that clarity of writing reflects clarity of thinking. Verbal fluency can mask fuzzy reasoning; structured writing cannot.
+
+In the Work Simulation, this surfaces as:
+- Scenarios that present written messages and ask you to select or draft responses.
+- Scoring that rewards: responses that are short, lead with the decision, and make the LP reasoning visible in the logic — not tacked on at the end as a label.
+
+Writing behaviors that earn higher Work Simulation scores:
+
+1. **Lead with the decision.** "I'll raise this issue with my manager now, before the Thursday demo." Not: "There are several things to consider here, including the deadline, the technical risk, and the team dynamics..."
+
+2. **Name the LP in the reasoning, not as a tag.** "Shipping a known load defect violates Insist on the Highest Standards, so I'll raise it now even if it risks the demo." Not: "I'd raise the issue (LP: Insist on the Highest Standards)."
+
+3. **Quantify or specify when possible.** "The race condition will fail at > 1,000 concurrent users. Our production rollout is 50,000." Not: "There is a scalability concern."
+
+4. **No padding.** The word "various" is a red flag. "Several stakeholders" means you haven't identified them. Name them or don't cite them.
+
+The Work Simulation scorer reads responses the way a Bar Raiser reads a STAR story — looking for specificity, first-person agency, and LP reasoning that is behavioral (describes an action) rather than philosophical (describes a value).
+
+---
+
+*10 cards · Amazon SWE Lab 01 · Work-Simulation LP Inbox Triage · Review 24–48 hrs after completing workbook*
